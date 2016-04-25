@@ -332,7 +332,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,MO(SYMB_SH)   ,KC_NO       ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_VOLD
 ,KC_LSFT       ,KC_NO       ,KC_NO   ,KC_MS_D ,KC_NO   ,KC_MUTE ,KC_WH_D
 ,KC_NO         ,KC_LCTL     ,ALL_T(KC_NO),KC_LALT,KC_LGUI
-                                                       ,KC_WSTP ,KC_WREF
+                                                       ,KC_MS_BTN3 ,KC_WREF
                                                                 ,KC_WSCH
                                               ,KC_BTN1 ,KC_BTN2 ,KC_WHOM
                                                                      // right hand
@@ -374,7 +374,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_NO      ,KC_NO       ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_VOLD  
 ,KC_LSFT    ,KC_NO       ,KC_NO   ,KC_MS_D ,KC_NO   ,KC_MUTE ,KC_WH_D
 ,KC_NO      ,KC_LCTL     ,ALL_T(KC_NO),KC_LALT,KC_LGUI
-                                                    ,KC_WSTP ,KC_WREF
+                                                    ,KC_MS_BTN3 ,KC_WREF
                                                              ,KC_WSCH
                                            ,KC_BTN1 ,KC_BTN2 ,KC_WHOM
                                                                      // right hand
