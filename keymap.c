@@ -579,15 +579,9 @@ void matrix_scan_user(void) {
     }
 
     if (layer == HUN_LK) {
-      if (shift_state || (host_keyboard_leds() & (1<<USB_LED_CAPS_LOCK)))
-        ergodox_right_led_1_on();
-      else
-        ergodox_right_led_1_off();
       ergodox_right_led_2_on();
       ergodox_right_led_3_on();
     } else {
-      //ergodox_board_led_off();
-
       // symbol turns on green light
       if(layer == SYMB_SH || layer == SYMB_LK) {
         ergodox_right_led_2_on();
