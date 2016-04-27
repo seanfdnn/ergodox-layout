@@ -514,9 +514,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           if (shift_state == 0) {
             register_code(KC_RSFT);
             shift_state = 1;
+            ergodox_right_led_1_on();
           } else {
             unregister_code(KC_RSFT);
             unregister_code(KC_CAPS);
+            ergodox_right_led_1_off();
             shift_state = 0;
           }
         }
@@ -570,13 +572,6 @@ void matrix_init_user(void) {
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void) {
     uint8_t layer = biton32(layer_state);
-
-    // shift or caps lock turns on red light
-    if (shift_state) {
-      ergodox_right_led_1_on();
-    } else {
-      ergodox_right_led_1_off();
-    }
 
     // do not change lights while locking and unlocking
     if(layer == LOCK || layer == SYMB_UN || layer == MDIA_UN || layer == UNLOCK) {
