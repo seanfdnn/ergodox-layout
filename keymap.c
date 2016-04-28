@@ -6,14 +6,15 @@
 
 #define BASE     0 // default layer
 #define LOCK     1 // shift-lock layer
-#define HUN_LK   2 // Hungarian base layer
-#define SYMB_SH  3 // symbols shift layer
-#define SYMB_LK  4 // symbols lock layer
-#define SYMB_UN  5 // symbols unlock layer
-#define MDIA_SH  6 // media shift layer
-#define MDIA_LK  7 // media lock layer
-#define MDIA_UN  8 // media unlock layer
-#define UNLOCK   9 // clear to base layer
+#define HUN_SH   2
+#define HUN_LK   3 // Hungarian base layer
+#define SYMB_SH  4 // symbols shift layer
+#define SYMB_LK  5 // symbols lock layer
+#define SYMB_UN  6 // symbols unlock layer
+#define MDIA_SH  7 // media shift layer
+#define MDIA_LK  8 // media lock layer
+#define MDIA_UN  9 // media unlock layer
+#define UNLOCK  10 // clear to base layer
 
 #define HU_AA M(10)
 #define HU_OO M(11)
@@ -85,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_RBRC ,KC_F   ,KC_G   ,KC_C   ,KC_R        ,KC_L        ,LT(MDIA_SH, KC_SLSH)
                                                                         ,KC_D   ,KC_H   ,KC_T   ,KC_N        ,KC_S        ,LT(SYMB_SH, KC_BSLS)
                                                                ,KC_RPRN ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,KC_RCTRL
-                                                                                ,KC_RGUI,KC_RALT,KC_APP      ,KC_NO       ,KC_FN4 
+                                                                                ,KC_RGUI,KC_RALT,KC_APP      ,KC_NO       ,MO(HUN_SH)
 
                                                                ,KC_LEFT ,KC_RGHT
                                                                ,KC_UP
@@ -118,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  KC_TRNS ,KC_ESC  ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
 ,KC_FN3  ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
 ,KC_FN2  ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
-,KC_LCTRL,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
+,KC_RCTRL,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
 ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
 
                                              ,KC_TRNS ,KC_TRNS
@@ -137,7 +138,54 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_TRNS ,KC_TRNS ,KC_TRNS
     ),
 
-/* Keymap 2: Hungarian Layer
+/* Keymap 2: Hungarian Shift Layer
+ *
+ * ,-----------------------------------------------------.           ,-----------------------------------------------------.
+ * | LOCK      |      |      |      |      |      |      |           |      |      |      |      |      |      |      LOCK |
+ * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
+ * |           |      |  Ő   |      |  Ű   |      |      |           |      |      |      |      |      |      |           |
+ * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |   Á  |  Ó   |  É   |  Ú   |  Í   |------|           |------|      |      |      |      |      |           |
+ * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |      |  Ö   |      |  Ü   |      |      |           |      |      |      |      |      |      |           |
+ * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
+ *      |      |      |      |      |      |                                       |      |      |      |      | HUN  |
+ *      `----------------------------------'                                       `----------------------------------'
+ *                                         ,-------------.           ,-------------.
+ *                                         |      |      |           |      |      |
+ *                                  ,------|------|------|           |------+------+------.
+ *                                  |      |      |      |           |      |      |      |
+ *                                  |      |      |------|           |------|      |      |
+ *                                  |      |      |      |           |      |      |      |
+ *                                  `--------------------'           `--------------------'
+ */
+
+[HUN_SH] = KEYMAP(
+// left hand
+ KC_FN4  ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_TRNS
+,KC_NO   ,KC_NO   ,HU_OEE  ,KC_NO   ,HU_UEE  ,KC_NO   ,KC_NO  
+,KC_NO   ,HU_AA   ,HU_OO   ,HU_EE   ,HU_UU   ,HU_II
+,KC_NO   ,KC_NO   ,HU_OE   ,KC_NO   ,HU_UE   ,KC_NO   ,KC_NO  
+,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
+
+                                             ,KC_TRNS ,KC_TRNS
+                                                      ,KC_TRNS
+                                    ,KC_TRNS ,KC_TRNS ,KC_TRNS
+
+                                                                // right hand
+                                                               ,KC_TRNS ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_FN4
+                                                               ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO  
+                                                                        ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO  
+                                                               ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO  
+                                                                                 ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,MO(HUN_SH)
+
+                                                               ,KC_TRNS,KC_TRNS
+                                                               ,KC_TRNS
+                                                               ,KC_TRNS ,KC_TRNS  ,KC_TRNS
+    ),
+
+
+/* Keymap 3: Hungarian Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * | UNLOCK    |      |      |      |      |      |      |           |      |      |      |      |      |      |    UNLOCK |
@@ -146,7 +194,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
  * |           |   Á  |  Ó   |  É   |  Ú   |  Í   |------|           |------|      |      |      |      |      |           |
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
- * | Caps LOCK |      |  Ö   |      |  Ü   |      |      |           |      |      |      |      |      |      | Caps LOCK |
+ * |           |      |  Ö   |      |  Ü   |      |      |           |      |      |      |      |      |      |           |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |      |      |      |      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
@@ -164,7 +212,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  KC_FN1  ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_TRNS
 ,KC_NO   ,KC_NO   ,HU_OEE  ,KC_NO   ,HU_UEE  ,KC_NO   ,KC_NO  
 ,KC_NO   ,HU_AA   ,HU_OO   ,HU_EE   ,HU_UU   ,HU_II
-,KC_LCTRL,KC_NO   ,HU_OE   ,KC_NO   ,HU_UE   ,KC_NO   ,KC_NO  
+,KC_NO   ,KC_NO   ,HU_OE   ,KC_NO   ,HU_UE   ,KC_NO   ,KC_NO  
 ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
 
                                              ,KC_TRNS ,KC_TRNS
@@ -175,15 +223,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_TRNS ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_FN1
                                                                ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO  
                                                                         ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO  
-                                                               ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_RCTL
-                                                                                 ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
+                                                               ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO  
+                                                                                 ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,MO(UNLOCK)
 
                                                                ,KC_TRNS,KC_TRNS
                                                                ,KC_TRNS
                                                                ,KC_TRNS ,KC_TRNS  ,KC_TRNS
     ),
 
-/* Keymap 3: Symbol Shift Layer
+/* Keymap 4: Symbol Shift Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * | LOCK      |  F1  |  F2  |  F3  |  F4  |  F5  |      |           |  -   |  F6  |  F7  |  F8  |  F9  |  F10 |      LOCK |
@@ -225,7 +273,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                     ,KC_PGDN     ,KC_BSPC ,AM_LSFT
 ),
 
-/* Keymap 4: Symbol Lock Layer
+/* Keymap 5: Symbol Lock Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * | LOCK      |  F1  |  F2  |  F3  |  F4  |  F5  |      |           |  -   |  F6  |  F7  |  F8  |  F9  |  F10 |      LOCK |
@@ -267,7 +315,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                     ,KC_PGDN     ,KC_BSPC ,AM_LSFT
     ),
 
-/* Keymap 5: Symbol Unlock Layer
+/* Keymap 6: Symbol Unlock Layer
  *
  * ,------------------------------------------------------.           ,------------------------------------------------------.
  * |            | Esc  |      |      |      |      |      |           |      |      |      |      |      | Bspc |            |
@@ -309,7 +357,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                      ,KC_TRNS ,KC_TRNS ,KC_TRNS
 ),
 
-/* Keymap 6: Media Shift Layer
+/* Keymap 7: Media Shift Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * | LOCK      | F11  | F12  | F13  | F14  | F15  |ScrLCK|           |      | F16  | F17  | F18  | F19  | F20  |      LOCK |
@@ -351,7 +399,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                      ,KC_VOLD  ,KC_MSTP ,KC_MPLY
 ),
 
-/* Keymap 7: Media Lock Layer
+/* Keymap 8: Media Lock Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * | LOCK      | F11  | F12  | F13  | F14  | F15  |ScrLCK|           |      | F16  | F17  | F18  | F19  | F20  |      LOCK |
@@ -393,7 +441,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                      ,KC_VOLD  ,KC_MSTP ,KC_MPLY
     ),
 
-/* Keymap 8: Media Unlock Layer
+/* Keymap 9: Media Unlock Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * |           | Esc  |      |      |      |      |      |           |      |      |      |      |      | Bspc |           |
@@ -437,7 +485,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_TRNS
                                                                ,KC_TRNS ,KC_TRNS ,KC_TRNS
     ),
-/* Keymap 9: Unlock Layer
+/* Keymap 10: Unlock Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * | UNLOCK    |      |      |      |      |      |      |           |      |      |      |      |      |      |    UNLOCK |
@@ -475,7 +523,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
                                                                         ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
                                                                ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
-                                                                                 ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
+                                                                                 ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_FN1
 
                                                                ,KC_TRNS ,KC_TRNS
                                                                ,KC_TRNS
@@ -667,7 +715,7 @@ void matrix_scan_user(void) {
     if ((shift_state == 1) && !(keyboard_report->mods & MOD_BIT(KC_RSFT)))
       register_code (KC_RSFT);
 
-    if (layer == HUN_LK) {
+    if (layer == HUN_LK || layer == HUN_SH) {
       ergodox_right_led_2_on();
       ergodox_right_led_3_on();
     } else {
