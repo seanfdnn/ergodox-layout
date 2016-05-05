@@ -39,19 +39,28 @@
 #define AM_LSFT M(5)
 #define AM_RSFT M(6)
 #define AM_CAPS M(5)
+
+#define AM_LALT M(7)
+#define AM_RALT M(7)
+
+#define AM_LCTRL M(8)
+#define AM_RCTRL M(8)
+
 /*
  * algernon's ErgoDox EZ layout.
  *  Based on Ordinary, with a bit of Dvorak, Hungarian and other changes.
  */
 
 uint8_t shift_state = 0;
+uint8_t alt_state = 0;
+uint8_t ctrl_state = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Keymap 0: Base Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | LOCK   `~ |   1  |   2  |   3  |   4  |   5  | ESC  |           |  ESC |   6  |   7  |   8  |   9  |   0  | =    LOCK |
+ * | LOCK   `~ |   1  |   2  |   3  |   4  |   5  | Apps |           | Apps |   6  |   7  |   8  |   9  |   0  | =    LOCK |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
  * | Media Tab |   '  |   ,  |   .  |   P  |   Y  |   [  |           |  ]   |   F  |   G  |   C  |   R  |  L   | /   Media |
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
@@ -59,38 +68,38 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-----------+------+------+------+------+------|   (  |           |  )   |------+------+------+------+------+-----------|
  * | LCtrl     |   ;  |   Q  |   J  |   K  |   X  |      |           |      |   B  |   M  |   W  |   V  |  Z   |     RCtrl |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
- *     |  M-x  |      | Apps | LAlt | LGui |                                       | RGui | RAlt | Apps |      |  HUN  |
+ *     |  M-x  | Home |  End | PgUp | Pgdn |                                       | Left |  Up  | Down | Right|  HUN  |
  *     `-----------------------------------'                                       `-----------------------------------'
  *                                         ,-------------.           ,-------------.
- *                                         | Home | End  |           | Left | Right|
+ *                                         | LAlt | GUI  |           | GUI  | RAlt |
  *                                  ,------|------|------|           |------+------+------.
- *                                  |      |      | PgUp |           |  Up  |      |      |
+ *                                  |      |      | Ctrl |           | Ctrl |      |      |
  *                                  |Backsp|LShift|------|           |------| Enter| Space|
- *                                  |      |      | PgDn |           | Down |      |      |
+ *                                  |      |      | ESC  |           |  ESC |      |      |
  *                                  `--------------------'           `--------------------'
  */
 [BASE] = KEYMAP(
 // left hand
- LT(LOCK, KC_GRV)   ,KC_1        ,KC_2        ,KC_3   ,KC_4  ,KC_5  ,KC_ESC 
+ LT(LOCK, KC_GRV)   ,KC_1        ,KC_2        ,KC_3   ,KC_4  ,KC_5  ,KC_APP 
 ,LT(MDIA_SH, KC_TAB),KC_QUOT     ,KC_COMM     ,KC_DOT ,KC_P  ,KC_Y  ,KC_LBRC
 ,LT(SYMB_SH,KC_MINS),KC_A        ,KC_O        ,KC_E   ,KC_U  ,KC_I
-,KC_LCTRL           ,KC_SCLN     ,KC_Q        ,KC_J   ,KC_K  ,KC_X  ,KC_LPRN     
-,M(1)               ,KC_NO       ,KC_APP      ,KC_LALT,KC_LGUI
+,AM_LCTRL           ,KC_SCLN     ,KC_Q        ,KC_J   ,KC_K  ,KC_X  ,KC_LPRN     
+,M(1)               ,KC_HOME     ,KC_END      ,KC_PGUP,KC_PGDN
 
-                                                            ,KC_HOME,KC_END
-                                                                    ,KC_PGUP
-                                                    ,KC_BSPC,AM_LSFT,KC_PGDN
+                                                            ,AM_LALT,KC_LGUI
+                                                                    ,AM_LCTRL
+                                                    ,KC_BSPC,AM_LSFT,KC_ESC 
 
                                                                 // right hand
-                                                               ,KC_ESC  ,KC_6   ,KC_7   ,KC_8   ,KC_9        ,KC_0        ,LT(LOCK, KC_EQL)
+                                                               ,KC_APP  ,KC_6   ,KC_7   ,KC_8   ,KC_9        ,KC_0        ,LT(LOCK, KC_EQL)
                                                                ,KC_RBRC ,KC_F   ,KC_G   ,KC_C   ,KC_R        ,KC_L        ,LT(MDIA_SH, KC_SLSH)
                                                                         ,KC_D   ,KC_H   ,KC_T   ,KC_N        ,KC_S        ,LT(SYMB_SH, KC_BSLS)
-                                                               ,KC_RPRN ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,KC_RCTRL
-                                                                                ,KC_RGUI,KC_RALT,KC_APP      ,KC_NO       ,MO(HUN_SH)
+                                                               ,KC_RPRN ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,AM_RCTRL
+                                                                                ,KC_LEFT,KC_UP  ,KC_DOWN     ,KC_RGHT     ,MO(HUN_SH)
 
-                                                               ,KC_LEFT ,KC_RGHT
-                                                               ,KC_UP
-                                                               ,KC_DOWN ,KC_ENT ,KC_SPC
+                                                               ,KC_RGUI ,AM_RALT
+                                                               ,AM_RCTRL
+                                                               ,KC_ESC  ,KC_ENT ,KC_SPC
     ),
 
 /* Keymap 1: Layer Lock Keys
@@ -551,7 +560,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 
       case 1:
         if (record->event.pressed) {
-          return MACRO (D(LALT), T(X), U(LALT), END);
+          return MACRO (D(LALT), T(M), U(LALT), END);
         }
         break;
 
@@ -571,11 +580,39 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
+      case 7:
+        if (record->event.pressed) {
+          if (alt_state == 0) {
+            register_code (KC_LALT);
+            alt_state = 1;
+            ergodox_right_led_2_on();
+          } else {
+            unregister_code (KC_LALT);
+            ergodox_right_led_2_off();
+            alt_state = 0;
+          }
+        }
+        break;
+
+      case 8:
+        if (record->event.pressed) {
+          if (ctrl_state == 0) {
+            register_code (KC_LCTRL);
+            ctrl_state = 1;
+            ergodox_right_led_3_on();
+          } else {
+            unregister_code (KC_LCTRL);
+            ergodox_right_led_3_off();
+            ctrl_state = 0;
+          }
+        }
+        break;
+
       case C_AA:
         if (record->event.pressed) {
           if (shift_state == 0) {
-              unregister_code(KC_RSFT);
-              return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(A), END);
+            unregister_code(KC_RSFT);
+            return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(A), END);
           }
           else
             {
@@ -694,7 +731,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
       }
-    return MACRO_NONE;
+      return MACRO_NONE;
 };
 
 // Runs just one time when the keyboard initializes.
@@ -714,8 +751,9 @@ void matrix_scan_user(void) {
     if ((shift_state == 1) && !(keyboard_report->mods & MOD_BIT(KC_RSFT)))
       register_code (KC_RSFT);
 
+    /*
     if (layer == HUN_LK || layer == HUN_SH) {
-      ergodox_right_led_2_on();
+            ergodox_right_led_2_on();
       ergodox_right_led_3_on();
     } else {
       // symbol turns on green light
@@ -732,5 +770,6 @@ void matrix_scan_user(void) {
         ergodox_right_led_3_off();
       }
     }
+    */
 };
 
