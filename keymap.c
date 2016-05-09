@@ -41,7 +41,6 @@
 
 /*
  * algernon's ErgoDox EZ layout.
- *  Based on Ordinary, with a bit of Dvorak, Hungarian and other changes.
  */
 
 uint8_t shift_state = 0;
