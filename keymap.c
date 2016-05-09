@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "action_layer.h"
 #include "action_util.h"
+#include "mousekey.h"
 
 #define BASE     0 // default layer
 #define HUN_LK   1 // Hungarian base layer
@@ -38,6 +39,11 @@
 
 #define AM_LCTRL M(8)
 #define AM_RCTRL M(8)
+
+#define MUL 20
+#define MUR 21
+#define MDL 22
+#define MDR 23
 
 /*
  * algernon's ErgoDox EZ layout.
@@ -187,11 +193,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * |           | F11  | F12  | F13  | F14  | F15  |ScrLCK|           |ScrLCK| F16  | F17  | F18  | F19  | F20  |           |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * |           |      |LClick| MsUp |RClick|Vol Up|ScrlUp|           |ScrlUp|PrtScr| Home |  Up  | PgUp |      |           |
+ * |           |      |MsUpL | MsUp |MsUpR |Vol Up|ScrlUp|           |ScrlUp|PrtScr| Home |  Up  | PgUp |      |           |
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
  * |           |      |MsLeft|MsDown|MsRght|Vol Dn|------|           |------|      | Left | Down | Right|      |           |
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
- * | Play/Pause|      |      |MsDown|      | Mute |ScrlDn|           |ScrlDn|      | End  | Down | PgDn |      |      Stop |
+ * | Play/Pause|      |MsDnL |MsDown|MsDnR | Mute |ScrlDn|           |ScrlDn|      | End  | Down | PgDn |      |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |      |      |      |      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
@@ -206,9 +212,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [MDIA_LK] = KEYMAP(
 // left hand
  KC_NO      ,KC_F11      ,KC_F12  ,KC_F13  ,KC_F14  ,KC_F15  ,LGUI(KC_L)
-,KC_NO      ,KC_NO       ,KC_BTN1 ,KC_MS_U ,KC_BTN2 ,KC_VOLU ,KC_WH_U
+,KC_NO      ,KC_NO       ,M(MUL)  ,KC_MS_U ,M(MUR)  ,KC_VOLU ,KC_WH_U
 ,KC_NO      ,KC_NO       ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_VOLD
-,KC_MPLY    ,KC_NO       ,KC_NO   ,KC_MS_D ,KC_NO   ,KC_MUTE ,KC_WH_D
+,KC_MPLY    ,KC_NO       ,M(MDL)  ,KC_MS_D ,M(MDR)  ,KC_MUTE ,KC_WH_D
 ,KC_NO      ,KC_NO       ,KC_NO   ,KC_NO   ,KC_NO
                                                     ,KC_MS_BTN3 ,KC_WREF
                                                              ,KC_MPRV
@@ -415,6 +421,54 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
                 unregister_code (KC_RSFT);
               return MACRO (U(RSFT), D(RALT), U(RALT), T(EQL), D(RSFT), T(U), END);
             }
+        }
+        break;
+
+      case MUL: // mouse up left
+        if (record->event.pressed) {
+          mousekey_on(KC_MS_UP);
+          mousekey_on(KC_MS_LEFT);
+          mousekey_send();
+        } else {
+          mousekey_off(KC_MS_UP);
+          mousekey_off(KC_MS_LEFT);
+          mousekey_send();
+        }
+        break;
+
+      case MUR: // mouse up right
+        if (record->event.pressed) {
+          mousekey_on(KC_MS_UP);
+          mousekey_on(KC_MS_RIGHT);
+          mousekey_send();
+        } else {
+          mousekey_off(KC_MS_UP);
+          mousekey_off(KC_MS_RIGHT);
+          mousekey_send();
+        }
+        break;
+
+      case MDL: // mouse down left
+        if (record->event.pressed) {
+          mousekey_on(KC_MS_DOWN);
+          mousekey_on(KC_MS_LEFT);
+          mousekey_send();
+        } else {
+          mousekey_off(KC_MS_DOWN);
+          mousekey_off(KC_MS_LEFT);
+          mousekey_send();
+        }
+        break;
+
+      case MDR: // mouse down right
+        if (record->event.pressed) {
+          mousekey_on(KC_MS_DOWN);
+          mousekey_on(KC_MS_RIGHT);
+          mousekey_send();
+        } else {
+          mousekey_off(KC_MS_DOWN);
+          mousekey_off(KC_MS_RIGHT);
+          mousekey_send();
         }
         break;
       }
