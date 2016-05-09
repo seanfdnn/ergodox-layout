@@ -45,6 +45,10 @@
 #define MDL 22
 #define MDR 23
 
+#define MUNICODE 24
+#define MLAMBDA 25
+#define MSHRUGGIE 26
+
 /*
  * algernon's ErgoDox EZ layout.
  */
@@ -66,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-----------+------+------+------+------+------|   (  |           |  )   |------+------+------+------+------+-----------|
  * | Play/Pause|   ;  |   Q  |   J  |   K  |   X  |      |           |      |   B  |   M  |   W  |   V  |  Z   |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
- *     |  M-m  | Home | PgUp | PgDn | End  |                                       | Left |  Up  | Down | Right|  M-m  |
+ *     |  M-m  | Home | PgUp | PgDn | End  |                                       | Left |  Up  | Down | Right|Unicode|
  *     `-----------------------------------'                                       `-----------------------------------'
  *                                         ,-------------.           ,-------------.
  *                                         | LAlt | GUI  |           | Media| SYM  |
@@ -93,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_RBRC ,KC_F   ,KC_G   ,KC_C   ,KC_R        ,KC_L        ,KC_SLSH
                                                                         ,KC_D   ,KC_H   ,KC_T   ,KC_N        ,KC_S        ,KC_BSLS
                                                                ,KC_RPRN ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,KC_MSTP
-                                                                                ,KC_LEFT,KC_UP  ,KC_DOWN     ,KC_RGHT     ,M(1)
+                                                                                ,KC_LEFT,KC_UP  ,KC_DOWN     ,KC_RGHT     ,M(MUNICODE)
 
                                                                ,KC_FN3  ,KC_FN2
                                                                ,KC_FN4
@@ -160,9 +164,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *      |  F5  |      |      |      |      |                                       |      |      |      |      |  F10 |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
- *                                         |      |      |           |      |UNLOCK|
+ *                                         |      |      |           |  λ   |UNLOCK|
  *                                  ,------|------|------|           |------+------+------.
- *                                  |      |      |      |           |      |      |      |
+ *                                  |      |      |      |           | SHRUG|      |      |
  *                                  |      |      |------|           |------|      |      |
  *                                  |      |      |      |           |      |      |      |
  *                                  `--------------------'           `--------------------'
@@ -183,8 +187,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                  ,KC_SLSH ,KC_1   ,KC_2   ,KC_3   ,KC_MINS ,KC_F8
                                                                     ,KC_TAB      ,KC_BSLS ,KC_0   ,KC_DOT ,KC_EQL ,KC_PLUS ,KC_F9
                                                                                           ,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS ,KC_F10
-                                                                    ,KC_NO   ,KC_FN1
-                                                                    ,KC_NO
+                                                                    ,M(MLAMBDA)  ,KC_FN1
+                                                                    ,M(MSHRUGGIE)
                                                                     ,KC_TRNS ,KC_TRNS ,KC_TRNS
     ),
 
@@ -469,6 +473,32 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           mousekey_off(KC_MS_DOWN);
           mousekey_off(KC_MS_RIGHT);
           mousekey_send();
+        }
+        break;
+
+      case MUNICODE:
+        if (record->event.pressed) {
+          return MACRO(D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), END);
+        }
+        break;
+
+      case MSHRUGGIE:
+        // ¯\_(ツ)_/¯
+        if (record->event.pressed) {
+          return MACRO(D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(A), T(F), T(SPC),
+                       T(BSLS),
+                       D(RSFT), T(MINS), T(9), U(RSFT),
+                       D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(3), T(0), T(C), T(4), T(SPC),
+                       D(RSFT), T(0), T(MINS), U(RSFT),
+                       T(SLSH),
+                       D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(A), T(F), T(SPC),
+                       END);
+        }
+        break;
+
+      case MLAMBDA:
+        if (record->event.pressed) {
+          return MACRO(D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(0), T(3), T(B), T(B), T(SPC), END);
         }
         break;
       }
