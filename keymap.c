@@ -186,22 +186,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 3: Media Lock Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * |           | F11  | F12  | F13  | F14  | F15  |ScrLCK|           |      | F16  | F17  | F18  | F19  | F20  |           |
+ * |           | F11  | F12  | F13  | F14  | F15  |ScrLCK|           |ScrLCK| F16  | F17  | F18  | F19  | F20  |           |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * |           |      |LClick| MsUp |RClick|Vol Up|ScrlUp|           |ScrlUp|PrtScr| Home |  Up  | PgUp | Mail |           |
+ * |           |      |LClick| MsUp |RClick|Vol Up|ScrlUp|           |ScrlUp|PrtScr| Home |  Up  | PgUp |      |           |
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
- * |           |      |MsLeft|MsDown|MsRght|Vol Dn|------|           |------|NumLok| Left | Down | Right|MyComp|           |
+ * |           |      |MsLeft|MsDown|MsRght|Vol Dn|------|           |------|      | Left | Down | Right|      |           |
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
  * | Play/Pause|      |      |MsDown|      | Mute |ScrlDn|           |ScrlDn|      | End  | Down | PgDn |      |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |      |      |      |      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
- *                                         | MClk |Refrsh|           |UNLOCK|      |
+ *                                         | MClk |Refrsh|           |UNLOCK| Alt  |
  *                                  ,------|------|------|           |------+------+------.
- *                                  |Left  |Right |Search|           |VolUp |      |      |
- *                                  | Click| Click|------|           |------| Prev | Next |
- *                                  |      |      | Home |           |VolDn |      |      |
+ *                                  |Left  |Right | Prev |           | Ctrl |      |      |
+ *                                  | Click| Click|------|           |------| Enter| Space|
+ *                                  |      |      | Next |           | ESC  |      |      |
  *                                  `--------------------'           `--------------------'
  */
 [MDIA_LK] = KEYMAP(
@@ -212,17 +212,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_MPLY    ,KC_NO       ,KC_NO   ,KC_MS_D ,KC_NO   ,KC_MUTE ,KC_WH_D
 ,KC_NO      ,KC_NO       ,KC_NO   ,KC_NO   ,KC_NO
                                                     ,KC_MS_BTN3 ,KC_WREF
-                                                             ,KC_WSCH
-                                           ,KC_BTN1 ,KC_BTN2 ,KC_WHOM
+                                                             ,KC_MPRV
+                                           ,KC_BTN1 ,KC_BTN2 ,KC_MNXT
                                                                      // right hand
-                                                                     ,KC_NO    ,KC_F16  ,KC_F17 ,KC_F18  ,KC_F19  ,KC_F20  ,KC_NO
-                                                                     ,KC_WH_U  ,KC_PSCR ,KC_HOME,KC_UP   ,KC_PGUP ,KC_MAIL ,KC_NO
-                                                                               ,KC_NLCK ,KC_LEFT,KC_DOWN ,KC_RIGHT,KC_MYCM ,KC_NO
-                                                                     ,KC_WH_D  ,KC_NO   ,KC_END ,KC_DOWN ,KC_PGDN ,KC_NO   ,KC_MSTP
-                                                                                        ,KC_NO  ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
-                                                                     ,KC_FN1   ,KC_NO
-                                                                     ,KC_VOLU
-                                                                     ,KC_VOLD  ,KC_MPRV ,KC_MNXT
+                                                                     ,LGUI(KC_L),KC_F16  ,KC_F17 ,KC_F18  ,KC_F19  ,KC_F20  ,KC_NO
+                                                                     ,KC_WH_U   ,KC_PSCR ,KC_HOME,KC_UP   ,KC_PGUP ,KC_NO   ,KC_NO
+                                                                                ,KC_NO   ,KC_LEFT,KC_DOWN ,KC_RIGHT,KC_NO   ,KC_NO
+                                                                     ,KC_WH_D   ,KC_NO   ,KC_END ,KC_DOWN ,KC_PGDN ,KC_NO   ,KC_MSTP
+                                                                                         ,KC_NO  ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
+                                                                     ,KC_FN1    ,AM_LALT
+                                                                     ,AM_LCTRL
+                                                                     ,KC_ESC    ,KC_ENT  ,KC_SPC
     )
 
 };
