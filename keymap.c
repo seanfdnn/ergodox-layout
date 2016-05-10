@@ -209,7 +209,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                         | MClk |Refrsh|           |UNLOCK| Alt  |
  *                                  ,------|------|------|           |------+------+------.
  *                                  |Left  |Right | Prev |           | Ctrl |      |      |
- *                                  | Click| Click|------|           |------| Enter| Space|
+ *                                  | Click| Click|------|           |------|LShift| Space|
  *                                  |      |      | Next |           | ESC  |      |      |
  *                                  `--------------------'           `--------------------'
  */
@@ -231,7 +231,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                          ,KC_NO  ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
                                                                      ,KC_FN1    ,AM_LALT
                                                                      ,AM_LCTRL
-                                                                     ,KC_ESC    ,KC_ENT  ,KC_SPC
+                                                                     ,KC_ESC    ,AM_LSFT ,KC_SPC
     )
 
 };
