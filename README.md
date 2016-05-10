@@ -96,7 +96,5 @@ C. `Hungarian layer`: The green and blue leds will turn on.
 
 ## Things to experiment with:
 
-* Use `OSL(HUN)` - a one-shot layer switch - for the Hungarian layer. May have
-  to move the button for that?
 * Improve the `Paste` key on the media layer: add a way to paste above or below
   the current line.

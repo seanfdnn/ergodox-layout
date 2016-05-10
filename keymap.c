@@ -112,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                 ,KC_LEFT,KC_UP  ,KC_DOWN     ,KC_RGHT     ,M(MUNICODE)
 
                                                                ,KC_FN3  ,KC_FN2
-                                                               ,KC_FN4
+                                                               ,OSL(HUN_LK)
                                                                ,KC_ESC  ,KC_ENT ,KC_SPC
     ),
 
@@ -158,7 +158,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                  ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
 
                                                                ,KC_NO   ,KC_NO
-                                                               ,KC_FN1
+                                                               ,KC_TRNS
                                                                ,KC_TRNS ,KC_TRNS  ,KC_TRNS
     ),
 
