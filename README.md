@@ -79,11 +79,24 @@ topmost pink button toggles visual mode on and off, by sending `V` first, and
 `D` for deleting when held. The pink button on the thumb cluster sends `Y` for
 copy when tapped, `P` for paste when held.
 
+## LED behaviour
+
+When a modifier is pressed, the appropriate LED (see below) will light up
+brightly. If a layer is activated, the appropriate LEDs will shine dimly. If a
+modifier is pressed in a layer, the LED will turn bright, and dim down again
+when leaving the layer.
+
+1. `SHIFT`: The red led will turn on.
+2. `Alt`: The green led will turn on.
+3. `Ctrl`: The blue led will turn on.
+
+A. `Media layer`: The red and green leds will turn on.
+B. `Symbol layer`: The red and blue leds will turn on.
+C. `Hungarian layer`: The green and blue leds will turn on.
+
 ## Things to experiment with:
 
 * Use `OSL(HUN)` - a one-shot layer switch - for the Hungarian layer. May have
   to move the button for that?
-* Blinking LEDs for the layers. Blink when layer's active, on when modifier is.
-* `DEBUG` and `RESET` buttons.
 * Improve the `Paste` key on the media layer: add a way to paste above or below
   the current line.

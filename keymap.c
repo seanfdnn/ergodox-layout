@@ -279,10 +279,12 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           if (shift_state == 0) {
             register_code(KC_RSFT);
             shift_state = 1;
+            ergodox_right_led_1_set(LED_BRIGHTNESS_HI);
             ergodox_right_led_1_on();
           } else {
             unregister_code(KC_RSFT);
             unregister_code(KC_CAPS);
+            ergodox_right_led_1_set(LED_BRIGHTNESS_LO);
             ergodox_right_led_1_off();
             shift_state = 0;
           }
@@ -294,9 +296,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           if (alt_state == 0) {
             register_code (KC_LALT);
             alt_state = 1;
+            ergodox_right_led_2_set(LED_BRIGHTNESS_HI);
             ergodox_right_led_2_on();
           } else {
             unregister_code (KC_LALT);
+            ergodox_right_led_2_set(LED_BRIGHTNESS_LO);
             ergodox_right_led_2_off();
             alt_state = 0;
           }
@@ -308,9 +312,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           if (ctrl_state == 0) {
             register_code (KC_LCTRL);
             ctrl_state = 1;
+            ergodox_right_led_3_set(LED_BRIGHTNESS_HI);
             ergodox_right_led_3_on();
           } else {
             unregister_code (KC_LCTRL);
+            ergodox_right_led_3_set(LED_BRIGHTNESS_LO);
             ergodox_right_led_3_off();
             ctrl_state = 0;
           }
@@ -548,7 +554,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
-
+  ergodox_led_all_set (LED_BRIGHTNESS_LO);
+  ergodox_led_all_on();
+  _delay_ms(1000);
+  ergodox_led_all_off();
 };
 
 // Runs constantly in the background, in a loop.
