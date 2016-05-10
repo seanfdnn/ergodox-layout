@@ -53,6 +53,7 @@
 #define MVISUAL 27
 #define MCUTDEL 28
 #define MCOPYPASTE 29
+#define MCPYP MCOPYPASTE
 
 /*
  * algernon's ErgoDox EZ layout.
@@ -206,43 +207,43 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 3: Media Lock Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * |           | F11  | F12  | F13  | F14  | F15  |ScrLCK|           |ScrLCK| F16  | F17  | F18  | F19  | F20  |           |
+ * |PrintScreen| F11  | F12  | F13  | F14  | F15  |ScrLCK|           |ScrLCK| F16  | F17  | F18  | F19  | F20  |           |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * |           |      |MsUpL | MsUp |MsUpR |Vol Up|ScrlUp|           |Visual|PrtScr| Home |  Up  | PgUp |      |           |
- * |-----------+------+------+------+------+------|      |           |Toggle|------+------+------+------+------+-----------|
- * |           |      |MsLeft|MsDown|MsRght|Vol Dn|------|           |------|      | Left | Down | Right|      |           |
- * |-----------+------+------+------+------+------|      |           | Cut  |------+------+------+------+------+-----------|
- * | Play/Pause|      |MsDnL |MsDown|MsDnR | Mute |ScrlDn|           |Delete|      | End  | Down | PgDn |      |      Stop |
+ * |           |      | Home |  Up  | PgUp |      |Visual|           |Scroll|Vol Up|MsUpL | MsUp |MsUpR |      |           |
+ * |-----------+------+------+------+------+------| Mode |           |  Up  |------+------+------+------+------+-----------|
+ * |           |      | Left | Down | Right|      |------|           |------|Vol Dn|MsLeft| MsDn |MsRght|      |           |
+ * |-----------+------+------+------+------+------| Cut  |           |Scroll|------+------+------+------+------+-----------|
+ * | Play/Pause|      | End  | Down | PgDn |      |Delete|           | Down | Mute |MsDnL | MsDn |MsDnR |      |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |      |      |      |      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
- *                                         | MClk |Refrsh|           |UNLOCK| Alt  |
+ *                                         |  Alt | GUI  |           |UNLOCK| MClk |
  *                                  ,------|------|------|           |------+------+------.
- *                                  |Left  |Right | Prev |           | Ctrl |      | Paste|
- *                                  | Click| Click|------|           |------|LShift|      |
- *                                  |      |      | Next |           | ESC  |      | Copy |
+ *                                  |Paste |      | Ctrl |           | Prev |Left  |Right |
+ *                                  |      |LShift|------|           |------| Click| Click|
+ *                                  | Copy |      | ESC  |           | Next |      |      |
  *                                  `--------------------'           `--------------------'
  */
 [MDIA_LK] = KEYMAP(
 // left hand
- KC_NO      ,KC_F11      ,KC_F12  ,KC_F13  ,KC_F14  ,KC_F15  ,LGUI(KC_L)
-,KC_NO      ,KC_NO       ,M(MUL)  ,KC_MS_U ,M(MUR)  ,KC_VOLU ,KC_WH_U
-,KC_NO      ,KC_NO       ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_VOLD
-,KC_MPLY    ,KC_NO       ,M(MDL)  ,KC_MS_D ,M(MDR)  ,KC_MUTE ,KC_WH_D
+ KC_PSCR    ,KC_F11      ,KC_F12  ,KC_F13  ,KC_F14  ,KC_F15  ,LGUI(KC_L)
+,KC_NO      ,KC_NO       ,KC_HOME ,KC_UP   ,KC_PGUP ,KC_NO   ,M(MVISUAL)
+,KC_NO      ,KC_NO       ,KC_LEFT ,KC_DOWN ,KC_RIGHT,KC_NO
+,KC_MPLY    ,KC_NO       ,KC_END  ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(MCUTDEL)
 ,KC_NO      ,KC_NO       ,KC_NO   ,KC_NO   ,KC_NO
-                                                    ,KC_MS_BTN3 ,KC_WREF
-                                                             ,KC_MPRV
-                                           ,KC_BTN1 ,KC_BTN2 ,KC_MNXT
+                                                    ,KC_TRNS ,KC_TRNS
+                                                             ,KC_TRNS
+                                           ,M(MCPYP),KC_TRNS ,KC_TRNS
                                                                      // right hand
                                                                      ,LGUI(KC_L),KC_F16  ,KC_F17 ,KC_F18  ,KC_F19  ,KC_F20  ,KC_NO
-                                                                     ,M(MVISUAL),KC_PSCR ,KC_HOME,KC_UP   ,KC_PGUP ,KC_NO   ,KC_NO
-                                                                                ,KC_NO   ,KC_LEFT,KC_DOWN ,KC_RIGHT,KC_NO   ,KC_NO
-                                                                     ,M(MCUTDEL),KC_NO   ,KC_END ,KC_DOWN ,KC_PGDN ,KC_NO   ,KC_MSTP
+                                                                     ,KC_WH_U   ,KC_VOLU ,M(MUL) ,KC_MS_U ,M(MUR)  ,KC_NO   ,KC_NO
+                                                                                ,KC_VOLD ,KC_MS_L,KC_MS_D ,KC_MS_R ,KC_NO   ,KC_NO
+                                                                     ,KC_WH_D   ,KC_MUTE ,M(MDL) ,KC_MS_D ,M(MDR)  ,KC_NO   ,KC_MSTP
                                                                                          ,KC_NO  ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
-                                                                     ,KC_FN1    ,AM_LALT
-                                                                     ,AM_LCTRL
-                                                                     ,KC_ESC    ,AM_LSFT ,M(MCOPYPASTE)
+                                                                     ,KC_FN1    ,KC_MS_BTN3
+                                                                     ,KC_MPRV
+                                                                     ,KC_MNXT   ,KC_BTN1 ,KC_BTN2
     )
 
 };
@@ -515,13 +516,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 
       case MVISUAL:
         if (record->event.pressed) {
-          if (m_visual_state == 0) {
-            m_visual_state = 1;
-            return MACRO(T(V), END);
-          } else {
-            m_visual_state = 0;
-            return MACRO(T(ESC), END);
-          }
+          return MACRO(T(V), END);
         }
         break;
 

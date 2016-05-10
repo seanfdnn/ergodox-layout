@@ -67,9 +67,7 @@ The key colors were done the same way as in the base layer.
 
 ![Media layer](images/media-layer.png)
 
-For all mouse-y, navigational and media needs! The mayor change in this layer is
-that the modifiers were moved to the right thumb cluster, so that mouse clicks
-can be on the left one.
+For all mouse-y, navigational and media needs!
 
 The coloring here also follows a different pattern: blue are mouse keys, red is
 cursor navigation, light orange is media control, pink are copy/paste related
@@ -87,9 +85,5 @@ copy when tapped, `P` for paste when held.
   to move the button for that?
 * Blinking LEDs for the layers. Blink when layer's active, on when modifier is.
 * `DEBUG` and `RESET` buttons.
-* Switch the hands on the media layer, so modifiers stay on the left.
 * Improve the `Paste` key on the media layer: add a way to paste above or below
   the current line.
-* The visual mode toggle should likely just send `V`, because we can leave
-  visual mode in many ways, and keeping track of that in the keyboard itself
-  would be troublesome.
