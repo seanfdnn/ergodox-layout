@@ -72,7 +72,14 @@ that the modifiers were moved to the right thumb cluster, so that mouse clicks
 can be on the left one.
 
 The coloring here also follows a different pattern: blue are mouse keys, red is
-cursor navigation, light orange is media control, and the rest are as usual.
+cursor navigation, light orange is media control, pink are copy/paste related
+functions, and the rest are as usual.
+
+The copy/paste stuff needs some explanation: they only work in Spacemacs. The
+topmost pink button toggles visual mode on and off, by sending `V` first, and
+`ESC` the second time. The button below it sends `X` for cutting when tapped,
+`D` for deleting when held. The pink button on the thumb cluster sends `Y` for
+copy when tapped, `P` for paste when held.
 
 ## Things to experiment with:
 
@@ -80,3 +87,9 @@ cursor navigation, light orange is media control, and the rest are as usual.
   to move the button for that?
 * Blinking LEDs for the layers. Blink when layer's active, on when modifier is.
 * `DEBUG` and `RESET` buttons.
+* Switch the hands on the media layer, so modifiers stay on the left.
+* Improve the `Paste` key on the media layer: add a way to paste above or below
+  the current line.
+* The visual mode toggle should likely just send `V`, because we can leave
+  visual mode in many ways, and keeping track of that in the keyboard itself
+  would be troublesome.

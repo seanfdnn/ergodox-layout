@@ -4,6 +4,7 @@
 #include "action_layer.h"
 #include "action_util.h"
 #include "mousekey.h"
+#include "timer.h"
 
 #define BASE     0 // default layer
 #define HUN_LK   1 // Hungarian base layer
@@ -49,6 +50,10 @@
 #define MLAMBDA 25
 #define MSHRUGGIE 26
 
+#define MVISUAL 27
+#define MCUTDEL 28
+#define MCOPYPASTE 29
+
 /*
  * algernon's ErgoDox EZ layout.
  */
@@ -56,6 +61,12 @@
 uint8_t shift_state = 0;
 uint8_t alt_state = 0;
 uint8_t ctrl_state = 0;
+
+uint8_t m_visual_state = 0;
+static uint16_t m_cutdel_timer;
+static uint16_t m_copypaste_timer;
+
+#define PASTE_DELAY 150
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -197,20 +208,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * |           | F11  | F12  | F13  | F14  | F15  |ScrLCK|           |ScrLCK| F16  | F17  | F18  | F19  | F20  |           |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * |           |      |MsUpL | MsUp |MsUpR |Vol Up|ScrlUp|           |ScrlUp|PrtScr| Home |  Up  | PgUp |      |           |
- * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |      |MsUpL | MsUp |MsUpR |Vol Up|ScrlUp|           |Visual|PrtScr| Home |  Up  | PgUp |      |           |
+ * |-----------+------+------+------+------+------|      |           |Toggle|------+------+------+------+------+-----------|
  * |           |      |MsLeft|MsDown|MsRght|Vol Dn|------|           |------|      | Left | Down | Right|      |           |
- * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
- * | Play/Pause|      |MsDnL |MsDown|MsDnR | Mute |ScrlDn|           |ScrlDn|      | End  | Down | PgDn |      |      Stop |
+ * |-----------+------+------+------+------+------|      |           | Cut  |------+------+------+------+------+-----------|
+ * | Play/Pause|      |MsDnL |MsDown|MsDnR | Mute |ScrlDn|           |Delete|      | End  | Down | PgDn |      |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |      |      |      |      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
  *                                         | MClk |Refrsh|           |UNLOCK| Alt  |
  *                                  ,------|------|------|           |------+------+------.
- *                                  |Left  |Right | Prev |           | Ctrl |      |      |
- *                                  | Click| Click|------|           |------|LShift| Space|
- *                                  |      |      | Next |           | ESC  |      |      |
+ *                                  |Left  |Right | Prev |           | Ctrl |      | Paste|
+ *                                  | Click| Click|------|           |------|LShift|      |
+ *                                  |      |      | Next |           | ESC  |      | Copy |
  *                                  `--------------------'           `--------------------'
  */
 [MDIA_LK] = KEYMAP(
@@ -225,13 +236,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                            ,KC_BTN1 ,KC_BTN2 ,KC_MNXT
                                                                      // right hand
                                                                      ,LGUI(KC_L),KC_F16  ,KC_F17 ,KC_F18  ,KC_F19  ,KC_F20  ,KC_NO
-                                                                     ,KC_WH_U   ,KC_PSCR ,KC_HOME,KC_UP   ,KC_PGUP ,KC_NO   ,KC_NO
+                                                                     ,M(MVISUAL),KC_PSCR ,KC_HOME,KC_UP   ,KC_PGUP ,KC_NO   ,KC_NO
                                                                                 ,KC_NO   ,KC_LEFT,KC_DOWN ,KC_RIGHT,KC_NO   ,KC_NO
-                                                                     ,KC_WH_D   ,KC_NO   ,KC_END ,KC_DOWN ,KC_PGDN ,KC_NO   ,KC_MSTP
+                                                                     ,M(MCUTDEL),KC_NO   ,KC_END ,KC_DOWN ,KC_PGDN ,KC_NO   ,KC_MSTP
                                                                                          ,KC_NO  ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
                                                                      ,KC_FN1    ,AM_LALT
                                                                      ,AM_LCTRL
-                                                                     ,KC_ESC    ,AM_LSFT ,KC_SPC
+                                                                     ,KC_ESC    ,AM_LSFT ,M(MCOPYPASTE)
     )
 
 };
@@ -501,6 +512,41 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           return MACRO(D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(0), T(3), T(B), T(B), T(SPC), END);
         }
         break;
+
+      case MVISUAL:
+        if (record->event.pressed) {
+          if (m_visual_state == 0) {
+            m_visual_state = 1;
+            return MACRO(T(V), END);
+          } else {
+            m_visual_state = 0;
+            return MACRO(T(ESC), END);
+          }
+        }
+        break;
+
+      case MCOPYPASTE:
+        if (record->event.pressed) {
+          m_copypaste_timer = timer_read ();
+        } else {
+          if (timer_elapsed (m_copypaste_timer) > PASTE_DELAY) {
+            return MACRO(T(P), END);
+          } else {
+            return MACRO(T(Y), END);
+          }
+        }
+        break;
+
+      case MCUTDEL:
+        if (record->event.pressed) {
+          m_cutdel_timer = timer_read ();
+        } else {
+          if (timer_elapsed (m_cutdel_timer) > PASTE_DELAY) {
+            return MACRO(T(D), END);
+          } else {
+            return MACRO(T(X), END);
+          }
+        }
       }
       return MACRO_NONE;
 };
