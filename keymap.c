@@ -55,6 +55,8 @@
 #define MCOPYPASTE 29
 #define MCPYP MCOPYPASTE
 
+#define M_LGUI 30
+
 /*
  * algernon's ErgoDox EZ layout.
  */
@@ -100,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_MPLY            ,KC_SCLN     ,KC_Q        ,KC_J   ,KC_K  ,KC_X  ,KC_LPRN
 ,M(1)               ,KC_HOME     ,KC_PGUP     ,KC_PGDN,KC_END
 
-                                                            ,AM_LALT,KC_LGUI
+                                                            ,AM_LALT,M(M_LGUI)
                                                                     ,AM_LCTRL
                                                     ,KC_BSPC,AM_LSFT,KC_ESC
 
@@ -254,6 +256,8 @@ const uint16_t PROGMEM fn_actions[] = {
     ,[3] = ACTION_LAYER_INVERT(MDIA_LK, ON_PRESS) // FN3 - toggle to Media on press
     ,[4] = ACTION_LAYER_INVERT(HUN_LK, ON_PRESS)  // FN4 - toggle to Hungarian on press
 };
+
+uint16_t gui_timer = 0;
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
@@ -548,6 +552,18 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             return MACRO(T(X), END);
           }
         }
+
+      case M_LGUI:
+        if (record->event.pressed) {
+          gui_timer = timer_read();
+        } else {
+          if (timer_elapsed (gui_timer) > PASTE_DELAY) {
+            return MACRO(D(LGUI), U(LGUI), END);
+          } else {
+            return MACRO(D(LGUI), T(W), U(LGUI), END);
+          }
+        }
+        break;
       }
       return MACRO_NONE;
 };
