@@ -73,3 +73,10 @@ can be on the left one.
 
 The coloring here also follows a different pattern: blue are mouse keys, red is
 cursor navigation, light orange is media control, and the rest are as usual.
+
+## Things to experiment with:
+
+* Use `OSL(HUN)` - a one-shot layer switch - for the Hungarian layer. May have
+  to move the button for that?
+* Blinking LEDs for the layers. Blink when layer's active, on when modifier is.
+* `DEBUG` and `RESET` buttons.
