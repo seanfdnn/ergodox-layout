@@ -24,30 +24,52 @@ some very minor changes:
 Apart from these changes, as far as the alphanumerics are considered, this is
 just plain old Dvorak. The fun comes with the modifiers, and their behaviour!
 
-I had trouble holding the modifiers when they were out on the side, under the
-reach of the pinky, because my weakest finger does not like holding stuff at
-all. So I had to find a new place for these keys, and as such, they were moved
-to the thumb cluster. But holding them with the thumb is even more awkward, you
-may rightfully say. And that's the trick: they are not held, but toggled. Since
-the thumb is the strongest finger, but also the least flexible (at least as far
-as keyboard gymnastics are concerned), it can effortlessly hit keys in fast
-succession, if so need be.
+Originally, I had the `Shift` keys at their more conventional position, on the
+sides of the keyboard, where `Minus` and `Backslash` are right now. The `Alt`,
+`Control`, `GUI`, and `Apps` keys were on the bottom row, and `ESC` up top. But
+I press modifiers very often, so placing them on the bottom row was incredibly
+inconvenient, and my fingers struggled reaching them, let alone holding them. On
+the other hand, I use the navigational keys less often, and when I do, I will
+likely stay in navigation mode for some time.
 
-Similarly, the layer keys are toggles too. There is only one modifier, that is
-not a toggle: the GUI key, simply because I ran out of leds, and because that is
-the modifier I use the least.
+For these reasons, I rearranged the keys to their current position: modifiers,
+layer switchers, `Backspace`, `Return`, `Space` and `ESC` are all on the thumb
+cluster, because my strongest digit has no problem hitting them often. It is
+easy to reach them, and them being toggles, I don't even have no hold them.
 
 The navigation keys are somewhat experimental at the moment, I'm not entirely
-happy with how they turned out.
+happy with how they turned out. Yet, I am playing with the idea of learning to
+switch to the media layer for navigational needs. We'll see how that works in
+the next few weeks.
 
-Oh! The Emacs keys in the lower corners! That sends an `M-m`, to use with
-Spacemacs' `holy-mode`.
+There are two more interesting keys: the red ones on the far sides. The left one
+simply sends `M-m`, for the rare case when my Spacemacs is in `holy-mode`. The
+right one is the Unicode compose key: it sends a sequence that tells my OS that
+we are doing unicode composition.
+
+As for the coloring of the keys: the guiding idea is that keys pressed by the
+same finger have the same color. But that is just a guide, because the thumb
+cluster has many colors, all pressed by the same digit. Functionality is the
+other guide, for most special keys.
 
 ## Symbols layer
 
 ![Symbols layer](images/symbol-layer.png)
 
+The symbol layer is a bit more conventional, and retains most of the special
+keys in the same position as in the base layer. As an addition, function keys
+appear on the sides, and the two other layer toggles turn into a `λ` and a
+shruggie sequence, for various reasons.
+
+The key colors were done the same way as in the base layer.
+
 ## Media layer
 
 ![Media layer](images/media-layer.png)
 
+For all mouse-y, navigational and media needs! The mayor change in this layer is
+that the modifiers were moved to the right thumb cluster, so that mouse clicks
+can be on the left one.
+
+The coloring here also follows a different pattern: blue are mouse keys, red is
+cursor navigation, light orange is media control, and the rest are as usual.
