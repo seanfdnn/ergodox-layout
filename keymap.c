@@ -49,6 +49,10 @@
 
 #define ASE_META  23 // M-m
 
+#define AE_EMACS  24 // Emacs copy & paste mode
+#define AE_TERM   25 // Terminal copy & paste mode
+#define AE_OTHER  26 // Other copy & paste mode
+
 /* States & timers */
 
 uint8_t shift_state = 0;
@@ -60,6 +64,14 @@ static uint16_t m_cutdel_timer;
 static uint16_t m_copypaste_timer;
 
 uint16_t gui_timer = 0;
+
+enum {
+  CP_EMACS = 0,
+  CP_TERM  = 1,
+  CP_OTHER = 2,
+};
+
+uint8_t cp_mode = CP_EMACS;
 
 /* The Keymap */
 
@@ -209,7 +221,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-----------+------+------+------+------+------| Cut  |           |Scroll|------+------+------+------+------+-----------|
  * | Play/Pause|      | End  | Down | PgDn |      |Delete|           | Down | Mute |MsDnL | MsDn |MsDnR |      |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
- *      |      |      |      |      |      |                                       |      |      |      |      |      |
+ *      |EmacsM|TermM |OtherM|      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
  *                                         |  Alt | GUI  |           |UNLOCK| MClk |
@@ -221,11 +233,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [NAV] = KEYMAP(
 // left hand
- KC_ACL0    ,KC_F11      ,KC_F12  ,KC_F13  ,KC_F14  ,KC_F15  ,LGUI(KC_L)
-,KC_ACL1    ,KC_NO       ,KC_HOME ,KC_UP   ,KC_PGUP ,KC_NO   ,M(AE_VIS)
-,KC_ACL2    ,KC_NO       ,KC_LEFT ,KC_DOWN ,KC_RIGHT,KC_NO
-,KC_MPLY    ,KC_NO       ,KC_END  ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(AE_CUTDEL)
-,KC_NO      ,KC_NO       ,KC_NO   ,KC_NO   ,KC_NO
+ KC_ACL0    ,KC_F11      ,KC_F12     ,KC_F13  ,KC_F14  ,KC_F15  ,LGUI(KC_L)
+,KC_ACL1    ,KC_NO       ,KC_HOME    ,KC_UP   ,KC_PGUP ,KC_NO   ,M(AE_VIS)
+,KC_ACL2    ,KC_NO       ,KC_LEFT    ,KC_DOWN ,KC_RIGHT,KC_NO
+,KC_MPLY    ,KC_NO       ,KC_END     ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(AE_CUTDEL)
+,M(AE_EMACS),M(AE_TERM)  ,M(AE_OTHER),KC_NO   ,KC_NO
                                                       ,KC_TRNS ,KC_TRNS
                                                                ,KC_TRNS
                                            ,M(AE_CPYP),KC_TRNS ,KC_TRNS
@@ -503,8 +515,26 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case AE_VIS:
+      case AE_EMACS:
         if (record->event.pressed) {
+          cp_mode = CP_EMACS;
+        }
+        break;
+
+      case AE_TERM:
+        if (record->event.pressed) {
+          cp_mode = CP_TERM;
+        }
+        break;
+
+      case AE_OTHER:
+        if (record->event.pressed) {
+          cp_mode = CP_OTHER;
+        }
+        break;
+
+      case AE_VIS:
+        if (cp_mode == CP_EMACS && record->event.pressed) {
           return MACRO(T(V), END);
         }
         break;
@@ -514,9 +544,29 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           m_copypaste_timer = timer_read ();
         } else {
           if (timer_elapsed (m_copypaste_timer) > TAPPING_TERM) {
-            return MACRO(T(P), END);
+            switch (cp_mode) {
+            case CP_EMACS:
+              return MACRO(T(P), END);
+              break;
+            case CP_TERM:
+              return MACRO(D(RCTRL), D(RSFT), T(V), U(RSFT), U(RCTRL), END);
+              break;
+            case CP_OTHER:
+              return MACRO(D(RCTRL), T(V), U(RCTRL), END);
+              break;
+            }
           } else {
-            return MACRO(T(Y), END);
+            switch (cp_mode) {
+            case CP_EMACS:
+              return MACRO(T(Y), END);
+              break;
+            case CP_TERM:
+              return MACRO(D(RCTRL), D(RSFT), T(C), U(RSFT), U(RCTRL), END);
+              break;
+            case CP_OTHER:
+              return MACRO(D(RCTRL), T(C), U(RCTRL), END);
+              break;
+            }
           }
         }
         break;
@@ -526,9 +576,27 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           m_cutdel_timer = timer_read ();
         } else {
           if (timer_elapsed (m_cutdel_timer) > TAPPING_TERM) {
-            return MACRO(T(D), END);
+            switch (cp_mode) {
+            case CP_EMACS:
+              return MACRO(T(D), END);
+              break;
+            case CP_TERM:
+            case CP_OTHER:
+              return MACRO(T(DEL), END);
+              break;
+            }
           } else {
-            return MACRO(T(X), END);
+            switch (cp_mode) {
+            case CP_EMACS:
+              return MACRO(T(X), END);
+              break;
+            case CP_TERM:
+              return MACRO(D(RCTRL), D(RSFT), T(X), U(RSFT), U(RCTRL), END);
+              break;
+            case CP_OTHER:
+              return MACRO(D(RCTRL), T(X), U(RCTRL), END);
+              break;
+            }
           }
         }
 
