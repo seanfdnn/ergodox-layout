@@ -10,56 +10,46 @@
 #include "mousekey.h"
 #include "timer.h"
 
-#define BASE     0 // default layer
-#define HUN_LK   1 // Hungarian base layer
-#define SYMB_LK  2 // symbols lock layer
-#define MDIA_LK  3 // media lock layer
+/* Layers */
 
-#define HU_AA M(10)
-#define HU_OO M(11)
-#define HU_EE M(12)
-#define HU_UU M(13)
-#define HU_II M(14)
-#define HU_OE M(15)
-#define HU_UE M(16)
-#define HU_OEE M(17)
-#define HU_UEE M(18)
+#define BASE    0 // default layer
+#define HUN     1 // Hungarian layer
+#define SYMB    2 // symbols layer
+#define NAV     3 // navigation layer
 
-#define C_AA  10
-#define C_OO  11
-#define C_EE  12
-#define C_UU  13
-#define C_II  14
-#define C_OE  15
-#define C_UE  16
-#define C_OEE 17
-#define C_UEE 18
+/* Macros */
 
-#define AM_LSFT M(5)
-#define AM_RSFT M(6)
-#define AM_CAPS M(5)
+#define A_SFT      0 // shift toggle
+#define A_ALT      1 // alt toggle
+#define A_CTRL     2 // control toggle
+#define A_GUI      3 // GUI magic
 
-#define AM_LALT M(7)
-#define AM_RALT M(7)
+#define A_MUL      4 // mouse up-left
+#define A_MUR      5 // mouse up-right
+#define A_MDL      6 // mouse down-left
+#define A_MDR      7 // mouse down-right
 
-#define AM_LCTRL M(8)
-#define AM_RCTRL M(8)
+#define A_UNIC     8 // Unicode input key
+#define AU_LMBD    9 // λ
+#define AU_SHRG   10 // ¯\_(ツ)_/¯
 
-#define MUL 20
-#define MUR 21
-#define MDL 22
-#define MDR 23
+#define AE_VIS    11 // Visual mode
+#define AE_CUTDEL 12 // Cut/Del
+#define AE_CPYP   13 // Copy/paste
 
-#define MUNICODE 24
-#define MLAMBDA 25
-#define MSHRUGGIE 26
+#define HU_AA     14 // Á
+#define HU_OO     15 // Ó
+#define HU_EE     16 // É
+#define HU_UU     17 // Ú
+#define HU_II     18 // Í
+#define HU_OE     19 // Ö
+#define HU_UE     20 // Ü
+#define HU_OEE    21 // Ő
+#define HU_UEE    22 // Ű
 
-#define MVISUAL 27
-#define MCUTDEL 28
-#define MCOPYPASTE 29
-#define MCPYP MCOPYPASTE
+#define ASE_META  23 // M-m
 
-#define M_LGUI 30
+/* States & timers */
 
 uint8_t shift_state = 0;
 uint8_t alt_state = 0;
@@ -69,7 +59,9 @@ uint8_t m_visual_state = 0;
 static uint16_t m_cutdel_timer;
 static uint16_t m_copypaste_timer;
 
-#define PASTE_DELAY 150
+uint16_t gui_timer = 0;
+
+/* The Keymap */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -100,21 +92,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_TAB             ,KC_QUOT     ,KC_COMM     ,KC_DOT ,KC_P  ,KC_Y  ,KC_LBRC
 ,KC_MINS            ,KC_A        ,KC_O        ,KC_E   ,KC_U  ,KC_I
 ,KC_MPLY            ,KC_SCLN     ,KC_Q        ,KC_J   ,KC_K  ,KC_X  ,KC_LPRN
-,M(1)               ,KC_HOME     ,KC_PGUP     ,KC_PGDN,KC_END
+,M(ASE_META)        ,KC_HOME     ,KC_PGUP     ,KC_PGDN,KC_END
 
-                                                            ,AM_LALT,M(M_LGUI)
-                                                                    ,AM_LCTRL
-                                                    ,KC_BSPC,AM_LSFT,KC_ESC
+                                                            ,M(A_ALT),M(A_GUI)
+                                                                     ,M(A_CTRL)
+                                                    ,KC_BSPC,M(A_SFT),KC_ESC
 
                                                                 // right hand
                                                                ,KC_APP  ,KC_6   ,KC_7   ,KC_8   ,KC_9        ,KC_0        ,KC_EQL
                                                                ,KC_RBRC ,KC_F   ,KC_G   ,KC_C   ,KC_R        ,KC_L        ,KC_SLSH
                                                                         ,KC_D   ,KC_H   ,KC_T   ,KC_N        ,KC_S        ,KC_BSLS
                                                                ,KC_RPRN ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,KC_MSTP
-                                                                                ,KC_LEFT,KC_UP  ,KC_DOWN     ,KC_RGHT     ,M(MUNICODE)
+                                                                                ,KC_LEFT,KC_UP  ,KC_DOWN     ,KC_RGHT     ,M(A_UNIC)
 
                                                                ,KC_FN3  ,KC_FN2
-                                                               ,OSL(HUN_LK)
+                                                               ,OSL(HUN)
                                                                ,KC_ESC  ,KC_ENT ,KC_SPC
     ),
 
@@ -140,13 +132,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                  `--------------------'           `--------------------'
  */
 
-[HUN_LK] = KEYMAP(
+[HUN] = KEYMAP(
 // left hand
- KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_TRNS
-,KC_NO   ,KC_NO   ,HU_OEE  ,KC_NO   ,HU_UEE  ,KC_NO   ,KC_NO
-,KC_NO   ,HU_AA   ,HU_OO   ,HU_EE   ,HU_UU   ,HU_II
-,KC_TRNS ,KC_NO   ,HU_OE   ,KC_NO   ,HU_UE   ,KC_NO   ,KC_NO
-,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
+ KC_NO   ,KC_NO   ,KC_NO    ,KC_NO   ,KC_NO    ,KC_NO   ,KC_TRNS
+,KC_NO   ,KC_NO   ,M(HU_OEE),KC_NO   ,M(HU_UEE),KC_NO   ,KC_NO
+,KC_NO   ,M(HU_AA),M(HU_OO) ,M(HU_EE),M(HU_UU) ,M(HU_II)
+,KC_TRNS ,KC_NO   ,M(HU_OE) ,KC_NO   ,M(HU_UE) ,KC_NO   ,KC_NO
+,KC_TRNS ,KC_TRNS ,KC_TRNS  ,KC_TRNS ,KC_TRNS
 
                                              ,KC_TRNS ,KC_TRNS
                                                       ,KC_TRNS
@@ -164,7 +156,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_TRNS ,KC_TRNS  ,KC_TRNS
     ),
 
-/* Keymap 2: Symbol Lock Layer
+/* Keymap 2: Symbol Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * |     F1    |   1  |   2  |   3  |   4  |   5  |      |           |      |   6  |   7  |   8  |   9  |   0  |    F6     |
@@ -185,7 +177,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                  |      |      |      |           |      |      |      |
  *                                  `--------------------'           `--------------------'
  */
-[SYMB_LK] = KEYMAP(
+[SYMB] = KEYMAP(
 // left hand
  KC_F1       ,KC_1    ,KC_2    ,KC_3    ,KC_4    ,KC_5    ,KC_TRNS
 ,KC_F2       ,KC_EXLM ,KC_AT   ,KC_LCBR ,KC_RCBR ,KC_AMPR ,LSFT(KC_COMM)
@@ -201,12 +193,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                  ,KC_SLSH ,KC_1   ,KC_2   ,KC_3   ,KC_MINS ,KC_F8
                                                                     ,KC_TAB      ,KC_BSLS ,KC_0   ,KC_DOT ,KC_EQL ,KC_PLUS ,KC_F9
                                                                                           ,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS ,KC_F10
-                                                                    ,M(MLAMBDA)  ,KC_FN1
-                                                                    ,M(MSHRUGGIE)
+                                                                    ,M(AU_LMBD)  ,KC_FN1
+                                                                    ,M(AU_SHRG)
                                                                     ,KC_TRNS ,KC_TRNS ,KC_TRNS
     ),
 
-/* Keymap 3: Media Lock Layer
+/* Keymap 3: Navigation layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * | MS Slow   | F11  | F12  | F13  | F14  | F15  |ScrLCK|           |ScrLCK| F16  | F17  | F18  | F19  | F20  |PrintScreen|
@@ -227,22 +219,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                  | Copy |      | ESC  |           | Next |      |      |
  *                                  `--------------------'           `--------------------'
  */
-[MDIA_LK] = KEYMAP(
+[NAV] = KEYMAP(
 // left hand
  KC_ACL0    ,KC_F11      ,KC_F12  ,KC_F13  ,KC_F14  ,KC_F15  ,LGUI(KC_L)
-,KC_ACL1    ,KC_NO       ,KC_HOME ,KC_UP   ,KC_PGUP ,KC_NO   ,M(MVISUAL)
+,KC_ACL1    ,KC_NO       ,KC_HOME ,KC_UP   ,KC_PGUP ,KC_NO   ,M(AE_VIS)
 ,KC_ACL2    ,KC_NO       ,KC_LEFT ,KC_DOWN ,KC_RIGHT,KC_NO
-,KC_MPLY    ,KC_NO       ,KC_END  ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(MCUTDEL)
+,KC_MPLY    ,KC_NO       ,KC_END  ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(AE_CUTDEL)
 ,KC_NO      ,KC_NO       ,KC_NO   ,KC_NO   ,KC_NO
-                                                    ,KC_TRNS ,KC_TRNS
-                                                             ,KC_TRNS
-                                           ,M(MCPYP),KC_TRNS ,KC_TRNS
+                                                      ,KC_TRNS ,KC_TRNS
+                                                               ,KC_TRNS
+                                           ,M(AE_CPYP),KC_TRNS ,KC_TRNS
                                                                      // right hand
-                                                                     ,LGUI(KC_L),KC_F16  ,KC_F17 ,KC_F18  ,KC_F19  ,KC_F20  ,KC_PSCR
-                                                                     ,KC_WH_U   ,KC_VOLU ,M(MUL) ,KC_MS_U ,M(MUR)  ,KC_NO   ,KC_NO
-                                                                                ,KC_VOLD ,KC_MS_L,KC_MS_D ,KC_MS_R ,KC_NO   ,KC_NO
-                                                                     ,KC_WH_D   ,KC_MUTE ,M(MDL) ,KC_MS_D ,M(MDR)  ,KC_NO   ,KC_MSTP
-                                                                                         ,KC_NO  ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
+                                                                     ,LGUI(KC_L),KC_F16  ,KC_F17  ,KC_F18  ,KC_F19  ,KC_F20  ,KC_PSCR
+                                                                     ,KC_WH_U   ,KC_VOLU ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_NO   ,KC_NO
+                                                                                ,KC_VOLD ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_NO   ,KC_NO
+                                                                     ,KC_WH_D   ,KC_MUTE ,M(A_MDL),KC_MS_D ,M(A_MDR),KC_NO   ,KC_MSTP
+                                                                                         ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
                                                                      ,KC_FN1    ,KC_MS_BTN3
                                                                      ,KC_MPRV
                                                                      ,KC_MNXT   ,KC_BTN1 ,KC_BTN2
@@ -252,33 +244,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint16_t PROGMEM fn_actions[] = {
      [1] = ACTION_LAYER_CLEAR(ON_PRESS)           // FN1 - clear to base layer
-    ,[2] = ACTION_LAYER_INVERT(SYMB_LK, ON_PRESS) // FN2 - toggle to Symbols on press
-    ,[3] = ACTION_LAYER_INVERT(MDIA_LK, ON_PRESS) // FN3 - toggle to Media on press
-    ,[4] = ACTION_LAYER_INVERT(HUN_LK, ON_PRESS)  // FN4 - toggle to Hungarian on press
+    ,[2] = ACTION_LAYER_INVERT(SYMB, ON_PRESS) // FN2 - toggle to Symbols on press
+    ,[3] = ACTION_LAYER_INVERT(NAV, ON_PRESS) // FN3 - toggle to Media on press
+    ,[4] = ACTION_LAYER_INVERT(HUN, ON_PRESS)  // FN4 - toggle to Hungarian on press
 };
-
-uint16_t gui_timer = 0;
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
-  // MACRODOWN only works in this function
       switch(id) {
-        case 0:
-        if (record->event.pressed) {
-          register_code(KC_RSFT);
-        } else {
-          unregister_code(KC_RSFT);
-        }
-        break;
-
-      case 1:
+      case ASE_META:
         if (record->event.pressed) {
           return MACRO (D(LALT), T(M), U(LALT), END);
         }
         break;
 
-      case 5:
-      case 6:
+      case A_SFT:
         if (record->event.pressed) {
           if (shift_state == 0) {
             register_code(KC_RSFT);
@@ -295,7 +275,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case 7:
+      case A_ALT:
         if (record->event.pressed) {
           if (alt_state == 0) {
             register_code (KC_LALT);
@@ -311,7 +291,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case 8:
+      case A_CTRL:
         if (record->event.pressed) {
           if (ctrl_state == 0) {
             register_code (KC_LCTRL);
@@ -327,7 +307,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case C_AA:
+      case HU_AA:
         if (record->event.pressed) {
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
@@ -341,7 +321,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             }
         }
         break;
-      case C_OO:
+      case HU_OO:
         if (record->event.pressed) {
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
@@ -355,7 +335,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             }
         }
         break;
-      case C_EE:
+      case HU_EE:
         if (record->event.pressed) {
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
@@ -369,7 +349,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             }
         }
         break;
-      case C_UU:
+      case HU_UU:
         if (record->event.pressed) {
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
@@ -383,7 +363,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             }
         }
         break;
-      case C_II:
+      case HU_II:
         if (record->event.pressed) {
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
@@ -397,7 +377,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             }
         }
         break;
-      case C_OE:
+      case HU_OE:
         if (record->event.pressed) {
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
@@ -409,7 +389,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             }
         }
         break;
-      case C_UE:
+      case HU_UE:
         if (record->event.pressed) {
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
@@ -421,7 +401,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             }
         }
         break;
-      case C_OEE:
+      case HU_OEE:
         if (record->event.pressed) {
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
@@ -435,7 +415,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             }
         }
         break;
-      case C_UEE:
+      case HU_UEE:
         if (record->event.pressed) {
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
@@ -450,7 +430,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case MUL: // mouse up left
+      case A_MUL:
         if (record->event.pressed) {
           mousekey_on(KC_MS_UP);
           mousekey_on(KC_MS_LEFT);
@@ -462,7 +442,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case MUR: // mouse up right
+      case A_MUR:
         if (record->event.pressed) {
           mousekey_on(KC_MS_UP);
           mousekey_on(KC_MS_RIGHT);
@@ -474,7 +454,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case MDL: // mouse down left
+      case A_MDL:
         if (record->event.pressed) {
           mousekey_on(KC_MS_DOWN);
           mousekey_on(KC_MS_LEFT);
@@ -486,7 +466,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case MDR: // mouse down right
+      case A_MDR:
         if (record->event.pressed) {
           mousekey_on(KC_MS_DOWN);
           mousekey_on(KC_MS_RIGHT);
@@ -498,14 +478,13 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case MUNICODE:
+      case A_UNIC:
         if (record->event.pressed) {
           return MACRO(D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), END);
         }
         break;
 
-      case MSHRUGGIE:
-        // ¯\_(ツ)_/¯
+      case AU_SHRG:
         if (record->event.pressed) {
           return MACRO(D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(A), T(F), T(SPC),
                        T(BSLS),
@@ -518,23 +497,23 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case MLAMBDA:
+      case AU_LMBD:
         if (record->event.pressed) {
           return MACRO(D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(0), T(3), T(B), T(B), T(SPC), END);
         }
         break;
 
-      case MVISUAL:
+      case AE_VIS:
         if (record->event.pressed) {
           return MACRO(T(V), END);
         }
         break;
 
-      case MCOPYPASTE:
+      case AE_CPYP:
         if (record->event.pressed) {
           m_copypaste_timer = timer_read ();
         } else {
-          if (timer_elapsed (m_copypaste_timer) > PASTE_DELAY) {
+          if (timer_elapsed (m_copypaste_timer) > TAPPING_TERM) {
             return MACRO(T(P), END);
           } else {
             return MACRO(T(Y), END);
@@ -542,18 +521,18 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case MCUTDEL:
+      case AE_CUTDEL:
         if (record->event.pressed) {
           m_cutdel_timer = timer_read ();
         } else {
-          if (timer_elapsed (m_cutdel_timer) > PASTE_DELAY) {
+          if (timer_elapsed (m_cutdel_timer) > TAPPING_TERM) {
             return MACRO(T(D), END);
           } else {
             return MACRO(T(X), END);
           }
         }
 
-      case M_LGUI:
+      case A_GUI:
         if (record->event.pressed) {
           register_mods(MOD_BIT(KC_LGUI));
           gui_timer = timer_read();
@@ -584,13 +563,13 @@ void matrix_scan_user(void) {
     if ((shift_state == 1) && !(keyboard_report->mods & MOD_BIT(KC_RSFT)))
       register_code (KC_RSFT);
 
-    if (layer == HUN_LK) {
+    if (layer == HUN) {
       ergodox_right_led_2_on();
       ergodox_right_led_3_on();
-    } else if (layer == SYMB_LK) {
+    } else if (layer == SYMB) {
       ergodox_right_led_1_on();
       ergodox_right_led_3_on();
-    } else if (layer == MDIA_LK) {
+    } else if (layer == NAV) {
       ergodox_right_led_1_on();
       ergodox_right_led_2_on();
     } else {
