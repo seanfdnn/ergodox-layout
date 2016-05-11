@@ -555,12 +555,13 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 
       case M_LGUI:
         if (record->event.pressed) {
+          register_mods(MOD_BIT(KC_LGUI));
           gui_timer = timer_read();
         } else {
-          if (timer_elapsed (gui_timer) > PASTE_DELAY) {
-            return MACRO(D(LGUI), U(LGUI), END);
+          if (timer_elapsed (gui_timer) > TAPPING_TERM) {
+            unregister_mods(MOD_BIT(KC_LGUI));
           } else {
-            return MACRO(D(LGUI), T(W), U(LGUI), END);
+            return MACRO(T(W), U(LGUI), END);
           }
         }
         break;
