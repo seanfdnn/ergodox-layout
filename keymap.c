@@ -34,8 +34,8 @@
 #define AU_SHRG   10 // ¯\_(ツ)_/¯
 
 #define AE_VIS    11 // Visual mode
-#define AE_CUTDEL 12 // Cut/Del
-#define AE_CPYP   13 // Copy/paste
+#define AE_PSTDEL 12 // Paste/Delete
+#define AE_CPYC   13 // Copy/Cut
 #define AE_EMACS  14 // Emacs copy & paste mode
 #define AE_TERM   15 // Terminal copy & paste mode
 #define AE_OTHER  16 // Other copy & paste mode
@@ -217,15 +217,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | MS Normal |      | Home |  Up  | PgUp |      |Visual|           |Scroll|Vol Up|MsUpL | MsUp |MsUpR |      |           |
  * |-----------+------+------+------+------+------| Mode |           |  Up  |------+------+------+------+------+-----------|
  * | MS Fast   |      | Left | Down | Right|      |------|           |------|Vol Dn|MsLeft| MsDn |MsRght|      |           |
- * |-----------+------+------+------+------+------| Cut  |           |Scroll|------+------+------+------+------+-----------|
- * | Play/Pause|      | End  | Down | PgDn |      |Delete|           | Down | Mute |MsDnL | MsDn |MsDnR |      |      Stop |
+ * |-----------+------+------+------+------+------|Delete|           |Scroll|------+------+------+------+------+-----------|
+ * | Play/Pause|      | End  | Down | PgDn |      |Paste |           | Down | Mute |MsDnL | MsDn |MsDnR |      |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |EmacsM|TermM |OtherM|      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
  *                                         |  Alt | GUI  |           |UNLOCK| MClk |
  *                                  ,------|------|------|           |------+------+------.
- *                                  |Paste |      | Ctrl |           | Prev |Left  |Right |
+ *                                  | Cut  |      | Ctrl |           | Prev |Left  |Right |
  *                                  |      |LShift|------|           |------| Click| Click|
  *                                  | Copy |      | ESC  |           | Next |      |      |
  *                                  `--------------------'           `--------------------'
@@ -235,11 +235,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  KC_ACL0    ,KC_F11      ,KC_F12     ,KC_F13  ,KC_F14  ,KC_F15  ,LGUI(KC_L)
 ,KC_ACL1    ,KC_NO       ,KC_HOME    ,KC_UP   ,KC_PGUP ,KC_NO   ,M(AE_VIS)
 ,KC_ACL2    ,KC_NO       ,KC_LEFT    ,KC_DOWN ,KC_RIGHT,KC_NO
-,KC_MPLY    ,KC_NO       ,KC_END     ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(AE_CUTDEL)
+,KC_MPLY    ,KC_NO       ,KC_END     ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(AE_PSTDEL)
 ,M(AE_EMACS),M(AE_TERM)  ,M(AE_OTHER),KC_NO   ,KC_NO
                                                       ,KC_TRNS ,KC_TRNS
                                                                ,KC_TRNS
-                                           ,M(AE_CPYP),KC_TRNS ,KC_TRNS
+                                           ,M(AE_CPYC),KC_TRNS ,KC_TRNS
                                                                      // right hand
                                                                      ,LGUI(KC_L),KC_F16  ,KC_F17  ,KC_F18  ,KC_F19  ,KC_F20  ,KC_PSCR
                                                                      ,KC_WH_U   ,KC_VOLU ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_NO   ,KC_NO
@@ -538,23 +538,25 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case AE_CPYP:
+      case AE_CPYC:
         if (record->event.pressed) {
           m_copypaste_timer = timer_read ();
         } else {
           if (timer_elapsed (m_copypaste_timer) > TAPPING_TERM) {
+            // Long press: Cut
             switch (cp_mode) {
             case CP_EMACS:
-              return MACRO(T(P), END);
+              return MACRO(T(X), END);
               break;
             case CP_TERM:
-              return MACRO(D(RCTRL), D(RSFT), T(V), U(RSFT), U(RCTRL), END);
+              return MACRO(D(RCTRL), D(RSFT), T(X), U(RSFT), U(RCTRL), END);
               break;
             case CP_OTHER:
-              return MACRO(D(RCTRL), T(V), U(RCTRL), END);
+              return MACRO(D(RCTRL), T(X), U(RCTRL), END);
               break;
             }
           } else {
+            // Short press: Copy
             switch (cp_mode) {
             case CP_EMACS:
               return MACRO(T(Y), END);
@@ -570,11 +572,12 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case AE_CUTDEL:
+      case AE_PSTDEL:
         if (record->event.pressed) {
           m_cutdel_timer = timer_read ();
         } else {
           if (timer_elapsed (m_cutdel_timer) > TAPPING_TERM) {
+            // Long press: Delete
             switch (cp_mode) {
             case CP_EMACS:
               return MACRO(T(D), END);
@@ -585,15 +588,16 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
               break;
             }
           } else {
+            // Short press: Paste
             switch (cp_mode) {
             case CP_EMACS:
-              return MACRO(T(X), END);
+              return MACRO(T(P), END);
               break;
             case CP_TERM:
-              return MACRO(D(RCTRL), D(RSFT), T(X), U(RSFT), U(RCTRL), END);
+              return MACRO(D(RCTRL), D(RSFT), T(V), U(RSFT), U(RCTRL), END);
               break;
             case CP_OTHER:
-              return MACRO(D(RCTRL), T(X), U(RCTRL), END);
+              return MACRO(D(RCTRL), T(V), U(RCTRL), END);
               break;
             }
           }
