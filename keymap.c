@@ -278,7 +278,6 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             ergodox_right_led_1_on();
           } else {
             unregister_code(KC_RSFT);
-            unregister_code(KC_CAPS);
             ergodox_right_led_1_set(LED_BRIGHTNESS_LO);
             ergodox_right_led_1_off();
             shift_state = 0;
