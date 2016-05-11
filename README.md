@@ -113,3 +113,18 @@ when leaving the layer.
 * `Navigation layer`: The red and green LEDs will turn on, dimly.
 * `Symbol layer`: The red and blue LEDs will turn on, dimly.
 * `Hungarian layer`: The green and blue LEDs will turn on, dimly.
+
+## Building
+
+To make my workflow easier, this layout is in its own repository. To build it,
+you will need the [QMK][qmk] firmware checked out, and this repo either checked
+out, or symlinked to `keyboard/ergodox_ez/algernon`. One way to achieve that is
+this:
+
+```
+$ cd src
+$ git clone https://github.com/jackhumbert/qmk_firmware.git
+$ cd qmk_firmware/keyboard/ergodox_ez
+$ git clone https://github.com/algernon/ergodox-layout.git keymaps/algernon
+$ make KEYMAP=algernon
+```
