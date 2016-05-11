@@ -590,7 +590,13 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             // Short press: Paste
             switch (cp_mode) {
             case CP_EMACS:
-              return MACRO(T(P), END);
+              if (shift_state == 1)
+                {
+                  unregister_code (KC_RSFT);
+                  return MACRO(U(RSFT), T(RBRC), T(P), D(RSFT), END);
+                }
+              else
+                return MACRO(T(P), END);
               break;
             case CP_TERM:
               return MACRO(D(RCTRL), D(RSFT), T(V), U(RSFT), U(RCTRL), END);

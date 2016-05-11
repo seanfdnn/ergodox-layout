@@ -79,9 +79,9 @@ The copy/paste stuff needs some explanation: there are three modes of operation:
 * The topmost pink button turns on `visual-mode` in the `Emacs` mode, by sending
   a `v`. In all other modes, it does nothing.
 * The second one is the *paste* and *delete* button in one. Tapped, it pastes,
-  held longer, it deletes. In `Emacs` mode, this sends `p` or `d`, respectively.
-  In `Terminal` mode, it sends `C-S-v` or `DEL`. In `Other` mode, `C-v` or
-  `DEL`.
+  held longer, it deletes. In `Emacs` mode, this sends `p` (or `]p` if `Shift`
+  is also down) or `d`, respectively. In `Terminal` mode, it sends `C-S-v` or
+  `DEL`. In `Other` mode, `C-v` or `DEL`.
 * The third one, on the thumb cluster is the *copy* and *cut* key. Tapped, it
   copies, held longer, it cuts. In `Emacs` mode, this sends `y` or `x`,
   respectively. In `Terminal` mode, it sends `C-S-c` or `C-S-x`. In `Other`
