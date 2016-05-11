@@ -86,6 +86,14 @@ The copy/paste stuff needs some explanation: there are three modes of operation:
   copies, held longer, it cuts. In `Emacs` mode, this sends `y` or `x`,
   respectively. In `Terminal` mode, it sends `C-S-c` or `C-S-x`. In `Other`
   mode, `C-c` or `C-x`.
+  
+## Hungarian layer
+
+[![Hungarian layer](images/hun-layer.png)](http://www.keyboard-layout-editor.com/#/gists/b160f6ec90d58c127c114c89f66e9dc9)
+
+This is somewhat experimental too, I have not used it much at all. Ideally, this
+would work as a one-shot-layer, but also allow shift to be pressed before
+switching back to the base layer.
 
 ## LED behaviour
 
