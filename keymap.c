@@ -36,22 +36,21 @@
 #define AE_VIS    11 // Visual mode
 #define AE_CUTDEL 12 // Cut/Del
 #define AE_CPYP   13 // Copy/paste
+#define AE_EMACS  14 // Emacs copy & paste mode
+#define AE_TERM   15 // Terminal copy & paste mode
+#define AE_OTHER  16 // Other copy & paste mode
 
-#define HU_AA     14 // Á
-#define HU_OO     15 // Ó
-#define HU_EE     16 // É
-#define HU_UU     17 // Ú
-#define HU_II     18 // Í
-#define HU_OE     19 // Ö
-#define HU_UE     20 // Ü
-#define HU_OEE    21 // Ő
-#define HU_UEE    22 // Ű
+#define HU_AA     17 // Á
+#define HU_OO     18 // Ó
+#define HU_EE     19 // É
+#define HU_UU     20 // Ú
+#define HU_II     21 // Í
+#define HU_OE     22 // Ö
+#define HU_UE     23 // Ü
+#define HU_OEE    24 // Ő
+#define HU_UEE    25 // Ű
 
-#define ASE_META  23 // M-m
-
-#define AE_EMACS  24 // Emacs copy & paste mode
-#define AE_TERM   25 // Terminal copy & paste mode
-#define AE_OTHER  26 // Other copy & paste mode
+#define ASE_META  26 // M-m
 
 /* States & timers */
 
