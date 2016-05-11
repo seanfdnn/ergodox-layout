@@ -122,7 +122,6 @@ out, or symlinked to `keyboard/ergodox_ez/algernon`. One way to achieve that is
 this:
 
 ```
-$ cd src
 $ git clone https://github.com/jackhumbert/qmk_firmware.git
 $ cd qmk_firmware/keyboard/ergodox_ez
 $ git clone https://github.com/algernon/ergodox-layout.git keymaps/algernon
