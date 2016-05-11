@@ -94,13 +94,17 @@ brightly. If a layer is activated, the appropriate LEDs will shine dimly. If a
 modifier is pressed in a layer, the LED will turn bright, and dim down again
 when leaving the layer.
 
-1. `SHIFT`: The red led will turn on.
-2. `Alt`: The green led will turn on.
-3. `Ctrl`: The blue led will turn on.
+#### Modifier LEDs
 
-A. `Media layer`: The red and green leds will turn on.
-B. `Symbol layer`: The red and blue leds will turn on.
-C. `Hungarian layer`: The green and blue leds will turn on.
+* `SHIFT`: The red LED will turn on, brightly
+* `Alt`: The green LED will turn on, brightly.
+* `Ctrl`: The blue LED will turn on, brightly.
+
+#### Layer LEDs
+
+* `Navigation layer`: The red and green LEDs will turn on, dimly.
+* `Symbol layer`: The red and blue LEDs will turn on, dimly.
+* `Hungarian layer`: The green and blue LEDs will turn on, dimly.
 
 ## Things to experiment with:
 
