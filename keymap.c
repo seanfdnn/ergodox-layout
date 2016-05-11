@@ -319,6 +319,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 
       case HU_AA:
         if (record->event.pressed) {
+          layer_off(HUN);
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(A), END);
@@ -333,6 +334,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
       case HU_OO:
         if (record->event.pressed) {
+          layer_off(HUN);
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(O), END);
@@ -347,6 +349,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
       case HU_EE:
         if (record->event.pressed) {
+          layer_off(HUN);
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(E), END);
@@ -361,6 +364,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
       case HU_UU:
         if (record->event.pressed) {
+          layer_off(HUN);
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(U), END);
@@ -375,6 +379,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
       case HU_II:
         if (record->event.pressed) {
+          layer_off(HUN);
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(I), END);
@@ -389,6 +394,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
       case HU_OE:
         if (record->event.pressed) {
+          layer_off(HUN);
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), D(LSFT), T(QUOT), U(LSFT), T(O), END);
@@ -401,6 +407,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
       case HU_UE:
         if (record->event.pressed) {
+          layer_off(HUN);
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), D(LSFT), T(QUOT), U(LSFT), T(U), END);
@@ -413,6 +420,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
       case HU_OEE:
         if (record->event.pressed) {
+          layer_off(HUN);
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(EQL), T(O), END);
@@ -427,6 +435,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
       case HU_UEE:
         if (record->event.pressed) {
+          layer_off(HUN);
           if (shift_state == 0) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(EQL), T(U), END);

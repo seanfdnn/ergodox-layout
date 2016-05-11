@@ -91,9 +91,10 @@ The copy/paste stuff needs some explanation: there are three modes of operation:
 
 [![Hungarian layer](images/hun-layer.png)](http://www.keyboard-layout-editor.com/#/gists/b160f6ec90d58c127c114c89f66e9dc9)
 
-This is somewhat experimental too, I have not used it much at all. Ideally, this
-would work as a one-shot-layer, but also allow shift to be pressed before
-switching back to the base layer.
+This is somewhat experimental too, I have not used it much at all. All the
+Hungarian keys turn the layer off after being pressed, returning to the base
+layer. This is because it is rare to type two accented chars after each other,
+thus, this acts as a one-shot layer, which allows for a sticky shift, too.
 
 ## LED behaviour
 
