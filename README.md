@@ -105,8 +105,3 @@ when leaving the layer.
 * `Navigation layer`: The red and green LEDs will turn on, dimly.
 * `Symbol layer`: The red and blue LEDs will turn on, dimly.
 * `Hungarian layer`: The green and blue LEDs will turn on, dimly.
-
-## Things to experiment with:
-
-* Improve the `Paste` key on the media layer: add a way to paste above or below
-  the current line.
