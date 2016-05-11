@@ -617,7 +617,9 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           if (timer_elapsed (gui_timer) > TAPPING_TERM) {
             unregister_mods(MOD_BIT(KC_LGUI));
           } else {
-            return MACRO(T(W), U(LGUI), END);
+            register_code(KC_W);
+            unregister_code(KC_W);
+            unregister_mods(MOD_BIT(KC_LGUI));
           }
         }
         break;
