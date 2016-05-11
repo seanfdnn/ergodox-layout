@@ -1,3 +1,7 @@
+/*
+ * algernon's ErgoDox EZ layout, please see the README.md file!
+ */
+
 #include "ergodox_ez.h"
 #include "led.h"
 #include "debug.h"
@@ -56,10 +60,6 @@
 #define MCPYP MCOPYPASTE
 
 #define M_LGUI 30
-
-/*
- * algernon's ErgoDox EZ layout.
- */
 
 uint8_t shift_state = 0;
 uint8_t alt_state = 0;
