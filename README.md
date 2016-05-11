@@ -11,7 +11,7 @@ But lets get on with the base layer, before I dive into a deeper explanation!
 
 ## Base layer
 
-![Base layer](images/base-layer.png)
+[![Base layer](images/base-layer.png)](http://www.keyboard-layout-editor.com/#/gists/28f7eb305fdbff943613e1dc7aa9e82b)
 
 As you can see, this appears to be a somewhat unremarkable Dvorak layout, with
 some very minor changes:
@@ -54,7 +54,7 @@ other guide, for most special keys.
 
 ## Symbols layer
 
-![Symbols layer](images/symbol-layer.png)
+[![Symbols layer](images/symbol-layer.png)](http://www.keyboard-layout-editor.com/#/gists/dad30ce9d478a336d3513b560b790930)
 
 The symbol layer is a bit more conventional, and retains most of the special
 keys in the same position as in the base layer. As an addition, function keys
@@ -63,9 +63,9 @@ shruggie sequence, for various reasons.
 
 The key colors were done the same way as in the base layer.
 
-## Media layer
+## Navigation layer
 
-![Media layer](images/media-layer.png)
+[![Navigation layer](images/nav-layer.png)](http://www.keyboard-layout-editor.com/#/gists/e4556d8dc59736c26d51a58cb4c4d2f0)
 
 For all mouse-y, navigational and media needs!
 
@@ -73,11 +73,19 @@ The coloring here also follows a different pattern: blue are mouse keys, red is
 cursor navigation, light orange is media control, pink are copy/paste related
 functions, and the rest are as usual.
 
-The copy/paste stuff needs some explanation: they only work in Spacemacs. The
-topmost pink button toggles visual mode on and off, by sending `V` first, and
-`ESC` the second time. The button below it sends `X` for cutting when tapped,
-`D` for deleting when held. The pink button on the thumb cluster sends `Y` for
-copy when tapped, `P` for paste when held.
+The copy/paste stuff needs some explanation: there are three modes of operation:
+`Emacs`, `Terminal`, and `Other`. The keys work the following way:
+
+* The topmost pink button turns on `visual-mode` in the `Emacs` mode, by sending
+  a `v`. In all other modes, it does nothing.
+* The second one is the *paste* and *delete* button in one. Tapped, it pastes,
+  held longer, it deletes. In `Emacs` mode, this sends `p` or `d`, respectively.
+  In `Terminal` mode, it sends `C-S-v` or `DEL`. In `Other` mode, `C-v` or
+  `DEL`.
+* The third one, on the thumb cluster is the *copy* and *cut* key. Tapped, it
+  copies, held longer, it cuts. In `Emacs` mode, this sends `y` or `x`,
+  respectively. In `Terminal` mode, it sends `C-S-c` or `C-S-x`. In `Other`
+  mode, `C-c` or `C-x`.
 
 ## LED behaviour
 
