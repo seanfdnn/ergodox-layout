@@ -13,9 +13,10 @@
 /* Layers */
 
 #define BASE    0 // default layer
-#define HUN     1 // Hungarian layer
-#define SYMB    2 // symbols layer
-#define NAV     3 // navigation layer
+#define APPSEL  1 // application select layer
+#define HUN     2 // Hungarian layer
+#define SYMB    3 // symbols layer
+#define NAV     4 // navigation layer
 
 /* Macros */
 
@@ -51,6 +52,11 @@
 #define HU_UEE    25 // Ű
 
 #define ASE_META  26 // M-m
+
+#define APP_SLK   27 // Slack
+#define APP_EMCS  28 // Emacs
+#define APP_TERM  29 // Terminal
+#define APP_CHRM  30 // Chrome
 
 /* States & timers */
 
@@ -121,7 +127,54 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_ESC  ,KC_ENT ,KC_SPC
     ),
 
-/* Keymap 1: Hungarian Layer
+/* Keymap 1: Application select layer
+ *
+ * ,-----------------------------------------------------.           ,-----------------------------------------------------.
+ * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
+ * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
+ * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
+ * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |      |      |      |      |      |------|           |------|      |      |      |      |      |           |
+ * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
+ * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
+ *      |      |      |      |      |      |                                       |      |      |      |      |      |
+ *      `----------------------------------'                                       `----------------------------------'
+ *                                         ,-------------.           ,-------------.
+ *                                         |      |      |           |      |      |
+ *                                  ,------|------|------|           |------+------+------.
+ *                                  |      |      |      |           |      |      |      |
+ *                                  |      |      |------|           |------|      |      |
+ *                                  |      |      |      |           |      |      |      |
+ *                                  `--------------------'           `--------------------'
+ */
+
+[APPSEL] = KEYMAP(
+// left hand
+ KC_TRNS ,KC_NO   ,M(APP_SLK),M(APP_EMCS),M(APP_TERM),M(APP_CHRM),KC_TRNS
+,KC_TRNS ,KC_TRNS ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
+,KC_TRNS ,KC_TRNS ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
+,KC_TRNS ,KC_TRNS ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
+,KC_TRNS ,KC_TRNS ,KC_TRNS   ,KC_TRNS    ,KC_TRNS
+
+                                             ,KC_TRNS ,KC_TRNS
+                                                      ,KC_TRNS
+                                    ,KC_TRNS ,KC_TRNS ,KC_TRNS
+
+                                                                // right hand
+                                                               ,KC_TRNS ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_TRNS
+                                                               ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
+                                                                        ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
+                                                               ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
+                                                                                 ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
+
+                                                               ,KC_TRNS ,KC_TRNS
+                                                               ,KC_TRNS
+                                                               ,KC_TRNS ,KC_TRNS  ,KC_TRNS
+    ),
+
+
+/* Keymap 2: Hungarian Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
@@ -167,7 +220,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_TRNS ,KC_TRNS  ,KC_TRNS
     ),
 
-/* Keymap 2: Symbol Layer
+/* Keymap 4: Symbol Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * |     F1    |   1  |   2  |   3  |   4  |   5  |      |           |      |   6  |   7  |   8  |   9  |   0  |    F6     |
@@ -209,7 +262,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                     ,KC_TRNS ,KC_TRNS ,KC_TRNS
     ),
 
-/* Keymap 3: Navigation layer
+/* Keymap 4: Navigation layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * | MS Slow   | F11  | F12  | F13  | F14  | F15  |ScrLCK|           |ScrLCK| F16  | F17  | F18  | F19  | F20  |PrintScreen|
@@ -631,6 +684,26 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             unregister_mods(MOD_BIT(KC_LGUI));
           }
         }
+        break;
+
+      case APP_SLK:
+        if (record->event.pressed)
+          return MACRO(T(S), T(C), T(U), T(D), T(C), T(L), T(O), T(U), T(D), T(ENT), END);
+        break;
+
+      case APP_EMCS:
+        if (record->event.pressed)
+          return MACRO(T(E), T(M), T(A), T(C), T(S), T(ENT), END);
+        break;
+
+      case APP_TERM:
+        if (record->event.pressed)
+          return MACRO(T(T), T(E), T(R), T(M), T(ENT), END);
+        break;
+
+      case APP_CHRM:
+        if (record->event.pressed)
+          return MACRO(T(C), T(H), T(R), T(O), T(M), T(ENT), END);
         break;
       }
       return MACRO_NONE;
