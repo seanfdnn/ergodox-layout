@@ -17,6 +17,7 @@
 #define HUN     2 // Hungarian layer
 #define SYMB    3 // symbols layer
 #define NAV     4 // navigation layer
+#define EDIT    5 // Edit overlay for the NAV layer
 
 /* Macros */
 
@@ -40,6 +41,8 @@
 #define AE_EMACS  14 // Emacs copy & paste mode
 #define AE_TERM   15 // Terminal copy & paste mode
 #define AE_OTHER  16 // Other copy & paste mode
+#define AE_INS    32 // Insert mode
+#define AE_OVR    33 // Overwrite mode
 
 #define HU_AA     17 // Á
 #define HU_OO     18 // Ó
@@ -277,7 +280,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *      |EmacsM|TermM |OtherM|      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
- *                                         |  Alt | GUI  |           |UNLOCK| MClk |
+ *                                         |  Alt | GUI  |           |Edit L| MClk |
  *                                  ,------|------|------|           |------+------+------.
  *                                  |Delete|      | Ctrl |           | Prev |Left  |Right |
  *                                  |      |LShift|------|           |------| Click| Click|
@@ -300,18 +303,65 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                 ,KC_VOLD ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_NO   ,KC_NO
                                                                      ,KC_WH_D   ,KC_MUTE ,M(A_MDL),KC_MS_D ,M(A_MDR),KC_NO   ,KC_MSTP
                                                                                          ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
-                                                                     ,KC_FN1    ,KC_MS_BTN3
+                                                                     ,KC_FN5    ,KC_MS_BTN3
                                                                      ,KC_MPRV
                                                                      ,KC_MNXT   ,KC_BTN1 ,KC_BTN2
-    )
+    ),
+
+/* Keymap 5: Edit overlay for NAV
+ *
+ * ,-----------------------------------------------------.           ,-----------------------------------------------------.
+ * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
+ * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
+ * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
+ * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |      |      |      |      |      |------|           |------|      |      |      |      |      |           |
+ * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
+ * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
+ *      |      |      |      |      |      |                                       |      |      |      |      |      |
+ *      `----------------------------------'                                       `----------------------------------'
+ *                                         ,-------------.           ,-------------.
+ *                                         |      |      |           |      |      |
+ *                                  ,------|------|------|           |------+------+------.
+ *                                  |      |      |      |           |      |      |      |
+ *                                  |      |      |------|           |------|      |      |
+ *                                  |      |      |      |           |      |      |      |
+ *                                  `--------------------'           `--------------------'
+ */
+[EDIT] = KEYMAP(
+// left hand
+ KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
+,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
+,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,M(AE_INS)
+,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
+,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS
+
+                                             ,KC_TRNS ,KC_TRNS
+                                                      ,KC_TRNS
+                                    ,KC_TRNS ,KC_TRNS ,KC_TRNS
+
+                                                                // right hand
+                                                               ,KC_TRNS ,KC_1    ,KC_2    ,KC_3    ,KC_4     ,KC_5    ,KC_TRNS
+                                                               ,KC_TRNS ,KC_DLR  ,KC_TRNS ,KC_TRNS ,M(AE_OVR),KC_TRNS ,KC_TRNS
+                                                                        ,KC_D    ,KC_TRNS ,KC_TRNS ,KC_TRNS  ,KC_TRNS ,KC_TRNS
+                                                               ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS  ,KC_TRNS ,KC_TRNS
+                                                                                 ,KC_TRNS ,KC_W    ,KC_TRNS  ,KC_TRNS ,KC_TRNS
+
+                                                               ,KC_TRNS ,KC_TRNS
+                                                               ,KC_TRNS
+                                                               ,KC_TRNS ,KC_TRNS  ,KC_TRNS
+    ),
+
 
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-     [1] = ACTION_LAYER_CLEAR(ON_PRESS)           // FN1 - clear to base layer
-    ,[2] = ACTION_LAYER_INVERT(SYMB, ON_PRESS) // FN2 - toggle to Symbols on press
-    ,[3] = ACTION_LAYER_INVERT(NAV, ON_PRESS) // FN3 - toggle to Media on press
-    ,[4] = ACTION_LAYER_INVERT(HUN, ON_PRESS)  // FN4 - toggle to Hungarian on press
+   [1] = ACTION_LAYER_CLEAR(ON_PRESS)           // FN1 - clear to base layer
+  ,[2] = ACTION_LAYER_INVERT(SYMB, ON_PRESS)    // FN2 - toggle to Symbols on press
+  ,[3] = ACTION_LAYER_INVERT(NAV, ON_PRESS)     // FN3 - toggle to Media on press
+  ,[4] = ACTION_LAYER_INVERT(HUN, ON_PRESS)     // FN4 - toggle to Hungarian on press
+  ,[5] = ACTION_LAYER_INVERT(EDIT, ON_PRESS)    // FN5 - Edit overlay
 };
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
@@ -672,6 +722,22 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
+      case AE_INS:
+        if (record->event.pressed) {
+          return MACRO(T(I), END);
+        } else {
+          layer_clear();
+        }
+        break;
+
+      case AE_OVR:
+        if (record->event.pressed) {
+          return MACRO(T(R), END);
+        } else {
+          layer_clear();
+        }
+        break;
+
       case A_GUI:
         if (record->event.pressed) {
           register_mods(MOD_BIT(KC_LGUI));
@@ -739,7 +805,7 @@ void matrix_scan_user(void) {
     } else if (layer == SYMB) {
       ergodox_right_led_1_on();
       ergodox_right_led_3_on();
-    } else if (layer == NAV) {
+    } else if (layer == NAV || layer == EDIT) {
       ergodox_right_led_1_on();
       ergodox_right_led_2_on();
     } else {

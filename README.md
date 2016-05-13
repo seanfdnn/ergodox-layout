@@ -86,6 +86,18 @@ The copy/paste stuff needs some explanation: there are three modes of operation:
   (or `]p` if `Shift` is also down) or `d`, respectively. In `Terminal` mode, it
   sends `C-S-v` or `DEL`. In `Other` mode, `C-v` or `DEL`.
   
+Tapping the key that enabled this layer will bring us further, to the `Edit layer`:
+
+## Edit Layer
+
+[![Edit layer](images/nav-edit-layer.png)](http://www.keyboard-layout-editor.com/#/gists/c59c453f9fe1a3238ba1494e7e5c6892)
+
+This is a light overlay over the `Navigation layer` above, adding a few tools to
+improve the navigational experience: a `d` key for deleting, `$` and `w` and a
+short number row to aid the delete; and an `i` and `r` for INSERT and OVERWRITE
+modes, respectively. These last two also take us back to the base layer, just
+like tapping the layer switch button.
+ 
 ## Hungarian layer
 
 [![Hungarian layer](images/hun-layer.png)](http://www.keyboard-layout-editor.com/#/gists/b160f6ec90d58c127c114c89f66e9dc9)
@@ -110,7 +122,7 @@ when leaving the layer.
 
 #### Layer LEDs
 
-* `Navigation layer`: The red and green LEDs will turn on, dimly.
+* `Navigation layer`, `Edit Layer`: The red and green LEDs will turn on, dimly.
 * `Symbol layer`: The red and blue LEDs will turn on, dimly.
 * `Hungarian layer`: The green and blue LEDs will turn on, dimly.
 
