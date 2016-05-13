@@ -271,17 +271,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | MS Normal |      | Home |  Up  | End  |      |Visual|           |Scroll|Vol Up|MsUpL | MsUp |MsUpR |      |           |
  * |-----------+------+------+------+------+------| Mode |           |  Up  |------+------+------+------+------+-----------|
  * | MS Fast   |      | Left | Down | Right|      |------|           |------|Vol Dn|MsLeft| MsDn |MsRght|      |           |
- * |-----------+------+------+------+------+------|Delete|           |Scroll|------+------+------+------+------+-----------|
- * | Play/Pause|      | PgUp | Down | PgDn |      |Paste |           | Down | Mute |MsDnL | MsDn |MsDnR |      |      Stop |
+ * |-----------+------+------+------+------+------| Cut  |           |Scroll|------+------+------+------+------+-----------|
+ * | Play/Pause|      | PgUp | Down | PgDn |      | Copy |           | Down | Mute |MsDnL | MsDn |MsDnR |      |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |EmacsM|TermM |OtherM|      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
  *                                         |  Alt | GUI  |           |UNLOCK| MClk |
  *                                  ,------|------|------|           |------+------+------.
- *                                  | Cut  |      | Ctrl |           | Prev |Left  |Right |
+ *                                  |Delete|      | Ctrl |           | Prev |Left  |Right |
  *                                  |      |LShift|------|           |------| Click| Click|
- *                                  | Copy |      | ESC  |           | Next |      |      |
+ *                                  |Paste |      | ESC  |           | Next |      |      |
  *                                  `--------------------'           `--------------------'
  */
 [NAV] = KEYMAP(
@@ -289,11 +289,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  KC_ACL0    ,KC_F11      ,KC_F12     ,KC_F13  ,KC_F14  ,KC_F15  ,LGUI(KC_L)
 ,KC_ACL1    ,KC_NO       ,KC_HOME    ,KC_UP   ,KC_END  ,KC_NO   ,M(AE_VIS)
 ,KC_ACL2    ,KC_NO       ,KC_LEFT    ,KC_DOWN ,KC_RIGHT,KC_NO
-,KC_MPLY    ,KC_NO       ,KC_PGUP    ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(AE_PSTDEL)
+,KC_MPLY    ,KC_NO       ,KC_PGUP    ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(AE_CPYC)
 ,M(AE_EMACS),M(AE_TERM)  ,M(AE_OTHER),KC_NO   ,KC_NO
-                                                      ,KC_TRNS ,KC_TRNS
-                                                               ,KC_TRNS
-                                           ,M(AE_CPYC),KC_TRNS ,KC_TRNS
+                                                        ,KC_TRNS ,KC_TRNS
+                                                                 ,KC_TRNS
+                                           ,M(AE_PSTDEL),KC_TRNS ,KC_TRNS
                                                                      // right hand
                                                                      ,LGUI(KC_L),KC_F16  ,KC_F17  ,KC_F18  ,KC_F19  ,KC_F20  ,KC_PSCR
                                                                      ,KC_WH_U   ,KC_VOLU ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_NO   ,KC_NO
