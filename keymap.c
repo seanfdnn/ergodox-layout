@@ -57,6 +57,7 @@
 #define APP_EMCS  28 // Emacs
 #define APP_TERM  29 // Terminal
 #define APP_CHRM  30 // Chrome
+#define APP_MSIC  31 // Music
 
 /* States & timers */
 
@@ -151,11 +152,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [APPSEL] = KEYMAP(
 // left hand
- KC_TRNS ,KC_NO   ,M(APP_SLK),M(APP_EMCS),M(APP_TERM),M(APP_CHRM),KC_TRNS
-,KC_TRNS ,KC_TRNS ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
-,KC_TRNS ,KC_TRNS ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
-,KC_TRNS ,KC_TRNS ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
-,KC_TRNS ,KC_TRNS ,KC_TRNS   ,KC_TRNS    ,KC_TRNS
+ KC_TRNS ,M(APP_MSIC),M(APP_SLK),M(APP_EMCS),M(APP_TERM),M(APP_CHRM),KC_TRNS
+,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
+,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
+,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
+,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS
 
                                              ,KC_TRNS ,KC_TRNS
                                                       ,KC_TRNS
@@ -707,6 +708,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       case APP_CHRM:
         if (record->event.pressed)
           return MACRO(T(C), T(H), T(R), T(O), T(M), T(ENT), END);
+        break;
+
+      case APP_MSIC:
+        if (record->event.pressed)
+          return MACRO(T(M), T(U), T(S), T(I), T(C), T(ENT), END);
         break;
       }
       return MACRO_NONE;
