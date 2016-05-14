@@ -5,6 +5,8 @@ This is an unconventional layout for the ErgoDox EZ, one that is still
 evolving. For the reasons of my choices, the whys and whatnot, see my
 [blog posts about my ErgoDox journey][blog-ergodox].
 
+ [blog-ergodox]: https://asylum.madhouse-project.org/blog/tags/ergodox/
+
 Here, I'll just present the layout itself, but for more information,
 see the blog. Once the layout is stable, as in, has not changed
 considerably for over a month, I'll sum it up here. Until then, it is
