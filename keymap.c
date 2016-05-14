@@ -15,9 +15,8 @@
 #define BASE    0 // default layer
 #define APPSEL  1 // application select layer
 #define HUN     2 // Hungarian layer
-#define SYMB    3 // symbols layer
-#define NAV     4 // navigation layer
-#define EDIT    5 // Edit overlay for the NAV layer
+#define NAV     3 // navigation layer
+#define EDIT    4 // Edit overlay for the NAV layer
 
 /* Macros */
 
@@ -100,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *     |  M-m  | Home | PgUp | PgDn | End  |                                       | Left |  Up  | Down | Right|Unicode|
  *     `-----------------------------------'                                       `-----------------------------------'
  *                                         ,-------------.           ,-------------.
- *                                         | LAlt | GUI  |           | Media| SYM  |
+ *                                         | LAlt | GUI  |           | Media|      |
  *                                  ,------|------|------|           |------+------+------.
  *                                  |      |      | Ctrl |           |  HUN |      |      |
  *                                  |Backsp|LShift|------|           |------| Enter| Space|
@@ -126,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_RPRN ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,KC_MSTP
                                                                                 ,KC_LEFT,KC_UP  ,KC_DOWN     ,KC_RGHT     ,M(A_UNIC)
 
-                                                               ,KC_FN3  ,KC_FN2
+                                                               ,KC_FN3  ,KC_NO
                                                                ,KC_FN4
                                                                ,KC_ESC  ,KC_ENT ,KC_SPC
     ),
@@ -224,54 +223,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_TRNS ,KC_TRNS  ,KC_TRNS
     ),
 
-/* Keymap 4: Symbol Layer
+/* Keymap 3: Navigation layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * |     F1    |   1  |   2  |   3  |   4  |   5  |      |           |      |   6  |   7  |   8  |   9  |   0  |    F6     |
+ * | MS Slow   |  F1  |  F2  |  F3  |  F4  |  F5  |ScrLCK|           |ScrLCK|  F6  |  F7  |  F8  |  F9  | F10  |    F11    |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * |     F2    |   !  |   @  |   {  |   }  |   &  |  <   |           |  >   |   |  |   4  |   5  |   6  |   *  |    F7     |
- * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
- * |     F3    |   #  |   $  |   (  |   )  |   `  |------|           |------|   /  |   1  |   2  |   3  |   -  |    F8     |
- * |-----------+------+------+------+------+------| Tab  |           |  Tab |------+------+------+------+------+-----------|
- * |     F4    |   %  |   ^  |   [  |   ]  |   ~  |      |           |      |   \  |   0  |   .  |   =  |   +  |    F9     |
- * `-----------+------+------+------+------+-------------'           `------------+------+------+------+------+------------'
- *      |  F5  |      |      |      |      |                                       |      |      |      |      |  F10 |
- *      `----------------------------------'                                       `----------------------------------'
- *                                         ,-------------.           ,-------------.
- *                                         |      |      |           |  λ   |UNLOCK|
- *                                  ,------|------|------|           |------+------+------.
- *                                  |      |      |      |           | SHRUG|      |      |
- *                                  |      |      |------|           |------|      |      |
- *                                  |      |      |      |           |      |      |      |
- *                                  `--------------------'           `--------------------'
- */
-[SYMB] = KEYMAP(
-// left hand
- KC_F1       ,KC_1    ,KC_2    ,KC_3    ,KC_4    ,KC_5    ,KC_TRNS
-,KC_F2       ,KC_EXLM ,KC_AT   ,KC_LCBR ,KC_RCBR ,KC_AMPR ,LSFT(KC_COMM)
-,KC_F3       ,KC_HASH ,KC_DLR  ,KC_LPRN ,KC_RPRN ,KC_GRV
-,KC_F4       ,KC_PERC ,KC_CIRC ,KC_LBRC ,KC_RBRC ,KC_TILD ,KC_TAB
-,KC_F5       ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
-                                                 ,KC_TRNS ,KC_TRNS
-                                                          ,KC_TRNS
-                                        ,KC_TRNS ,KC_TRNS ,KC_TRNS
-                                                                    // right hand
-                                                                    ,KC_TRNS     ,KC_6    ,KC_7   ,KC_8   ,KC_9   ,KC_0    ,KC_F6
-                                                                    ,LSFT(KC_DOT),KC_PIPE ,KC_4   ,KC_5   ,KC_6   ,KC_ASTR ,KC_F7
-                                                                                 ,KC_SLSH ,KC_1   ,KC_2   ,KC_3   ,KC_MINS ,KC_F8
-                                                                    ,KC_TAB      ,KC_BSLS ,KC_0   ,KC_DOT ,KC_EQL ,KC_PLUS ,KC_F9
-                                                                                          ,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS ,KC_F10
-                                                                    ,M(AU_LMBD)  ,KC_FN1
-                                                                    ,M(AU_SHRG)
-                                                                    ,KC_TRNS ,KC_TRNS ,KC_TRNS
-    ),
-
-/* Keymap 4: Navigation layer
- *
- * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | MS Slow   | F11  | F12  | F13  | F14  | F15  |ScrLCK|           |ScrLCK| F16  | F17  | F18  | F19  | F20  |PrintScreen|
- * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * | MS Normal |      | Home |  Up  | End  |      |Visual|           |Scroll|Vol Up|MsUpL | MsUp |MsUpR |      |           |
+ * | MS Normal |      | Home |  Up  | End  |      |Visual|           |Scroll|Vol Up|MsUpL | MsUp |MsUpR |      |PrintScreen|
  * |-----------+------+------+------+------+------| Mode |           |  Up  |------+------+------+------+------+-----------|
  * | MS Fast   |      | Left | Down | Right|      |------|           |------|Vol Dn|MsLeft| MsDn |MsRght|      |           |
  * |-----------+------+------+------+------+------| Cut  |           |Scroll|------+------+------+------+------+-----------|
@@ -289,7 +246,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [NAV] = KEYMAP(
 // left hand
- KC_ACL0    ,KC_F11      ,KC_F12     ,KC_F13  ,KC_F14  ,KC_F15  ,LGUI(KC_L)
+ KC_ACL0    ,KC_F1       ,KC_F2      ,KC_F3   ,KC_F4   ,KC_F5   ,LGUI(KC_L)
 ,KC_ACL1    ,KC_NO       ,KC_HOME    ,KC_UP   ,KC_END  ,KC_NO   ,M(AE_VIS)
 ,KC_ACL2    ,KC_NO       ,KC_LEFT    ,KC_DOWN ,KC_RIGHT,KC_NO
 ,KC_MPLY    ,KC_NO       ,KC_PGUP    ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(AE_CPYC)
@@ -298,8 +255,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                  ,KC_TRNS
                                            ,M(AE_PSTDEL),KC_TRNS ,KC_TRNS
                                                                      // right hand
-                                                                     ,LGUI(KC_L),KC_F16  ,KC_F17  ,KC_F18  ,KC_F19  ,KC_F20  ,KC_PSCR
-                                                                     ,KC_WH_U   ,KC_VOLU ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_NO   ,KC_NO
+                                                                     ,LGUI(KC_L),KC_F6   ,KC_F7   ,KC_F8   ,KC_F9   ,KC_F10  ,KC_F11
+                                                                     ,KC_WH_U   ,KC_VOLU ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_NO   ,KC_PSCR
                                                                                 ,KC_VOLD ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_NO   ,KC_NO
                                                                      ,KC_WH_D   ,KC_MUTE ,M(A_MDL),KC_MS_D ,M(A_MDR),KC_NO   ,KC_MSTP
                                                                                          ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
@@ -308,7 +265,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                      ,KC_MNXT   ,KC_BTN1 ,KC_BTN2
     ),
 
-/* Keymap 5: Edit overlay for NAV
+/* Keymap 4: Edit overlay for NAV
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * |           |      |      |      |      |      |      |           |      |   1  |   2  |   3  |   4  |   5  |           |
@@ -358,7 +315,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint16_t PROGMEM fn_actions[] = {
    [1] = ACTION_LAYER_CLEAR(ON_PRESS)           // FN1 - clear to base layer
-  ,[2] = ACTION_LAYER_INVERT(SYMB, ON_PRESS)    // FN2 - toggle to Symbols on press
   ,[3] = ACTION_LAYER_INVERT(NAV, ON_PRESS)     // FN3 - toggle to Media on press
   ,[4] = ACTION_LAYER_INVERT(HUN, ON_PRESS)     // FN4 - toggle to Hungarian on press
   ,[5] = ACTION_LAYER_INVERT(EDIT, ON_PRESS)    // FN5 - Edit overlay
@@ -802,10 +758,10 @@ void matrix_scan_user(void) {
     if (layer == HUN) {
       ergodox_right_led_2_on();
       ergodox_right_led_3_on();
-    } else if (layer == SYMB) {
+    } else if (layer == EDIT) {
       ergodox_right_led_1_on();
       ergodox_right_led_3_on();
-    } else if (layer == NAV || layer == EDIT) {
+    } else if (layer == NAV) {
       ergodox_right_led_1_on();
       ergodox_right_led_2_on();
     } else {

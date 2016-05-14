@@ -52,17 +52,6 @@ same finger have the same color. But that is just a guide, because the thumb
 cluster has many colors, all pressed by the same digit. Functionality is the
 other guide, for most special keys.
 
-## Symbols layer
-
-[![Symbols layer](images/symbol-layer.png)](http://www.keyboard-layout-editor.com/#/gists/dad30ce9d478a336d3513b560b790930)
-
-The symbol layer is a bit more conventional, and retains most of the special
-keys in the same position as in the base layer. As an addition, function keys
-appear on the sides, and the two other layer toggles turn into a `λ` and a
-shruggie sequence, for various reasons.
-
-The key colors were done the same way as in the base layer.
-
 ## Navigation layer
 
 [![Navigation layer](images/nav-layer.png)](http://www.keyboard-layout-editor.com/#/gists/e4556d8dc59736c26d51a58cb4c4d2f0)
@@ -85,7 +74,7 @@ The copy/paste stuff needs some explanation: there are three modes of operation:
   Tapped, it pastes, held longer, it deletes. In `Emacs` mode, this sends `p`
   (or `]p` if `Shift` is also down) or `d`, respectively. In `Terminal` mode, it
   sends `C-S-v` or `DEL`. In `Other` mode, `C-v` or `DEL`.
-  
+
 Tapping the key that enabled this layer will bring us further, to the `Edit layer`:
 
 ## Edit Layer
@@ -97,7 +86,7 @@ improve the navigational experience: a `d` key for deleting, `$` and `w` and a
 short number row to aid the delete; and an `i` and `r` for INSERT and OVERWRITE
 modes, respectively. These last two also take us back to the base layer, just
 like tapping the layer switch button.
- 
+
 ## Hungarian layer
 
 [![Hungarian layer](images/hun-layer.png)](http://www.keyboard-layout-editor.com/#/gists/b160f6ec90d58c127c114c89f66e9dc9)
