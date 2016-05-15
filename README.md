@@ -27,6 +27,10 @@ So, the layers!
 
 [![Hungarian layer](images/hun-layer.png)](http://www.keyboard-layout-editor.com/#/gists/b160f6ec90d58c127c114c89f66e9dc9)
 
+## One-handed layer
+
+[![One-handed layer](images/one-handed-layer.png)](http://www.keyboard-layout-editor.com/#/gists/edff2495135955b8963198dace7f7ece)
+
 # Building
 
 To make my workflow easier, this layout is in its own repository. To build it,
