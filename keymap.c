@@ -117,7 +117,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                  ,------|------|------|           |------+------+------.
  *                                  |      |      | Ctrl |           | HUN  |      |      |
  *                                  |Backsp|LShift|------|           |------| Enter| Space|
- *                                  |      |      | ESC  |           |  ESC |      |      |
+ *                                  |      |      | ESC  |           |  :   |      |      |
  *                                  `--------------------'           `--------------------'
  */
 [BASE] = KEYMAP(
@@ -141,7 +141,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                ,KC_FN3  ,KC_NO
                                                                ,KC_FN4
-                                                               ,KC_ESC  ,KC_ENT ,KC_SPC
+                                                               ,KC_COLN ,KC_ENT ,KC_SPC
     ),
 
 /* Keymap 1: Application select layer
