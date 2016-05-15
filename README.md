@@ -21,7 +21,7 @@ So, the layers!
 
 ## Emacs layer
 
-[![Emacs layer](images/emacs-layer.png)](http://www.keyboard-layout-editor.com/#/gists/e4556d8dc59736c26d51a58cb4c4d2f0)
+[![Emacs layer](images/emacs-layer.png)](http://www.keyboard-layout-editor.com/#/gists/c59c453f9fe1a3238ba1494e7e5c6892)
 
 ## Hungarian layer
 
