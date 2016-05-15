@@ -43,7 +43,6 @@
 #define AE_INS    32 // Insert mode
 #define AE_OVR    33 // Overwrite mode
 #define AE_APPND  34 // Append
-#define AE_DEL    35 // Delete
 
 #define HU_AA     17 // Á
 #define HU_OO     18 // Ó
@@ -276,7 +275,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
  * |           |APPEND|      |      |      | INS  |------|           |------|   D  |      |      |      |      |           |
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
- * |           |      |      |      |      | DEL  |      |           |      |      |      |   W  |      |      |           |
+ * |           |      |      |      |      |  X   |      |           |      |      |      |   W  |      |      |           |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |      |      |      |      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
@@ -293,7 +292,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
 ,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
 ,KC_TRNS ,M(AE_APPND),KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,M(AE_INS)
-,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,M(AE_DEL)  ,KC_TRNS
+,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_X       ,KC_TRNS
 ,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS
 
                                              ,KC_TRNS ,KC_TRNS
@@ -699,14 +698,6 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       case AE_APPND:
         if (record->event.pressed) {
           return MACRO(T(A), END);
-        } else {
-          layer_clear();
-        }
-        break;
-
-      case AE_DEL:
-        if (record->event.pressed) {
-          return MACRO(T(X), END);
         } else {
           layer_clear();
         }
