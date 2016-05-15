@@ -78,6 +78,8 @@
 #define OH_BSSPC  46
 #define OH_ENTSFT 47
 #define OH_BASE   48
+#define OH_LEFT   49
+#define OH_RIGHT  50
 
 /* States & timers */
 
@@ -96,6 +98,11 @@ uint16_t kf_timers[12];
 uint16_t oh_base_timer = 0;
 uint16_t oh_bsspc_timer = 0;
 uint16_t oh_entsft_timer = 0;
+
+uint8_t oh_left_blink = 0;
+uint16_t oh_left_blink_timer = 0;
+uint8_t oh_right_blink = 0;
+uint16_t oh_right_blink_timer = 0;
 
 enum {
   CP_EMACS = 0,
@@ -149,7 +156,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_RPRN ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,KC_MSTP
                                                                                 ,KC_LEFT,KC_UP  ,KC_DOWN     ,KC_RGHT     ,M(A_UNIC)
 
-                                                               ,KC_FN3  ,KC_FN2
+                                                               ,KC_FN3  ,M(OH_LEFT)
                                                                ,KC_FN4
                                                                ,KC_COLN ,KC_ENT ,KC_SPC
     ),
@@ -321,7 +328,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                 ,M(A_ALT)    ,M(A_GUI)
                                                                              ,M(A_CTRL)
-                                                    ,M(OH_BSSPC),M(OH_ENTSFT),KC_FN5
+                                                    ,M(OH_BSSPC),M(OH_ENTSFT),M(OH_RIGHT)
 
                                                                 // right hand
                                                                ,KC_NO   ,KC_NO  ,KC_NO  ,KC_NO  ,KC_NO       ,KC_NO       ,KC_NO
@@ -366,7 +373,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                 ,M(A_ALT)    ,M(A_GUI)
                                                                              ,M(A_CTRL)
-                                                    ,M(OH_BSSPC),M(OH_ENTSFT),KC_FN2
+                                                    ,M(OH_BSSPC),M(OH_ENTSFT),M(OH_LEFT)
 
                                                                 // right hand
                                                                ,KC_NO   ,KC_NO  ,KC_NO  ,KC_NO  ,KC_NO       ,KC_NO       ,KC_NO
@@ -385,10 +392,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint16_t PROGMEM fn_actions[] = {
    [1] = ACTION_LAYER_CLEAR(ON_PRESS)             // FN1 - clear to base layer
-  ,[2] = ACTION_LAYER_INVERT(OHLFT, ON_PRESS)     // FN2 - toggle to One-Handed Left layer
   ,[3] = ACTION_LAYER_INVERT(EMACS, ON_PRESS)     // FN3 - toggle to EMACS on press
   ,[4] = ACTION_LAYER_INVERT(HUN, ON_PRESS)       // FN4 - toggle to Hungarian on press
-  ,[5] = ACTION_LAYER_INVERT(OHRGT, ON_PRESS)     // FN5 - toggle to One-Handed Right layer
 };
 
 void ang_handle_kf (keyrecord_t *record, uint8_t id)
@@ -885,6 +890,22 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           }
         }
         break;
+
+      case OH_LEFT:
+        if (record->event.pressed) {
+          layer_move (OHLFT);
+          oh_left_blink = 1;
+          oh_left_blink_timer = timer_read ();
+        }
+        break;
+
+      case OH_RIGHT:
+        if (record->event.pressed) {
+          layer_move (OHRGT);
+          oh_right_blink = 1;
+          oh_right_blink_timer = timer_read ();
+        }
+        break;
       }
       return MACRO_NONE;
 };
@@ -904,20 +925,49 @@ void matrix_scan_user(void) {
     if ((shift_state == 1) && !(keyboard_report->mods & MOD_BIT(KC_RSFT)))
       register_code (KC_RSFT);
 
+    if (layer != OHLFT)
+      oh_left_blink = 0;
+    if (layer != OHRGT)
+      oh_right_blink = 0;
+
     if (layer == HUN) {
       ergodox_right_led_2_on();
       ergodox_right_led_3_on();
-    } else if (layer == OHLFT || layer == OHRGT) {
-      ergodox_right_led_2_on();
     } else if (layer == EMACS) {
       ergodox_right_led_1_on();
       ergodox_right_led_2_on();
     } else {
-      if (shift_state == 0)
+      if (shift_state == 0 && oh_left_blink == 0)
         ergodox_right_led_1_off();
-      if (alt_state == 0)
+      if (alt_state == 0 && !(layer == OHLFT || layer == OHRGT))
         ergodox_right_led_2_off();
-      if (ctrl_state == 0)
+      if (ctrl_state == 0 && oh_right_blink == 0)
         ergodox_right_led_3_off();
+    }
+
+    if (layer == OHLFT || layer == OHRGT) {
+      ergodox_right_led_2_on();
+
+      if (oh_left_blink) {
+        if (timer_elapsed (oh_left_blink_timer) > 1000) {
+          if (shift_state == 0)
+            ergodox_right_led_1_off ();
+        }
+        if (timer_elapsed (oh_left_blink_timer) > 2000) {
+          ergodox_right_led_1_on ();
+          oh_left_blink_timer = timer_read ();
+        }
+      }
+
+      if (oh_right_blink) {
+        if (timer_elapsed (oh_right_blink_timer) > 1000) {
+          if (ctrl_state == 0)
+            ergodox_right_led_3_off ();
+        }
+        if (timer_elapsed (oh_right_blink_timer) > 2000) {
+          ergodox_right_led_3_on ();
+          oh_right_blink_timer = timer_read ();
+        }
+      }
     }
 };
