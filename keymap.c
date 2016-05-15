@@ -15,8 +15,7 @@
 #define BASE    0 // default layer
 #define APPSEL  1 // application select layer
 #define HUN     2 // Hungarian layer
-#define NAV     3 // navigation layer
-#define EDIT    4 // Edit overlay for the NAV layer
+#define EMACS   3 // (Spac)Emacs layer
 
 /* Macros */
 
@@ -62,6 +61,18 @@
 #define APP_CHRM  30 // Chrome
 #define APP_MSIC  31 // Music
 
+#define KF_1      35 // 1, F1
+#define KF_2      36 // 2, F2
+#define KF_3      37 // ...
+#define KF_4      38
+#define KF_5      39
+#define KF_6      40
+#define KF_7      41
+#define KF_8      42
+#define KF_9      43
+#define KF_10     44
+#define KF_11     45 // =, F11
+
 /* States & timers */
 
 uint8_t shift_state = 0;
@@ -73,6 +84,8 @@ static uint16_t m_cutdel_timer;
 static uint16_t m_copypaste_timer;
 
 uint16_t gui_timer = 0;
+
+uint16_t kf_timers[12];
 
 enum {
   CP_EMACS = 0,
@@ -89,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Base Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * |        `~ |   1  |   2  |   3  |   4  |   5  | Apps |           | Apps |   6  |   7  |   8  |   9  |   0  | =         |
+ * |        `~ | 1 F1 | 2 F2 | 3 F3 | 4 F4 | 5 F5 | Apps |           | Apps | 6 F6 | 7 F7 | 8 F8 | 9 F9 | 0 F10| =     F11 |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
  * |       Tab |   '  |   ,  |   .  |   P  |   Y  |   [  |           |  ]   |   F  |   G  |   C  |   R  |  L   | /         |
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
@@ -109,10 +122,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = KEYMAP(
 // left hand
- KC_GRV             ,KC_1        ,KC_2        ,KC_3   ,KC_4  ,KC_5  ,KC_APP
-,KC_TAB             ,KC_QUOT     ,KC_COMM     ,KC_DOT ,KC_P  ,KC_Y  ,KC_LBRC
-,KC_MINS            ,KC_A        ,KC_O        ,KC_E   ,KC_U  ,KC_I
-,KC_MPLY            ,KC_SCLN     ,KC_Q        ,KC_J   ,KC_K  ,KC_X  ,KC_LPRN
+ KC_GRV             ,M(KF_1)     ,M(KF_2)     ,M(KF_3),M(KF_4),M(KF_5),KC_APP
+,KC_TAB             ,KC_QUOT     ,KC_COMM     ,KC_DOT ,KC_P   ,KC_Y   ,KC_LBRC
+,KC_MINS            ,KC_A        ,KC_O        ,KC_E   ,KC_U   ,KC_I
+,KC_MPLY            ,KC_SCLN     ,KC_Q        ,KC_J   ,KC_K   ,KC_X   ,KC_LPRN
 ,M(ASE_META)        ,KC_HOME     ,KC_PGUP     ,KC_PGDN,KC_END
 
                                                             ,M(A_ALT),M(A_GUI)
@@ -120,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                     ,KC_BSPC,M(A_SFT),KC_ESC
 
                                                                 // right hand
-                                                               ,KC_APP  ,KC_6   ,KC_7   ,KC_8   ,KC_9        ,KC_0        ,KC_EQL
+                                                               ,KC_APP  ,M(KF_6),M(KF_7),M(KF_8),M(KF_9)     ,M(KF_10)    ,M(KF_11)
                                                                ,KC_RBRC ,KC_F   ,KC_G   ,KC_C   ,KC_R        ,KC_L        ,KC_SLSH
                                                                         ,KC_D   ,KC_H   ,KC_T   ,KC_N        ,KC_S        ,KC_BSLS
                                                                ,KC_RPRN ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,KC_MSTP
@@ -224,102 +237,79 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_TRNS ,KC_TRNS  ,KC_TRNS
     ),
 
-/* Keymap 3: Navigation layer
+/* Keymap 3: Spacemacs layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | MS Slow   |  F1  |  F2  |  F3  |  F4  |  F5  |ScrLCK|           |ScrLCK|  F6  |  F7  |  F8  |  F9  | F10  |    F11    |
+ * | MS Slow   | 1 F1 | 2 F2 | 3 F3 | 4 F4 | 5 F5 |ScrLCK|           |ScrLCK| 6 F6 | 7 F7 | 8 F8 | 9 F9 | 0 F10|    F11    |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * | MS Normal |      | Home |  Up  | End  |      |Visual|           |Scroll|Vol Up|MsUpL | MsUp |MsUpR |      |PrintScreen|
+ * | MS Normal |      | Home |  Up  | End  |      |Visual|           |Scroll|  $   |MsUpL | MsUp |MsUpR |Vol Up|PrintScreen|
  * |-----------+------+------+------+------+------| Mode |           |  Up  |------+------+------+------+------+-----------|
- * | MS Fast   |      | Left | Down | Right|      |------|           |------|Vol Dn|MsLeft| MsDn |MsRght|      |           |
+ * | MS Fast   |APPEND| Left | Down | Right| INS  |------|           |------|  D   |MsLeft| MsDn |MsRght|Vol Dn|           |
  * |-----------+------+------+------+------+------| Cut  |           |Scroll|------+------+------+------+------+-----------|
- * | Play/Pause|      | PgUp | Down | PgDn |      | Copy |           | Down | Mute |MsDnL | MsDn |MsDnR |      |      Stop |
+ * | Play/Pause|      | PgUp | Down | PgDn |  X   | Copy |           | Down |      |MsDnL |  W   |MsDnR | Mute |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |EmacsM|TermM |OtherM|      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
- *                                         |  Alt | GUI  |           |Edit L| MClk |
+ *                                         |  Alt | GUI  |           | BASE | MClk |
  *                                  ,------|------|------|           |------+------+------.
  *                                  |Delete|      | Ctrl |           | Prev |Left  |Right |
  *                                  |      |LShift|------|           |------| Click| Click|
  *                                  |Paste |      | ESC  |           | Next |      |      |
  *                                  `--------------------'           `--------------------'
  */
-[NAV] = KEYMAP(
+[EMACS] = KEYMAP(
 // left hand
- KC_ACL0    ,KC_F1       ,KC_F2      ,KC_F3   ,KC_F4   ,KC_F5   ,LGUI(KC_L)
+ KC_ACL0    ,M(KF_1)     ,M(KF_2)    ,M(KF_3) ,M(KF_4) ,M(KF_5) ,LGUI(KC_L)
 ,KC_ACL1    ,KC_NO       ,KC_HOME    ,KC_UP   ,KC_END  ,KC_NO   ,M(AE_VIS)
-,KC_ACL2    ,KC_NO       ,KC_LEFT    ,KC_DOWN ,KC_RIGHT,KC_NO
-,KC_MPLY    ,KC_NO       ,KC_PGUP    ,KC_DOWN ,KC_PGDN ,KC_NO   ,M(AE_CPYC)
+,KC_ACL2    ,M(AE_APPND) ,KC_LEFT    ,KC_DOWN ,KC_RIGHT,M(AE_INS)
+,KC_MPLY    ,KC_NO       ,KC_PGUP    ,KC_DOWN ,KC_PGDN ,KC_X    ,M(AE_CPYC)
 ,M(AE_EMACS),M(AE_TERM)  ,M(AE_OTHER),KC_NO   ,KC_NO
                                                         ,KC_TRNS ,KC_TRNS
                                                                  ,KC_TRNS
                                            ,M(AE_PSTDEL),KC_TRNS ,KC_TRNS
+
                                                                      // right hand
-                                                                     ,LGUI(KC_L),KC_F6   ,KC_F7   ,KC_F8   ,KC_F9   ,KC_F10  ,KC_F11
-                                                                     ,KC_WH_U   ,KC_VOLU ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_NO   ,KC_PSCR
-                                                                                ,KC_VOLD ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_NO   ,KC_NO
-                                                                     ,KC_WH_D   ,KC_MUTE ,M(A_MDL),KC_MS_D ,M(A_MDR),KC_NO   ,KC_MSTP
+                                                                     ,LGUI(KC_L),M(KF_6) ,M(KF_7) ,M(KF_8) ,M(KF_9) ,M(KF_10),M(KF_11)
+                                                                     ,KC_WH_U   ,KC_DLR  ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_VOLU ,KC_PSCR
+                                                                                ,KC_D    ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_VOLD ,KC_NO
+                                                                     ,KC_WH_D   ,KC_NO   ,M(A_MDL),KC_MS_D ,M(A_MDR),KC_MUTE ,KC_MSTP
                                                                                          ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
-                                                                     ,KC_FN5    ,KC_MS_BTN3
+                                                                     ,KC_FN1    ,KC_MS_BTN3
                                                                      ,KC_MPRV
                                                                      ,KC_MNXT   ,KC_BTN1 ,KC_BTN2
     ),
-
-/* Keymap 4: Edit overlay for NAV
- *
- * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * |           |      |      |      |      |      |      |           |      |   1  |   2  |   3  |   4  |   5  |           |
- * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * |           |      |      |      |      |      |      |           |      |   $  |      |      | OVR  |      |           |
- * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
- * |           |APPEND|      |      |      | INS  |------|           |------|   D  |      |      |      |      |           |
- * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
- * |           |      |      |      |      |  X   |      |           |      |      |      |   W  |      |      |           |
- * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
- *      |      |      |      |      |      |                                       |      |      |      |      |      |
- *      `----------------------------------'                                       `----------------------------------'
- *                                         ,-------------.           ,-------------.
- *                                         |      |      |           |      |      |
- *                                  ,------|------|------|           |------+------+------.
- *                                  |      |      |      |           |      |      |      |
- *                                  |      |      |------|           |------|      |      |
- *                                  |      |      |      |           |      |      |      |
- *                                  `--------------------'           `--------------------'
- */
-[EDIT] = KEYMAP(
-// left hand
- KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
-,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_TRNS    ,KC_TRNS
-,KC_TRNS ,M(AE_APPND),KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,M(AE_INS)
-,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS    ,KC_X       ,KC_TRNS
-,KC_TRNS ,KC_TRNS    ,KC_TRNS   ,KC_TRNS    ,KC_TRNS
-
-                                             ,KC_TRNS ,KC_TRNS
-                                                      ,KC_TRNS
-                                    ,KC_TRNS ,KC_TRNS ,KC_TRNS
-
-                                                                // right hand
-                                                               ,KC_TRNS ,KC_1    ,KC_2    ,KC_3    ,KC_4     ,KC_5    ,KC_TRNS
-                                                               ,KC_TRNS ,KC_DLR  ,KC_TRNS ,KC_TRNS ,M(AE_OVR),KC_TRNS ,KC_TRNS
-                                                                        ,KC_D    ,KC_TRNS ,KC_TRNS ,KC_TRNS  ,KC_TRNS ,KC_TRNS
-                                                               ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS  ,KC_TRNS ,KC_TRNS
-                                                                                 ,KC_TRNS ,KC_W    ,KC_TRNS  ,KC_TRNS ,KC_TRNS
-
-                                                               ,KC_FN1  ,KC_TRNS
-                                                               ,KC_TRNS
-                                                               ,KC_TRNS ,KC_TRNS  ,KC_TRNS
-    ),
-
-
 };
 
 const uint16_t PROGMEM fn_actions[] = {
    [1] = ACTION_LAYER_CLEAR(ON_PRESS)           // FN1 - clear to base layer
-  ,[3] = ACTION_LAYER_INVERT(NAV, ON_PRESS)     // FN3 - toggle to Media on press
+  ,[3] = ACTION_LAYER_INVERT(EMACS, ON_PRESS)     // FN3 - toggle to EMACS on press
   ,[4] = ACTION_LAYER_INVERT(HUN, ON_PRESS)     // FN4 - toggle to Hungarian on press
-  ,[5] = ACTION_LAYER_INVERT(EDIT, ON_PRESS)    // FN5 - Edit overlay
 };
+
+void ang_handle_kf (keyrecord_t *record, uint8_t id)
+{
+  uint8_t code = id - KF_1;
+
+  if (record->event.pressed) {
+    kf_timers[code] = timer_read ();
+  } else {
+    uint8_t kc;
+
+    if (timer_elapsed (kf_timers[code]) > TAPPING_TERM) {
+      // Long press
+      kc = KC_F1 + code;
+    } else {
+      if (id == KF_11)
+        kc = KC_EQL;
+      else
+        kc = KC_1 + code;
+    }
+
+    register_code (kc);
+    unregister_code (kc);
+  }
+}
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
@@ -745,6 +735,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         if (record->event.pressed)
           return MACRO(T(M), T(U), T(S), T(I), T(C), T(ENT), END);
         break;
+
+      case KF_1 ... KF_11:
+        ang_handle_kf (record, id);
+        break;
       }
       return MACRO_NONE;
 };
@@ -767,10 +761,10 @@ void matrix_scan_user(void) {
     if (layer == HUN) {
       ergodox_right_led_2_on();
       ergodox_right_led_3_on();
-    } else if (layer == EDIT) {
+    } else if (layer == APPSEL) {
       ergodox_right_led_1_on();
       ergodox_right_led_3_on();
-    } else if (layer == NAV) {
+    } else if (layer == EMACS) {
       ergodox_right_led_1_on();
       ergodox_right_led_2_on();
     } else {

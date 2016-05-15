@@ -19,13 +19,9 @@ So, the layers!
 [![Base layer](images/base-layer.png)](http://www.keyboard-layout-editor.com/#/gists/28f7eb305fdbff943613e1dc7aa9e82b)
 
 
-## Navigation layer
+## Emacs layer
 
-[![Navigation layer](images/nav-layer.png)](http://www.keyboard-layout-editor.com/#/gists/e4556d8dc59736c26d51a58cb4c4d2f0)
-
-## Edit Layer
-
-[![Edit layer](images/nav-edit-layer.png)](http://www.keyboard-layout-editor.com/#/gists/c59c453f9fe1a3238ba1494e7e5c6892)
+[![Emacs layer](images/emacs-layer.png)](http://www.keyboard-layout-editor.com/#/gists/e4556d8dc59736c26d51a58cb4c4d2f0)
 
 ## Hungarian layer
 
