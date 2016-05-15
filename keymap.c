@@ -908,8 +908,7 @@ void matrix_scan_user(void) {
       ergodox_right_led_2_on();
       ergodox_right_led_3_on();
     } else if (layer == OHLFT || layer == OHRGT) {
-      ergodox_right_led_1_on();
-      ergodox_right_led_3_on();
+      ergodox_right_led_2_on();
     } else if (layer == EMACS) {
       ergodox_right_led_1_on();
       ergodox_right_led_2_on();
