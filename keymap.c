@@ -363,7 +363,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                  |Space |Enter |OTHER |
  *                                  `--------------------'
  */
-[OHLFT] = KEYMAP(
+[OHRGT] = KEYMAP(
 // left hand
  M(KF_11)   ,M(KF_10)    ,M(KF_9)     ,M(KF_8)   ,M(KF_7)    ,M(KF_6) ,M(OH_BASE)
 ,KC_SLSH    ,KC_L        ,KC_R        ,KC_C      ,KC_G       ,KC_F    ,KC_RBRC
