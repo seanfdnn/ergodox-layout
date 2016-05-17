@@ -850,7 +850,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 
       case APP_MSIC:
         if (record->event.pressed)
-          return MACRO(T(M), T(U), T(S), T(I), T(C), T(ENT), END);
+          return MACRO(T(R), T(H), T(Y), T(T), T(H), T(M), T(B), T(O), T(X), T(ENT), END);
         break;
 
       case KF_1 ... KF_11:
