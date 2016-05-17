@@ -99,6 +99,8 @@ uint16_t oh_base_timer = 0;
 uint16_t oh_bsspc_timer = 0;
 uint16_t oh_entsft_timer = 0;
 
+#define OH_BLINK_INTERVAL 500
+
 uint8_t oh_left_blink = 0;
 uint16_t oh_left_blink_timer = 0;
 uint8_t oh_right_blink = 0;
@@ -896,6 +898,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           layer_move (OHLFT);
           oh_left_blink = 1;
           oh_left_blink_timer = timer_read ();
+          ergodox_right_led_1_on ();
         }
         break;
 
@@ -904,6 +907,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           layer_move (OHRGT);
           oh_right_blink = 1;
           oh_right_blink_timer = timer_read ();
+          ergodox_right_led_3_on ();
         }
         break;
       }
@@ -949,22 +953,22 @@ void matrix_scan_user(void) {
       ergodox_right_led_2_on();
 
       if (oh_left_blink) {
-        if (timer_elapsed (oh_left_blink_timer) > 1000) {
+        if (timer_elapsed (oh_left_blink_timer) > OH_BLINK_INTERVAL) {
           if (shift_state == 0)
             ergodox_right_led_1_off ();
         }
-        if (timer_elapsed (oh_left_blink_timer) > 2000) {
+        if (timer_elapsed (oh_left_blink_timer) > OH_BLINK_INTERVAL * 2) {
           ergodox_right_led_1_on ();
           oh_left_blink_timer = timer_read ();
         }
       }
 
       if (oh_right_blink) {
-        if (timer_elapsed (oh_right_blink_timer) > 1000) {
+        if (timer_elapsed (oh_right_blink_timer) > OH_BLINK_INTERVAL) {
           if (ctrl_state == 0)
             ergodox_right_led_3_off ();
         }
-        if (timer_elapsed (oh_right_blink_timer) > 2000) {
+        if (timer_elapsed (oh_right_blink_timer) > OH_BLINK_INTERVAL * 2) {
           ergodox_right_led_3_on ();
           oh_right_blink_timer = timer_read ();
         }
