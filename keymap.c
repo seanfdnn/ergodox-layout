@@ -85,6 +85,7 @@
 #define F_BSE     0
 #define F_ECS     1
 #define F_HUN     2
+#define F_GUI     3
 
 /* States & timers */
 
@@ -152,7 +153,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_MPLY            ,KC_SCLN     ,KC_Q        ,KC_J   ,KC_K   ,KC_X   ,KC_LPRN
 ,M(ASE_META)        ,KC_HOME     ,KC_PGUP     ,KC_PGDN,KC_END
 
-                                                            ,M(A_ALT),M(A_GUI)
+                                                            ,M(A_ALT),F(F_GUI)
                                                                      ,M(A_CTRL)
                                                     ,KC_BSPC,M(A_SFT),KC_ESC
 
@@ -333,7 +334,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_MPLY    ,KC_SCLN     ,KC_Q        ,KC_J      ,KC_K       ,KC_X    ,KC_LPRN
 ,KC_ESC     ,KC_HOME     ,KC_PGUP     ,KC_PGDN   ,KC_END
 
-                                                                ,M(A_ALT)    ,M(A_GUI)
+                                                                ,M(A_ALT)    ,F(F_GUI)
                                                                              ,M(A_CTRL)
                                                     ,M(OH_BSSPC),M(OH_ENTSFT),M(OH_RIGHT)
 
@@ -378,7 +379,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_MSTP    ,KC_Z        ,KC_V        ,KC_W      ,KC_M       ,KC_B    ,KC_RPRN
 ,KC_ESC     ,KC_LEFT     ,KC_UP       ,KC_DOWN   ,KC_RIGHT
 
-                                                                ,M(A_ALT)    ,M(A_GUI)
+                                                                ,M(A_ALT)    ,F(F_GUI)
                                                                              ,M(A_CTRL)
                                                     ,M(OH_BSSPC),M(OH_ENTSFT),M(OH_LEFT)
 
@@ -401,6 +402,7 @@ const uint16_t PROGMEM fn_actions[] = {
    [F_BSE] = ACTION_LAYER_CLEAR(ON_PRESS)
   ,[F_ECS] = ACTION_LAYER_INVERT(EMACS, ON_PRESS)
   ,[F_HUN] = ACTION_LAYER_INVERT(HUN, ON_PRESS)
+  ,[F_GUI] = ACTION_MACRO_TAP(A_GUI)
 };
 
 void ang_handle_kf (keyrecord_t *record, uint8_t id)
@@ -817,19 +819,24 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 
       case A_GUI:
         if (record->event.pressed) {
-          register_mods(MOD_BIT(KC_LGUI));
-          gui_timer = timer_read();
-        } else {
-          if (timer_elapsed (gui_timer) > TAPPING_TERM) {
-            unregister_mods(MOD_BIT(KC_LGUI));
+          register_code (KC_LGUI);
+          if (record->tap.count && !record->tap.interrupted) {
+            if (record->tap.count >= 2) {
+              register_code (KC_W);
+              layer_on (APPSEL);
+              set_oneshot_layer (APPSEL, ONESHOT_START);
+            }
           } else {
-            register_code(KC_W);
-            unregister_code(KC_W);
-            unregister_mods(MOD_BIT(KC_LGUI));
-            layer_on(APPSEL);
-            set_oneshot_layer(APPSEL, ONESHOT_START);
-            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            record->tap.count = 0;
           }
+          gui_timer = 0;
+        } else {
+          if (record->tap.count >= 2)
+            {
+              unregister_code (KC_W);
+              clear_oneshot_layer_state (ONESHOT_PRESSED);
+            }
+          gui_timer = timer_read ();
         }
         break;
 
@@ -933,6 +940,9 @@ void matrix_scan_user(void) {
 
     if ((shift_state == 1) && !(keyboard_report->mods & MOD_BIT(KC_RSFT)))
       register_code (KC_RSFT);
+
+    if (gui_timer && timer_elapsed (gui_timer) > TAPPING_TERM)
+      unregister_code (KC_LGUI);
 
     if (layer != OHLFT)
       oh_left_blink = 0;
