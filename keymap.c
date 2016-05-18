@@ -81,6 +81,11 @@
 #define OH_LEFT   49
 #define OH_RIGHT  50
 
+/* Fn keys */
+#define F_BSE     0
+#define F_ECS     1
+#define F_HUN     2
+
 /* States & timers */
 
 uint8_t shift_state = 0;
@@ -158,8 +163,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_RPRN ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,KC_MSTP
                                                                                 ,KC_LEFT,KC_UP  ,KC_DOWN     ,KC_RGHT     ,M(A_UNIC)
 
-                                                               ,KC_FN3  ,M(OH_LEFT)
-                                                               ,KC_FN4
+                                                               ,F(F_ECS),M(OH_LEFT)
+                                                               ,F(F_HUN)
                                                                ,KC_COLN ,KC_ENT ,KC_SPC
     ),
 
@@ -252,7 +257,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                  ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
 
                                                                ,KC_NO   ,KC_NO
-                                                               ,KC_FN1
+                                                               ,F(F_BSE)
                                                                ,KC_TRNS ,KC_TRNS  ,KC_TRNS
     ),
 
@@ -294,7 +299,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                 ,KC_D    ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_NO   ,KC_NO
                                                                      ,KC_WH_D   ,KC_NO   ,M(A_MDL),KC_W    ,M(A_MDR),KC_NO   ,KC_MSTP
                                                                                          ,KC_VOLU ,KC_VOLD ,KC_MUTE ,KC_NO   ,KC_NO
-                                                                     ,KC_FN1    ,KC_MS_BTN3
+                                                                     ,F(F_BSE)  ,KC_MS_BTN3
                                                                      ,KC_MPRV
                                                                      ,KC_MNXT   ,KC_BTN1 ,KC_BTN2
     ),
@@ -393,9 +398,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-   [1] = ACTION_LAYER_CLEAR(ON_PRESS)             // FN1 - clear to base layer
-  ,[3] = ACTION_LAYER_INVERT(EMACS, ON_PRESS)     // FN3 - toggle to EMACS on press
-  ,[4] = ACTION_LAYER_INVERT(HUN, ON_PRESS)       // FN4 - toggle to Hungarian on press
+   [F_BSE] = ACTION_LAYER_CLEAR(ON_PRESS)
+  ,[F_ECS] = ACTION_LAYER_INVERT(EMACS, ON_PRESS)
+  ,[F_HUN] = ACTION_LAYER_INVERT(HUN, ON_PRESS)
 };
 
 void ang_handle_kf (keyrecord_t *record, uint8_t id)
