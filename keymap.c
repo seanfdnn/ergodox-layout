@@ -936,57 +936,57 @@ void matrix_init_user(void) {
 
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void) {
-    uint8_t layer = biton32(layer_state);
+  uint8_t layer = biton32(layer_state);
 
-    if ((shift_state == 1) && !(keyboard_report->mods & MOD_BIT(KC_RSFT)))
-      register_code (KC_RSFT);
+  if ((shift_state == 1) && !(keyboard_report->mods & MOD_BIT(KC_RSFT)))
+    register_code (KC_RSFT);
 
-    if (gui_timer && timer_elapsed (gui_timer) > TAPPING_TERM)
-      unregister_code (KC_LGUI);
+  if (gui_timer && timer_elapsed (gui_timer) > TAPPING_TERM)
+    unregister_code (KC_LGUI);
 
-    if (layer != OHLFT)
-      oh_left_blink = 0;
-    if (layer != OHRGT)
-      oh_right_blink = 0;
+  if (layer != OHLFT)
+    oh_left_blink = 0;
+  if (layer != OHRGT)
+    oh_right_blink = 0;
 
-    if (layer == HUN) {
-      ergodox_right_led_2_on();
-      ergodox_right_led_3_on();
-    } else if (layer == EMACS) {
-      ergodox_right_led_1_on();
-      ergodox_right_led_2_on();
-    } else {
-      if (shift_state == 0 && oh_left_blink == 0)
-        ergodox_right_led_1_off();
-      if (alt_state == 0 && !(layer == OHLFT || layer == OHRGT))
-        ergodox_right_led_2_off();
-      if (ctrl_state == 0 && oh_right_blink == 0)
-        ergodox_right_led_3_off();
-    }
+  if (layer == HUN) {
+    ergodox_right_led_2_on();
+    ergodox_right_led_3_on();
+  } else if (layer == EMACS) {
+    ergodox_right_led_1_on();
+    ergodox_right_led_2_on();
+  } else {
+    if (shift_state == 0 && oh_left_blink == 0)
+      ergodox_right_led_1_off();
+    if (alt_state == 0 && !(layer == OHLFT || layer == OHRGT))
+      ergodox_right_led_2_off();
+    if (ctrl_state == 0 && oh_right_blink == 0)
+      ergodox_right_led_3_off();
+  }
 
-    if (layer == OHLFT || layer == OHRGT) {
-      ergodox_right_led_2_on();
+  if (layer == OHLFT || layer == OHRGT) {
+    ergodox_right_led_2_on();
 
-      if (oh_left_blink) {
-        if (timer_elapsed (oh_left_blink_timer) > OH_BLINK_INTERVAL) {
-          if (shift_state == 0)
-            ergodox_right_led_1_off ();
-        }
-        if (timer_elapsed (oh_left_blink_timer) > OH_BLINK_INTERVAL * 2) {
-          ergodox_right_led_1_on ();
-          oh_left_blink_timer = timer_read ();
-        }
+    if (oh_left_blink) {
+      if (timer_elapsed (oh_left_blink_timer) > OH_BLINK_INTERVAL) {
+        if (shift_state == 0)
+          ergodox_right_led_1_off ();
       }
-
-      if (oh_right_blink) {
-        if (timer_elapsed (oh_right_blink_timer) > OH_BLINK_INTERVAL) {
-          if (ctrl_state == 0)
-            ergodox_right_led_3_off ();
-        }
-        if (timer_elapsed (oh_right_blink_timer) > OH_BLINK_INTERVAL * 2) {
-          ergodox_right_led_3_on ();
-          oh_right_blink_timer = timer_read ();
-        }
+      if (timer_elapsed (oh_left_blink_timer) > OH_BLINK_INTERVAL * 2) {
+        ergodox_right_led_1_on ();
+        oh_left_blink_timer = timer_read ();
       }
     }
+
+    if (oh_right_blink) {
+      if (timer_elapsed (oh_right_blink_timer) > OH_BLINK_INTERVAL) {
+        if (ctrl_state == 0)
+          ergodox_right_led_3_off ();
+      }
+      if (timer_elapsed (oh_right_blink_timer) > OH_BLINK_INTERVAL * 2) {
+        ergodox_right_led_3_on ();
+        oh_right_blink_timer = timer_read ();
+      }
+    }
+  }
 };
