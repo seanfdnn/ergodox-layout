@@ -21,65 +21,56 @@
 
 /* Macros */
 
-#define A_SFT      0 // shift toggle
-#define A_ALT      1 // alt toggle
-#define A_CTRL     2 // control toggle
-#define A_GUI      3 // GUI magic
+#define A_GUI      0 // GUI magic
 
-#define A_MUL      4 // mouse up-left
-#define A_MUR      5 // mouse up-right
-#define A_MDL      6 // mouse down-left
-#define A_MDR      7 // mouse down-right
+#define A_MUL      1 // mouse up-left
+#define A_MUR      2 // mouse up-right
+#define A_MDL      3 // mouse down-left
+#define A_MDR      4 // mouse down-right
 
-#define A_UNIC     8 // Unicode input key
-#define AU_LMBD    9 // λ
-#define AU_SHRG   10 // ¯\_(ツ)_/¯
+#define AE_VIS     5 // Visual mode
+#define AE_PSTDEL  6 // Paste/Delete
+#define AE_CPYC    7 // Copy/Cut
+#define AE_EMACS   8 // Emacs copy & paste mode
+#define AE_TERM    9 // Terminal copy & paste mode
+#define AE_OTHER  10 // Other copy & paste mode
+#define AE_INS    11 // Insert mode
+#define AE_OVR    12 // Overwrite mode
+#define AE_APPND  13 // Append
 
-#define AE_VIS    11 // Visual mode
-#define AE_PSTDEL 12 // Paste/Delete
-#define AE_CPYC   13 // Copy/Cut
-#define AE_EMACS  14 // Emacs copy & paste mode
-#define AE_TERM   15 // Terminal copy & paste mode
-#define AE_OTHER  16 // Other copy & paste mode
-#define AE_INS    32 // Insert mode
-#define AE_OVR    33 // Overwrite mode
-#define AE_APPND  34 // Append
+#define HU_AA     14 // Á
+#define HU_OO     15 // Ó
+#define HU_EE     16 // É
+#define HU_UU     17 // Ú
+#define HU_II     18 // Í
+#define HU_OE     19 // Ö
+#define HU_UE     20 // Ü
+#define HU_OEE    21 // Ő
+#define HU_UEE    22 // Ű
 
-#define HU_AA     17 // Á
-#define HU_OO     18 // Ó
-#define HU_EE     19 // É
-#define HU_UU     20 // Ú
-#define HU_II     21 // Í
-#define HU_OE     22 // Ö
-#define HU_UE     23 // Ü
-#define HU_OEE    24 // Ő
-#define HU_UEE    25 // Ű
+#define APP_SLK   23 // Slack
+#define APP_EMCS  24 // Emacs
+#define APP_TERM  25 // Terminal
+#define APP_CHRM  26 // Chrome
+#define APP_MSIC  27 // Music
 
-#define ASE_META  26 // M-m
+#define KF_1      28 // 1, F1
+#define KF_2      29 // 2, F2
+#define KF_3      30 // ...
+#define KF_4      31
+#define KF_5      32
+#define KF_6      33
+#define KF_7      34
+#define KF_8      35
+#define KF_9      36
+#define KF_10     37
+#define KF_11     38 // =, F11
 
-#define APP_SLK   27 // Slack
-#define APP_EMCS  28 // Emacs
-#define APP_TERM  29 // Terminal
-#define APP_CHRM  30 // Chrome
-#define APP_MSIC  31 // Music
-
-#define KF_1      35 // 1, F1
-#define KF_2      36 // 2, F2
-#define KF_3      37 // ...
-#define KF_4      38
-#define KF_5      39
-#define KF_6      40
-#define KF_7      41
-#define KF_8      42
-#define KF_9      43
-#define KF_10     44
-#define KF_11     45 // =, F11
-
-#define OH_BSSPC  46
-#define OH_ENTSFT 47
-#define OH_BASE   48
-#define OH_LEFT   49
-#define OH_RIGHT  50
+#define OH_BSSPC  39
+#define OH_ENTSFT 40
+#define OH_BASE   41
+#define OH_LEFT   42
+#define OH_RIGHT  43
 
 /* Fn keys */
 #define F_BSE     0
@@ -338,8 +329,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_MPLY    ,KC_SCLN     ,KC_Q        ,KC_J      ,KC_K       ,KC_X    ,KC_LPRN
 ,KC_HOME    ,KC_END      ,KC_DOWN     ,KC_UP     ,KC_ESC
 
-                                                                ,F(F_ALT)    ,F(F_GUI)
-                                                                             ,F(F_CTRL)
+                                                                ,KC_TRNS     ,KC_TRNS
+                                                                             ,KC_TRNS
                                                     ,M(OH_BSSPC),M(OH_ENTSFT),M(OH_RIGHT)
 
                                                                 // right hand
@@ -383,8 +374,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_MSTP    ,KC_Z        ,KC_V        ,KC_W      ,KC_M       ,KC_B    ,KC_RPRN
 ,KC_PGDN    ,KC_PGUP     ,KC_RGHT     ,KC_LEFT   ,KC_ESC
 
-                                                                ,F(F_ALT)    ,F(F_GUI)
-                                                                             ,F(F_CTRL)
+                                                                ,KC_TRNS     ,KC_TRNS
+                                                                             ,KC_TRNS
                                                     ,M(OH_BSSPC),M(OH_ENTSFT),M(OH_LEFT)
 
                                                                 // right hand
@@ -398,7 +389,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_NO
                                                                ,KC_NO   ,KC_NO  ,KC_NO
     ),
-
 
 };
 
@@ -439,11 +429,7 @@ void ang_handle_kf (keyrecord_t *record, uint8_t id)
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
       switch(id) {
-      case ASE_META:
-        if (record->event.pressed) {
-          return MACRO (D(LALT), T(M), U(LALT), END);
-        }
-        break;
+      /* Hungarian layer */
 
       case HU_AA:
         if (record->event.pressed) {
@@ -571,6 +557,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
+        /* Mouse movement */
       case A_MUL:
         if (record->event.pressed) {
           mousekey_on(KC_MS_UP);
@@ -619,31 +606,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case A_UNIC:
-        if (record->event.pressed) {
-          return MACRO(D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), END);
-        }
-        break;
-
-      case AU_SHRG:
-        if (record->event.pressed) {
-          return MACRO(D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(A), T(F), T(SPC),
-                       T(BSLS),
-                       D(RSFT), T(MINS), T(9), U(RSFT),
-                       D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(3), T(0), T(C), T(4), T(SPC),
-                       D(RSFT), T(0), T(MINS), U(RSFT),
-                       T(SLSH),
-                       D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(A), T(F), T(SPC),
-                       END);
-        }
-        break;
-
-      case AU_LMBD:
-        if (record->event.pressed) {
-          return MACRO(D(RCTL), D(RSFT), T(U), U(RSFT), U(RCTL), T(0), T(3), T(B), T(B), T(SPC), END);
-        }
-        break;
-
+        /* EMACS layer stuff */
       case AE_EMACS:
         if (record->event.pressed) {
           cp_mode = CP_EMACS;
@@ -763,6 +726,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
+        /* GUI & AppSel */
       case A_GUI:
         if (record->event.pressed) {
           register_code (KC_LGUI);
@@ -811,10 +775,12 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           return MACRO(T(R), T(H), T(Y), T(T), T(H), T(M), T(B), T(O), T(X), T(ENT), END);
         break;
 
+        /* Function keys */
       case KF_1 ... KF_11:
         ang_handle_kf (record, id);
         break;
 
+        /* 1HAND layout */
       case OH_BASE:
         if (record->event.pressed) {
           oh_base_timer = timer_read ();
