@@ -267,7 +267,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * | MS Slow   | 1 F1 | 2 F2 | 3 F3 | 4 F4 | 5 F5 |ScrLCK|           |ScrLCK| 6 F6 | 7 F7 | 8 F8 | 9 F9 | 0 F10|    F11    |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * | MS Normal |      | Home |  Up  | End  |      |Visual|           |Scroll|  $   |MsUpL | MsUp |MsUpR |      |PrintScreen|
+ * | MS Normal |      | Home |  Up  | End  |      |Visual|           |Scroll|  $   |MsUpL | MsUp |MsUpR |  R   |PrintScreen|
  * |-----------+------+------+------+------+------| Mode |           |  Up  |------+------+------+------+------+-----------|
  * | MS Fast   |APPEND| Left | Down | Right| INS  |------|           |------|  D   |MsLeft| MsDn |MsRght|      |           |
  * |-----------+------+------+------+------+------| Cut  |           |Scroll|------+------+------+------+------+-----------|
@@ -296,7 +296,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                      // right hand
                                                                      ,LGUI(KC_L),M(KF_6) ,M(KF_7) ,M(KF_8) ,M(KF_9) ,M(KF_10),M(KF_11)
-                                                                     ,KC_WH_U   ,KC_DLR  ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_NO   ,KC_PSCR
+                                                                     ,KC_WH_U   ,KC_DLR  ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_R    ,KC_PSCR
                                                                                 ,KC_D    ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_NO   ,KC_NO
                                                                      ,KC_WH_D   ,KC_NO   ,M(A_MDL),KC_W    ,M(A_MDR),KC_NO   ,KC_MSTP
                                                                                          ,KC_VOLU ,KC_VOLD ,KC_MUTE ,KC_NO   ,KC_NO
