@@ -810,7 +810,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           oh_entsft_timer = timer_read ();
         } else {
           if (timer_elapsed (oh_entsft_timer) > TAPPING_TERM) {
-            //ang_shift_toggle ();
+            if (keyboard_report->mods & MOD_BIT(KC_LSFT))
+              unregister_code (KC_LSFT);
+            else
+              register_code (KC_LSFT);
           } else {
             return MACRO (T(ENT), END);
           }
