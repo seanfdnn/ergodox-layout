@@ -135,14 +135,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-----------+------+------+------+------+------|   (  |           |  )   |------+------+------+------+------+-----------|
  * | Play/Pause|   ;  |   Q  |   J  |   K  |   X  |      |           |      |   B  |   M  |   W  |   V  |  Z   |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
- *     |  M-m  | Home | PgUp | PgDn | End  |                                       | Left |  Up  | Down | Right|Unicode|
+ *     |  Home | PgUp | PgDn | End  |   :  |                                       | Left |  Up  | Down | Right|Unicode|
  *     `-----------------------------------'                                       `-----------------------------------'
  *                                         ,-------------.           ,-------------.
  *                                         | LAlt | GUI  |           |EMACS | 1HND |
  *                                  ,------|------|------|           |------+------+------.
  *                                  |      |      | Ctrl |           | HUN  |      |      |
  *                                  |Backsp|LShift|------|           |------| Enter| Space|
- *                                  |      |      | ESC  |           |  :   |      |      |
+ *                                  |      |      | ESC  |           | ESC  |      |      |
  *                                  `--------------------'           `--------------------'
  */
 [BASE] = KEYMAP(
@@ -151,7 +151,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_TAB             ,KC_QUOT     ,KC_COMM     ,KC_DOT ,KC_P   ,KC_Y   ,KC_LBRC
 ,KC_MINS            ,KC_A        ,KC_O        ,KC_E   ,KC_U   ,KC_I
 ,KC_MPLY            ,KC_SCLN     ,KC_Q        ,KC_J   ,KC_K   ,KC_X   ,KC_LPRN
-,M(ASE_META)        ,KC_HOME     ,KC_PGUP     ,KC_PGDN,KC_END
+,KC_HOME            ,KC_PGUP     ,KC_PGDN     ,KC_END ,KC_COLN
 
                                                             ,M(A_ALT),F(F_GUI)
                                                                      ,M(A_CTRL)
@@ -166,7 +166,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                ,F(F_ECS),M(OH_LEFT)
                                                                ,F(F_HUN)
-                                                               ,KC_COLN ,KC_ENT ,KC_SPC
+                                                               ,KC_ESC  ,KC_ENT ,KC_SPC
     ),
 
 /* Keymap 1: Application select layer
