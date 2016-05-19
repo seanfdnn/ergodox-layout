@@ -9,4 +9,7 @@
 #define MOUSEKEY_TIME_TO_MAX 1
 #define MOUSEKEY_MAX_SPEED 2
 
+#define ONESHOT_TAP_TOGGLE 2
+#define ONESHOT_TIMEOUT 3000
+
 #endif

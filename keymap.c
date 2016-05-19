@@ -86,12 +86,11 @@
 #define F_ECS     1
 #define F_HUN     2
 #define F_GUI     3
+#define F_SFT     4
+#define F_ALT     5
+#define F_CTRL    6
 
 /* States & timers */
-
-uint8_t shift_state = 0;
-uint8_t alt_state = 0;
-uint8_t ctrl_state = 0;
 
 uint8_t m_visual_state = 0;
 static uint16_t m_cutdel_timer;
@@ -119,6 +118,11 @@ enum {
 };
 
 uint8_t cp_mode = CP_EMACS;
+
+/* Helpers */
+
+#define IS_SHIFTED() (keyboard_report->mods & MOD_BIT(KC_LSFT) || \
+                      ((get_oneshot_mods() & MOD_BIT(KC_LSFT)) && !has_oneshot_mods_timed_out()))
 
 /* The Keymap */
 
@@ -153,9 +157,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_MPLY            ,KC_SCLN     ,KC_Q        ,KC_J   ,KC_K   ,KC_X   ,KC_LPRN
 ,KC_HOME            ,KC_END      ,KC_DOWN     ,KC_UP  ,KC_COLN
 
-                                                            ,M(A_ALT),F(F_GUI)
-                                                                     ,M(A_CTRL)
-                                                    ,KC_BSPC,M(A_SFT),KC_ESC
+                                                            ,F(F_ALT),F(F_GUI)
+                                                                     ,F(F_CTRL)
+                                                    ,KC_BSPC,F(F_SFT),KC_ESC
 
                                                                 // right hand
                                                                ,KC_APP  ,M(KF_6),M(KF_7),M(KF_8),M(KF_9)     ,M(KF_10)    ,M(KF_11)
@@ -334,8 +338,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_MPLY    ,KC_SCLN     ,KC_Q        ,KC_J      ,KC_K       ,KC_X    ,KC_LPRN
 ,KC_HOME    ,KC_END      ,KC_DOWN     ,KC_UP     ,KC_ESC
 
-                                                                ,M(A_ALT)    ,F(F_GUI)
-                                                                             ,M(A_CTRL)
+                                                                ,F(F_ALT)    ,F(F_GUI)
+                                                                             ,F(F_CTRL)
                                                     ,M(OH_BSSPC),M(OH_ENTSFT),M(OH_RIGHT)
 
                                                                 // right hand
@@ -379,8 +383,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_MSTP    ,KC_Z        ,KC_V        ,KC_W      ,KC_M       ,KC_B    ,KC_RPRN
 ,KC_PGDN    ,KC_PGUP     ,KC_RGHT     ,KC_LEFT   ,KC_ESC
 
-                                                                ,M(A_ALT)    ,F(F_GUI)
-                                                                             ,M(A_CTRL)
+                                                                ,F(F_ALT)    ,F(F_GUI)
+                                                                             ,F(F_CTRL)
                                                     ,M(OH_BSSPC),M(OH_ENTSFT),M(OH_LEFT)
 
                                                                 // right hand
@@ -399,10 +403,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-   [F_BSE] = ACTION_LAYER_CLEAR(ON_PRESS)
-  ,[F_ECS] = ACTION_LAYER_INVERT(EMACS, ON_PRESS)
-  ,[F_HUN] = ACTION_LAYER_INVERT(HUN, ON_PRESS)
-  ,[F_GUI] = ACTION_MACRO_TAP(A_GUI)
+   [F_BSE]  = ACTION_LAYER_CLEAR(ON_PRESS)
+  ,[F_ECS]  = ACTION_LAYER_INVERT(EMACS, ON_PRESS)
+  ,[F_HUN]  = ACTION_LAYER_INVERT(HUN, ON_PRESS)
+  ,[F_GUI]  = ACTION_MACRO_TAP(A_GUI)
+  ,[F_SFT]  = ACTION_MODS_ONESHOT (MOD_LSFT)
+  ,[F_ALT]  = ACTION_MODS_ONESHOT (MOD_LALT)
+  ,[F_CTRL] = ACTION_MODS_ONESHOT (MOD_LCTL)
 };
 
 void ang_handle_kf (keyrecord_t *record, uint8_t id)
@@ -429,22 +436,6 @@ void ang_handle_kf (keyrecord_t *record, uint8_t id)
   }
 }
 
-void ang_shift_toggle (void)
-{
-  if (shift_state == 0) {
-    register_code(KC_RSFT);
-    shift_state = 1;
-    ergodox_right_led_1_set(LED_BRIGHTNESS_HI);
-    ergodox_right_led_1_on();
-  } else {
-    unregister_code(KC_RSFT);
-    ergodox_right_led_1_set(LED_BRIGHTNESS_LO);
-    ergodox_right_led_1_off();
-    shift_state = 0;
-  }
-}
-
-
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
       switch(id) {
@@ -454,63 +445,19 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
-      case A_SFT:
-        if (record->event.pressed) {
-          ang_shift_toggle ();
-        }
-        break;
-
-      case A_ALT:
-        if (record->event.pressed) {
-          if (alt_state == 0) {
-            register_code (KC_LALT);
-            alt_state = 1;
-            ergodox_right_led_2_set(LED_BRIGHTNESS_HI);
-            ergodox_right_led_2_on();
-          } else {
-            unregister_code (KC_LALT);
-            ergodox_right_led_2_set(LED_BRIGHTNESS_LO);
-            ergodox_right_led_2_off();
-            alt_state = 0;
-          }
-        }
-        break;
-
-      case A_CTRL:
-        if (record->event.pressed) {
-          if (ctrl_state == 0) {
-            register_code (KC_LCTRL);
-            ctrl_state = 1;
-            ergodox_right_led_3_set(LED_BRIGHTNESS_HI);
-            ergodox_right_led_3_on();
-          } else {
-            unregister_code (KC_LCTRL);
-            ergodox_right_led_3_set(LED_BRIGHTNESS_LO);
-            ergodox_right_led_3_off();
-            ctrl_state = 0;
-          }
-        }
-        break;
-
       case HU_AA:
         if (record->event.pressed) {
           layer_off(HUN);
-          if (shift_state == 0) {
-            unregister_code(KC_RSFT);
-            return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(A), END);
-          }
-          else
-            {
-              if (keyboard_report->mods & MOD_BIT(KC_RSFT))
-                unregister_code (KC_RSFT);
-              return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), D(RSFT), T(A), END);
-            }
+          if (IS_SHIFTED ()) {
+            return MACRO (U(LSFT), D(RALT), U(RALT), T(QUOT), D(LSFT), T(A), END);
+          } else
+            return MACRO (D(RALT), U(RALT), T(QUOT), T(A), END);
         }
         break;
       case HU_OO:
         if (record->event.pressed) {
           layer_off(HUN);
-          if (shift_state == 0) {
+          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(O), END);
           }
@@ -525,7 +472,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       case HU_EE:
         if (record->event.pressed) {
           layer_off(HUN);
-          if (shift_state == 0) {
+          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(E), END);
           }
@@ -540,7 +487,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       case HU_UU:
         if (record->event.pressed) {
           layer_off(HUN);
-          if (shift_state == 0) {
+          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(U), END);
           }
@@ -555,7 +502,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       case HU_II:
         if (record->event.pressed) {
           layer_off(HUN);
-          if (shift_state == 0) {
+          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(I), END);
           }
@@ -570,7 +517,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       case HU_OE:
         if (record->event.pressed) {
           layer_off(HUN);
-          if (shift_state == 0) {
+          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), D(LSFT), T(QUOT), U(LSFT), T(O), END);
           }
@@ -583,7 +530,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       case HU_UE:
         if (record->event.pressed) {
           layer_off(HUN);
-          if (shift_state == 0) {
+          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), D(LSFT), T(QUOT), U(LSFT), T(U), END);
           }
@@ -596,7 +543,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       case HU_OEE:
         if (record->event.pressed) {
           layer_off(HUN);
-          if (shift_state == 0) {
+          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(EQL), T(O), END);
           }
@@ -611,7 +558,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       case HU_UEE:
         if (record->event.pressed) {
           layer_off(HUN);
-          if (shift_state == 0) {
+          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
             unregister_code(KC_RSFT);
             return MACRO (U(RSFT), D(RALT), U(RALT), T(EQL), T(U), END);
           }
@@ -774,11 +721,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             // Short press: Paste
             switch (cp_mode) {
             case CP_EMACS:
-              if (shift_state == 1)
-                {
-                  unregister_code (KC_RSFT);
-                  return MACRO(U(RSFT), T(RBRC), T(P), D(RSFT), END);
-                }
+              if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
+                unregister_code (KC_RSFT);
+                return MACRO(U(RSFT), T(RBRC), T(P), D(RSFT), END);
+              }
               else
                 return MACRO(T(P), END);
               break;
@@ -898,7 +844,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           oh_entsft_timer = timer_read ();
         } else {
           if (timer_elapsed (oh_entsft_timer) > TAPPING_TERM) {
-            ang_shift_toggle ();
+            //ang_shift_toggle ();
           } else {
             return MACRO (T(ENT), END);
           }
@@ -938,9 +884,6 @@ void matrix_init_user(void) {
 void matrix_scan_user(void) {
   uint8_t layer = biton32(layer_state);
 
-  if ((shift_state == 1) && !(keyboard_report->mods & MOD_BIT(KC_RSFT)))
-    register_code (KC_RSFT);
-
   if (gui_timer && timer_elapsed (gui_timer) > TAPPING_TERM)
     unregister_code (KC_LGUI);
 
@@ -955,13 +898,6 @@ void matrix_scan_user(void) {
   } else if (layer == EMACS) {
     ergodox_right_led_1_on();
     ergodox_right_led_2_on();
-  } else {
-    if (shift_state == 0 && oh_left_blink == 0)
-      ergodox_right_led_1_off();
-    if (alt_state == 0 && !(layer == OHLFT || layer == OHRGT))
-      ergodox_right_led_2_off();
-    if (ctrl_state == 0 && oh_right_blink == 0)
-      ergodox_right_led_3_off();
   }
 
   if (layer == OHLFT || layer == OHRGT) {
@@ -969,7 +905,7 @@ void matrix_scan_user(void) {
 
     if (oh_left_blink) {
       if (timer_elapsed (oh_left_blink_timer) > OH_BLINK_INTERVAL) {
-        if (shift_state == 0)
+        if ((keyboard_report->mods & MOD_BIT(KC_LSFT)) == 0)
           ergodox_right_led_1_off ();
       }
       if (timer_elapsed (oh_left_blink_timer) > OH_BLINK_INTERVAL * 2) {
@@ -980,7 +916,7 @@ void matrix_scan_user(void) {
 
     if (oh_right_blink) {
       if (timer_elapsed (oh_right_blink_timer) > OH_BLINK_INTERVAL) {
-        if (ctrl_state == 0)
+        if ((keyboard_report->mods & MOD_BIT(KC_LCTRL)) == 0)
           ergodox_right_led_3_off ();
       }
       if (timer_elapsed (oh_right_blink_timer) > OH_BLINK_INTERVAL * 2) {
@@ -989,4 +925,34 @@ void matrix_scan_user(void) {
       }
     }
   }
-};
+
+  if (keyboard_report->mods & MOD_BIT(KC_LSFT) ||
+      ((get_oneshot_mods() & MOD_BIT(KC_LSFT)) && !has_oneshot_mods_timed_out())) {
+    ergodox_right_led_1_set (LED_BRIGHTNESS_HI);
+    ergodox_right_led_1_on ();
+  } else {
+    ergodox_right_led_1_set (LED_BRIGHTNESS_LO);
+    if (layer != OHLFT && layer != EMACS)
+      ergodox_right_led_1_off ();
+  }
+
+  if (keyboard_report->mods & MOD_BIT(KC_LALT) ||
+      ((get_oneshot_mods() & MOD_BIT(KC_LALT)) && !has_oneshot_mods_timed_out())) {
+    ergodox_right_led_2_set (LED_BRIGHTNESS_HI);
+    ergodox_right_led_2_on ();
+  } else {
+    ergodox_right_led_2_set (LED_BRIGHTNESS_LO);
+    if (layer != OHRGT && layer != HUN && layer != OHLFT && layer != EMACS)
+      ergodox_right_led_2_off ();
+  }
+
+  if (keyboard_report->mods & MOD_BIT(KC_LCTRL) ||
+      ((get_oneshot_mods() & MOD_BIT(KC_LCTRL)) && !has_oneshot_mods_timed_out())) {
+    ergodox_right_led_3_set (LED_BRIGHTNESS_HI);
+    ergodox_right_led_3_on ();
+  } else {
+    ergodox_right_led_3_set (LED_BRIGHTNESS_LO);
+    if (layer != OHRGT && layer != HUN)
+      ergodox_right_led_3_off ();
+  }
+}
