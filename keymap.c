@@ -110,11 +110,6 @@ enum {
 
 uint8_t cp_mode = CP_EMACS;
 
-/* Helpers */
-
-#define IS_SHIFTED() (keyboard_report->mods & MOD_BIT(KC_LSFT) || \
-                      ((get_oneshot_mods() & MOD_BIT(KC_LSFT)) && !has_oneshot_mods_timed_out()))
-
 /* The Keymap */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -402,6 +397,51 @@ const uint16_t PROGMEM fn_actions[] = {
   ,[F_CTRL] = ACTION_MODS_ONESHOT (MOD_LCTL)
 };
 
+macro_t *ang_do_hun (keyrecord_t *record, uint16_t accent, uint16_t hun_char)
+{
+  uint8_t need_shift = 0;
+  uint8_t hold_shift = 0;
+
+  if (!record->event.pressed)
+    return MACRO_NONE;
+
+  layer_off (HUN);
+
+  if (keyboard_report->mods & MOD_BIT (KC_LSFT)) {
+    hold_shift = 1;
+    need_shift = 1;
+    unregister_code (KC_LSFT);
+  }
+  if ((get_oneshot_mods () & MOD_BIT(KC_LSFT)) && !has_oneshot_mods_timed_out ()) {
+    need_shift = 1;
+    hold_shift = 0;
+    unregister_code (KC_LSFT);
+  }
+
+  clear_oneshot_mods ();
+
+  register_code (KC_RALT);
+  unregister_code (KC_RALT);
+  if (accent == (KC_DQT)) {
+    register_code (KC_RSFT);
+  }
+  register_code (accent);
+  unregister_code (accent);
+  if (need_shift && accent != (KC_DQT)) {
+    register_code (KC_RSFT);
+  } else if (accent == (KC_DQT) && !need_shift) {
+    unregister_code (KC_RSFT);
+  }
+  register_code (hun_char);
+  unregister_code (hun_char);
+  if (need_shift || accent == (KC_DQT))
+    unregister_code (KC_RSFT);
+  if (hold_shift)
+    register_code (KC_LSFT);
+
+  return MACRO_NONE;
+}
+
 void ang_handle_kf (keyrecord_t *record, uint8_t id)
 {
   uint8_t code = id - KF_1;
@@ -432,130 +472,23 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       /* Hungarian layer */
 
       case HU_AA:
-        if (record->event.pressed) {
-          layer_off(HUN);
-          if (IS_SHIFTED ()) {
-            return MACRO (U(LSFT), D(RALT), U(RALT), T(QUOT), D(LSFT), T(A), END);
-          } else
-            return MACRO (D(RALT), U(RALT), T(QUOT), T(A), END);
-        }
-        break;
+        return ang_do_hun (record, KC_QUOT, KC_A);
       case HU_OO:
-        if (record->event.pressed) {
-          layer_off(HUN);
-          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
-            unregister_code(KC_RSFT);
-            return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(O), END);
-          }
-          else
-            {
-              if (keyboard_report->mods & MOD_BIT(KC_RSFT))
-                unregister_code (KC_RSFT);
-              return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), D(RSFT), T(O), END);
-            }
-        }
-        break;
+        return ang_do_hun (record, KC_QUOT, KC_O);
       case HU_EE:
-        if (record->event.pressed) {
-          layer_off(HUN);
-          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
-            unregister_code(KC_RSFT);
-            return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(E), END);
-          }
-          else
-            {
-              if (keyboard_report->mods & MOD_BIT(KC_RSFT))
-                unregister_code (KC_RSFT);
-              return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), D(RSFT), T(E), END);
-            }
-        }
-        break;
+        return ang_do_hun (record, KC_QUOT, KC_E);
       case HU_UU:
-        if (record->event.pressed) {
-          layer_off(HUN);
-          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
-            unregister_code(KC_RSFT);
-            return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(U), END);
-          }
-          else
-            {
-              if (keyboard_report->mods & MOD_BIT(KC_RSFT))
-                unregister_code (KC_RSFT);
-              return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), D(RSFT), T(U), END);
-            }
-        }
-        break;
+        return ang_do_hun (record, KC_QUOT, KC_U);
       case HU_II:
-        if (record->event.pressed) {
-          layer_off(HUN);
-          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
-            unregister_code(KC_RSFT);
-            return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), T(I), END);
-          }
-          else
-            {
-              if (keyboard_report->mods & MOD_BIT(KC_RSFT))
-                unregister_code (KC_RSFT);
-              return MACRO (U(RSFT), D(RALT), U(RALT), T(QUOT), D(RSFT), T(I), END);
-            }
-        }
-        break;
+        return ang_do_hun (record, KC_QUOT, KC_I);
       case HU_OE:
-        if (record->event.pressed) {
-          layer_off(HUN);
-          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
-            unregister_code(KC_RSFT);
-            return MACRO (U(RSFT), D(RALT), U(RALT), D(LSFT), T(QUOT), U(LSFT), T(O), END);
-          }
-          else
-            {
-              return MACRO (D(RALT), U(RALT), T(QUOT), T(O), END);
-            }
-        }
-        break;
+        return ang_do_hun (record, KC_DQT, KC_O);
       case HU_UE:
-        if (record->event.pressed) {
-          layer_off(HUN);
-          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
-            unregister_code(KC_RSFT);
-            return MACRO (U(RSFT), D(RALT), U(RALT), D(LSFT), T(QUOT), U(LSFT), T(U), END);
-          }
-          else
-            {
-              return MACRO (D(RALT), U(RALT), T(QUOT), T(U), END);
-            }
-        }
-        break;
+        return ang_do_hun (record, KC_DQT, KC_U);
       case HU_OEE:
-        if (record->event.pressed) {
-          layer_off(HUN);
-          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
-            unregister_code(KC_RSFT);
-            return MACRO (U(RSFT), D(RALT), U(RALT), T(EQL), T(O), END);
-          }
-          else
-            {
-              if (keyboard_report->mods & MOD_BIT(KC_RSFT))
-                unregister_code (KC_RSFT);
-              return MACRO (U(RSFT), D(RALT), U(RALT), T(EQL), D(RSFT), T(O), END);
-            }
-        }
-        break;
+        return ang_do_hun (record, KC_EQL, KC_O);
       case HU_UEE:
-        if (record->event.pressed) {
-          layer_off(HUN);
-          if (keyboard_report->mods & MOD_BIT(KC_RSFT)) {
-            unregister_code(KC_RSFT);
-            return MACRO (U(RSFT), D(RALT), U(RALT), T(EQL), T(U), END);
-          }
-          else
-            {
-              if (keyboard_report->mods & MOD_BIT(KC_RSFT))
-                unregister_code (KC_RSFT);
-              return MACRO (U(RSFT), D(RALT), U(RALT), T(EQL), D(RSFT), T(U), END);
-            }
-        }
-        break;
+        return ang_do_hun (record, KC_EQL, KC_U);
 
         /* Mouse movement */
       case A_MUL:
