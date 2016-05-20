@@ -469,8 +469,7 @@ void ang_handle_kf (keyrecord_t *record, uint8_t id)
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
       switch(id) {
-      /* Hungarian layer */
-
+        /* Hungarian layer */
       case HU_AA:
         return ang_do_hun (record, KC_QUOT, KC_A);
       case HU_OO:
@@ -495,48 +494,44 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         if (record->event.pressed) {
           mousekey_on(KC_MS_UP);
           mousekey_on(KC_MS_LEFT);
-          mousekey_send();
         } else {
           mousekey_off(KC_MS_UP);
           mousekey_off(KC_MS_LEFT);
-          mousekey_send();
         }
+        mousekey_send();
         break;
 
       case A_MUR:
         if (record->event.pressed) {
           mousekey_on(KC_MS_UP);
           mousekey_on(KC_MS_RIGHT);
-          mousekey_send();
         } else {
           mousekey_off(KC_MS_UP);
           mousekey_off(KC_MS_RIGHT);
-          mousekey_send();
         }
+        mousekey_send();
         break;
 
       case A_MDL:
         if (record->event.pressed) {
           mousekey_on(KC_MS_DOWN);
           mousekey_on(KC_MS_LEFT);
-          mousekey_send();
         } else {
           mousekey_off(KC_MS_DOWN);
           mousekey_off(KC_MS_LEFT);
-          mousekey_send();
         }
+        mousekey_send();
         break;
 
       case A_MDR:
         if (record->event.pressed) {
           mousekey_on(KC_MS_DOWN);
           mousekey_on(KC_MS_RIGHT);
-          mousekey_send();
         } else {
           mousekey_off(KC_MS_DOWN);
           mousekey_off(KC_MS_RIGHT);
-          mousekey_send();
         }
+        mousekey_send();
         break;
 
         /* EMACS layer stuff */
