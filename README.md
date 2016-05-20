@@ -38,6 +38,8 @@ you will need the [QMK][qmk] firmware checked out, and this repo either checked
 out, or symlinked to `keyboard/ergodox_ez/algernon`. One way to achieve that is
 this:
 
+ [qmk]: https://github.com/jackhumbert/qmk_firmware
+
 ```
 $ git clone https://github.com/jackhumbert/qmk_firmware.git
 $ cd qmk_firmware/keyboard/ergodox_ez
