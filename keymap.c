@@ -22,6 +22,7 @@
 /* Macros */
 
 #define A_GUI      0 // GUI magic
+#define A_ESC     44 // OSM-clearing ESC
 
 #define A_MUL      1 // mouse up-left
 #define A_MUR      2 // mouse up-right
@@ -145,7 +146,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                             ,F(F_ALT),F(F_GUI)
                                                                      ,F(F_CTRL)
-                                                    ,KC_BSPC,F(F_SFT),KC_ESC
+                                                    ,KC_BSPC,F(F_SFT),M(A_ESC)
 
                                                                 // right hand
                                                                ,KC_APP  ,M(KF_6),M(KF_7),M(KF_8),M(KF_9)     ,M(KF_10)    ,M(KF_11)
@@ -156,7 +157,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                ,F(F_ECS),M(OH_LEFT)
                                                                ,F(F_HUN)
-                                                               ,KC_ESC  ,KC_ENT ,KC_SPC
+                                                               ,M(A_ESC),KC_ENT ,KC_SPC
     ),
 
 /* Keymap 1: Application select layer
@@ -322,7 +323,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_TAB     ,KC_QUOT     ,KC_COMM     ,KC_DOT    ,KC_P       ,KC_Y    ,KC_LBRC
 ,KC_MINS    ,KC_A        ,KC_O        ,KC_E      ,KC_U       ,KC_I
 ,KC_MPLY    ,KC_SCLN     ,KC_Q        ,KC_J      ,KC_K       ,KC_X    ,KC_LPRN
-,KC_HOME    ,KC_END      ,KC_DOWN     ,KC_UP     ,KC_ESC
+,KC_HOME    ,KC_END      ,KC_DOWN     ,KC_UP     ,M(A_ESC)
 
                                                                 ,KC_TRNS     ,KC_TRNS
                                                                              ,KC_TRNS
@@ -367,7 +368,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,KC_SLSH    ,KC_L        ,KC_R        ,KC_C      ,KC_G       ,KC_F    ,KC_RBRC
 ,KC_BSLS    ,KC_S        ,KC_N        ,KC_T      ,KC_H       ,KC_D
 ,KC_MSTP    ,KC_Z        ,KC_V        ,KC_W      ,KC_M       ,KC_B    ,KC_RPRN
-,KC_PGDN    ,KC_PGUP     ,KC_RGHT     ,KC_LEFT   ,KC_ESC
+,KC_PGDN    ,KC_PGUP     ,KC_RGHT     ,KC_LEFT   ,M(A_ESC)
 
                                                                 ,KC_TRNS     ,KC_TRNS
                                                                              ,KC_TRNS
@@ -469,6 +470,18 @@ void ang_handle_kf (keyrecord_t *record, uint8_t id)
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
       switch(id) {
+      case A_ESC:
+        if (record->event.pressed) {
+          if ((get_oneshot_mods ()) && !has_oneshot_mods_timed_out ()) {
+            clear_oneshot_mods ();
+          } else {
+            register_code (KC_ESC);
+          }
+        } else {
+          unregister_code (KC_ESC);
+        }
+        break;
+
         /* Hungarian layer */
       case HU_AA:
         return ang_do_hun (record, KC_QUOT, KC_A);
