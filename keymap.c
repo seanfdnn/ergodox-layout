@@ -75,12 +75,11 @@
 
 /* Fn keys */
 #define F_BSE     0
-#define F_ECS     1
-#define F_HUN     2
-#define F_GUI     3
-#define F_SFT     4
-#define F_ALT     5
-#define F_CTRL    6
+#define F_HUN     1
+#define F_GUI     2
+#define F_SFT     3
+#define F_ALT     4
+#define F_CTRL    5
 
 /* States & timers */
 
@@ -155,7 +154,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_RPRN ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,KC_MSTP
                                                                                 ,KC_MINS,KC_LEFT,KC_RGHT     ,KC_PGUP     ,KC_PGDN
 
-                                                               ,F(F_ECS),M(OH_LEFT)
+                                                               ,OSL(EMACS),M(OH_LEFT)
                                                                ,F(F_HUN)
                                                                ,M(A_ESC),KC_ENT ,KC_SPC
     ),
@@ -291,7 +290,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                 ,KC_D    ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_NO   ,KC_NO
                                                                      ,KC_WH_D   ,KC_NO   ,M(A_MDL),KC_W    ,M(A_MDR),KC_NO   ,KC_MSTP
                                                                                          ,KC_VOLU ,KC_VOLD ,KC_MUTE ,KC_NO   ,KC_NO
-                                                                     ,F(F_BSE)  ,KC_MS_BTN3
+                                                                     ,KC_TRNS   ,KC_MS_BTN3
                                                                      ,KC_MPRV
                                                                      ,KC_MNXT   ,KC_BTN1 ,KC_BTN2
     ),
@@ -390,7 +389,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint16_t PROGMEM fn_actions[] = {
    [F_BSE]  = ACTION_LAYER_CLEAR(ON_PRESS)
-  ,[F_ECS]  = ACTION_LAYER_INVERT(EMACS, ON_PRESS)
   ,[F_HUN]  = ACTION_LAYER_INVERT(HUN, ON_PRESS)
   ,[F_GUI]  = ACTION_MACRO_TAP(A_GUI)
   ,[F_SFT]  = ACTION_MODS_ONESHOT (MOD_LSFT)
