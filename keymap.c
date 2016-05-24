@@ -257,11 +257,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
  * | MS Slow   | 1 F1 | 2 F2 | 3 F3 | 4 F4 | 5 F5 |ScrLCK|           |ScrLCK| 6 F6 | 7 F7 | 8 F8 | 9 F9 | 0 F10|    F11    |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * | MS Normal |      | Home |  Up  | End  |      |Visual|           |Scroll|  $   |MsUpL | MsUp |MsUpR |  R   |PrintScreen|
+ * | MS Normal |      | Home |  Up  | PgUp |      |Visual|           |Scroll|  $   |MsUpL | MsUp |MsUpR |  R   |PrintScreen|
  * |-----------+------+------+------+------+------| Mode |           |  Up  |------+------+------+------+------+-----------|
  * | MS Fast   |APPEND| Left | Down | Right| INS  |------|           |------|  D   |MsLeft| MsDn |MsRght|      |           |
  * |-----------+------+------+------+------+------| Cut  |           |Scroll|------+------+------+------+------+-----------|
- * | Play/Pause|      | PgUp | Down | PgDn |  X   | Copy |           | Down |      |MsDnL |  W   |MsDnR |      |      Stop |
+ * | Play/Pause|      | End  | Down | PgDn |  X   | Copy |           | Down |      |MsDnL |  W   |MsDnR |      |      Stop |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |EmacsM|TermM |OtherM|      |      |                                       |Vol Up|Vol Dn| Mute |      |      |
  *      `----------------------------------'                                       `----------------------------------'
@@ -276,9 +276,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [EMACS] = KEYMAP(
 // left hand
  KC_ACL0    ,M(KF_1)     ,M(KF_2)    ,M(KF_3) ,M(KF_4) ,M(KF_5) ,LGUI(KC_L)
-,KC_ACL1    ,KC_NO       ,KC_HOME    ,KC_UP   ,KC_END  ,KC_NO   ,M(AE_VIS)
+,KC_ACL1    ,KC_NO       ,KC_HOME    ,KC_UP   ,KC_PGUP ,KC_NO   ,M(AE_VIS)
 ,KC_ACL2    ,M(AE_APPND) ,KC_LEFT    ,KC_DOWN ,KC_RIGHT,M(AE_INS)
-,KC_MPLY    ,KC_NO       ,KC_PGUP    ,KC_DOWN ,KC_PGDN ,KC_X    ,M(AE_CPYC)
+,KC_MPLY    ,KC_NO       ,KC_END     ,KC_DOWN ,KC_PGDN ,KC_X    ,M(AE_CPYC)
 ,M(AE_EMACS),M(AE_TERM)  ,M(AE_OTHER),KC_NO   ,KC_NO
                                                         ,KC_TRNS ,KC_TRNS
                                                                  ,KC_TRNS
