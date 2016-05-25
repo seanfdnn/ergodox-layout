@@ -130,9 +130,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                         ,-------------.           ,-------------.
  *                                         | LAlt | GUI  |           |EMACS | 1HND |
  *                                  ,------|------|------|           |------+------+------.
- *                                  |      |      | Ctrl |           | HUN  |      |      |
+ *                                  |      |      | Ctrl |           |      |      |      |
  *                                  |Backsp|LShift|------|           |------| Enter| Space|
- *                                  |      |      | ESC  |           | ESC  |      |      |
+ *                                  |      |      | ESC  |           | HUN  |      |      |
  *                                  `--------------------'           `--------------------'
  */
 [BASE] = KEYMAP(
@@ -155,8 +155,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                 ,KC_MINS,KC_LEFT,KC_RGHT     ,KC_PGUP     ,KC_PGDN
 
                                                                ,OSL(EMACS),M(OH_LEFT)
-                                                               ,F(F_HUN)
-                                                               ,M(A_ESC),KC_ENT ,KC_SPC
+                                                               ,KC_NO
+                                                               ,F(F_HUN),KC_ENT ,KC_SPC
     ),
 
 /* Keymap 1: Application select layer
@@ -222,9 +222,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                         ,-------------.           ,-------------.
  *                                         |      |      |           |      |      |
  *                                  ,------|------|------|           |------+------+------.
- *                                  |      |      |      |           | BASE |      |      |
- *                                  |      |      |------|           |------|      |      |
  *                                  |      |      |      |           |      |      |      |
+ *                                  |      |      |------|           |------|      |      |
+ *                                  |      |      |      |           | BASE |      |      |
  *                                  `--------------------'           `--------------------'
  */
 
@@ -248,8 +248,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                  ,KC_NO   ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
 
                                                                ,KC_NO   ,KC_NO
-                                                               ,F(F_BSE)
-                                                               ,KC_TRNS ,KC_TRNS  ,KC_TRNS
+                                                               ,KC_NO
+                                                               ,F(F_BSE),KC_TRNS  ,KC_TRNS
     ),
 
 /* Keymap 3: Spacemacs layer
