@@ -130,7 +130,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                         ,-------------.           ,-------------.
  *                                         | LAlt | GUI  |           |EMACS | 1HND |
  *                                  ,------|------|------|           |------+------+------.
- *                                  |      |      | Ctrl |           |      |      |      |
+ *                                  |      |      | Ctrl |           | LEAD |      |      |
  *                                  |Backsp|LShift|------|           |------| Enter| Space|
  *                                  |      |      | ESC  |           | HUN  |      |      |
  *                                  `--------------------'           `--------------------'
@@ -155,7 +155,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                 ,KC_MINS,KC_LEFT,KC_RGHT     ,KC_PGUP     ,KC_PGDN
 
                                                                ,OSL(EMACS),M(OH_LEFT)
-                                                               ,KC_NO
+                                                               ,KC_LEAD
                                                                ,F(F_HUN),KC_ENT ,KC_SPC
     ),
 
@@ -789,6 +789,28 @@ void matrix_init_user(void) {
   ergodox_led_all_off();
 };
 
+LEADER_EXTERNS();
+
+void ang_do_unicode (void) {
+  register_code (KC_RCTL);
+  register_code (KC_RSFT);
+  register_code (KC_U);
+  unregister_code (KC_U);
+  unregister_code (KC_RSFT);
+  unregister_code (KC_RCTL);
+}
+
+void ang_tap (uint16_t codes[]) {
+  for (int i = 0; codes[i] != 0; i++) {
+    register_code (codes[i]);
+    unregister_code (codes[i]);
+  }
+}
+
+#define TAP_ONCE(code) \
+  register_code (code); \
+  unregister_code (code)
+
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void) {
   uint8_t layer = biton32(layer_state);
@@ -863,5 +885,48 @@ void matrix_scan_user(void) {
     ergodox_right_led_3_set (LED_BRIGHTNESS_LO);
     if (layer != OHRGT && layer != HUN)
       ergodox_right_led_3_off ();
+  }
+
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end ();
+
+    SEQ_ONE_KEY (KC_U) {
+      ang_do_unicode ();
+    }
+
+    SEQ_ONE_KEY (KC_L) {
+      /* λ */
+      ang_do_unicode ();
+
+      uint16_t codes[] = {KC_0, KC_3, KC_B, KC_B, KC_ENT, 0};
+      ang_tap (codes);
+    }
+
+    SEQ_ONE_KEY (KC_S) {
+      ang_do_unicode (); TAP_ONCE (KC_A); TAP_ONCE (KC_F); TAP_ONCE (KC_SPC);
+      TAP_ONCE (KC_BSLS);
+      register_code (KC_RSFT); TAP_ONCE (KC_MINS); TAP_ONCE (KC_9); unregister_code (KC_RSFT);
+      ang_do_unicode (); TAP_ONCE (KC_3); TAP_ONCE (KC_0); TAP_ONCE (KC_C); TAP_ONCE (KC_4); TAP_ONCE (KC_SPC);
+      register_code (KC_RSFT); TAP_ONCE (KC_0); TAP_ONCE (KC_MINS); unregister_code (KC_RSFT);
+      TAP_ONCE (KC_SLSH);
+      ang_do_unicode (); TAP_ONCE (KC_A); TAP_ONCE (KC_F); TAP_ONCE (KC_SPC);
+    }
+
+    SEQ_TWO_KEYS (KC_W, KC_M) {
+      register_code (KC_LALT);
+      register_code (KC_F2);
+      unregister_code (KC_F2);
+      unregister_code (KC_LALT);
+
+      _delay_ms (1000);
+
+      uint16_t codes[] = {KC_M, KC_A, KC_X, KC_MINS, KC_F, KC_O, KC_C, KC_U, KC_S, KC_E, KC_D, KC_ENT, 0};
+      ang_tap (codes);
+      register_code (KC_LGUI);
+      register_code (KC_UP);
+      unregister_code (KC_UP);
+      unregister_code (KC_LGUI);
+    }
   }
 }
