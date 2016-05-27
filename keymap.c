@@ -12,74 +12,89 @@
 
 /* Layers */
 
-#define BASE    0 // default layer
-#define APPSEL  1 // application select layer
-#define HUN     2 // Hungarian layer
-#define EMACS   3 // (Spac)Emacs layer
-#define OHLFT   4 // One-handed, left side
-#define OHRGT   5 // One-handed, right side
+enum {
+  BASE = 0,
+  APPSEL,
+  HUN,
+  EMACS,
+  OHLFT,
+  OHRGT,
+};
 
 /* Macros */
 
-#define A_GUI      0 // GUI magic
-#define A_ESC     44 // OSM-clearing ESC
+enum {
+  NONE = 0,
+  // Buttons that do extra stuff
+  A_GUI,
+  A_ESC,
 
-#define A_MUL      1 // mouse up-left
-#define A_MUR      2 // mouse up-right
-#define A_MDL      3 // mouse down-left
-#define A_MDR      4 // mouse down-right
+  // Function / number keys
+  KF_1, // 1, F1
+  KF_2, // 2, F2
+  KF_3, // ...
+  KF_4,
+  KF_5,
+  KF_6,
+  KF_7,
+  KF_8,
+  KF_9,
+  KF_10,
+  KF_11, // =, F11
 
-#define AE_VIS     5 // Visual mode
-#define AE_PSTDEL  6 // Paste/Delete
-#define AE_CPYC    7 // Copy/Cut
-#define AE_EMACS   8 // Emacs copy & paste mode
-#define AE_TERM    9 // Terminal copy & paste mode
-#define AE_OTHER  10 // Other copy & paste mode
-#define AE_INS    11 // Insert mode
-#define AE_OVR    12 // Overwrite mode
-#define AE_APPND  13 // Append
+  // Application select keys
+  APP_SLK, // Slack
+  APP_EMCS, // Emacs
+  APP_TERM, // Terminal
+  APP_CHRM, // Chrome
+  APP_MSIC, // Music
 
-#define HU_AA     14 // Á
-#define HU_OO     15 // Ó
-#define HU_EE     16 // É
-#define HU_UU     17 // Ú
-#define HU_II     18 // Í
-#define HU_OE     19 // Ö
-#define HU_UE     20 // Ü
-#define HU_OEE    21 // Ő
-#define HU_UEE    22 // Ű
+  // Diagonal mouse movement
+  A_MUL,
+  A_MUR,
+  A_MDL,
+  A_MDR,
 
-#define APP_SLK   23 // Slack
-#define APP_EMCS  24 // Emacs
-#define APP_TERM  25 // Terminal
-#define APP_CHRM  26 // Chrome
-#define APP_MSIC  27 // Music
+  // Emacs layer keys
+  AE_VIS, // Visual mode
+  AE_PSTDEL, // Paste/Delete
+  AE_CPYC, // Copy/Cut
+  AE_EMACS, // Emacs copy & paste mode
+  AE_TERM, // Terminal copy & paste mode
+  AE_OTHER, // Other copy & paste mode
+  AE_INS, // Insert mode
+  AE_OVR, // Overwrite mode
+  AE_APPND, // Append
 
-#define KF_1      28 // 1, F1
-#define KF_2      29 // 2, F2
-#define KF_3      30 // ...
-#define KF_4      31
-#define KF_5      32
-#define KF_6      33
-#define KF_7      34
-#define KF_8      35
-#define KF_9      36
-#define KF_10     37
-#define KF_11     38 // =, F11
+  // Hungarian layer keys
+  HU_AA, // Á
+  HU_OO, // Ó
+  HU_EE, // É
+  HU_UU, // Ú
+  HU_II, // Í
+  HU_OE, // Ö
+  HU_UE, // Ü
+  HU_OEE, // Ő
+  HU_UEE, // Ű
 
-#define OH_BSSPC  39
-#define OH_ENTSFT 40
-#define OH_BASE   41
-#define OH_LEFT   42
-#define OH_RIGHT  43
+  // One-handed layout specials
+  OH_BSSPC,
+  OH_ENTSFT,
+  OH_BASE,
+  OH_LEFT,
+  OH_RIGHT,
+};
 
 /* Fn keys */
-#define F_BSE     0
-#define F_HUN     1
-#define F_GUI     2
-#define F_SFT     3
-#define F_ALT     4
-#define F_CTRL    5
+
+enum {
+  F_BSE = 0,
+  F_HUN,
+  F_GUI,
+  F_SFT,
+  F_ALT,
+  F_CTRL
+};
 
 /* States & timers */
 
