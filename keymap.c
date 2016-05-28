@@ -706,29 +706,19 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
 
       case APP_SLK:
-        if (record->event.pressed)
-          return MACRO(T(S), T(C), T(U), T(D), T(C), T(L), T(O), T(U), T(D), T(ENT), END);
-        break;
+        return MACRODOWN(T(S), T(C), T(U), T(D), T(C), T(L), T(O), T(U), T(D), T(ENT), END);
 
       case APP_EMCS:
-        if (record->event.pressed)
-          return MACRO(T(E), T(M), T(A), T(C), T(S), T(ENT), END);
-        break;
+        return MACRODOWN(T(E), T(M), T(A), T(C), T(S), T(ENT), END);
 
       case APP_TERM:
-        if (record->event.pressed)
-          return MACRO(T(T), T(E), T(R), T(M), T(ENT), END);
-        break;
+        return MACRODOWN(T(T), T(E), T(R), T(M), T(ENT), END);
 
       case APP_CHRM:
-        if (record->event.pressed)
-          return MACRO(T(C), T(H), T(R), T(O), T(M), T(ENT), END);
-        break;
+        return MACRODOWN(T(C), T(H), T(R), T(O), T(M), T(ENT), END);
 
       case APP_MSIC:
-        if (record->event.pressed)
-          return MACRO(T(R), T(H), T(Y), T(T), T(H), T(M), T(B), T(O), T(X), T(ENT), END);
-        break;
+        return MACRODOWN(T(R), T(H), T(Y), T(T), T(H), T(M), T(B), T(O), T(X), T(ENT), END);
 
         /* Function keys */
       case KF_1 ... KF_11:
