@@ -9,6 +9,7 @@
 #include "action_util.h"
 #include "mousekey.h"
 #include "timer.h"
+#include "keymap_plover.h"
 
 /* Layers */
 
@@ -19,6 +20,7 @@ enum {
   EMACS,
   OHLFT,
   OHRGT,
+  PLVR,
 };
 
 /* Macros */
@@ -27,6 +29,7 @@ enum {
   NONE = 0,
   // Buttons that do extra stuff
   A_GUI,
+  A_PLVR,
   A_ESC,
 
   // Function / number keys
@@ -132,7 +135,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Base Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * |        `~ | 1 F1 | 2 F2 | 3 F3 | 4 F4 | 5 F5 | Apps |           | Apps | 6 F6 | 7 F7 | 8 F8 | 9 F9 | 0 F10| =     F11 |
+ * |        `~ | 1 F1 | 2 F2 | 3 F3 | 4 F4 | 5 F5 | Plvr |           | Apps | 6 F6 | 7 F7 | 8 F8 | 9 F9 | 0 F10| =     F11 |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
  * |       Tab |   '  |   ,  |   .  |   P  |   Y  |   [  |           |  ]   |   F  |   G  |   C  |   R  |  L   | /         |
  * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
@@ -152,7 +155,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = KEYMAP(
 // left hand
- KC_GRV             ,M(KF_1)     ,M(KF_2)     ,M(KF_3),M(KF_4),M(KF_5),KC_APP
+ KC_GRV             ,M(KF_1)     ,M(KF_2)     ,M(KF_3),M(KF_4),M(KF_5),M(A_PLVR)
 ,KC_TAB             ,KC_QUOT     ,KC_COMM     ,KC_DOT ,KC_P   ,KC_Y   ,KC_LBRC
 ,KC_MINS            ,KC_A        ,KC_O        ,KC_E   ,KC_U   ,KC_I
 ,KC_MPLY            ,KC_SCLN     ,KC_Q        ,KC_J   ,KC_K   ,KC_X   ,KC_LPRN
@@ -401,6 +404,50 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_NO   ,KC_NO  ,KC_NO
     ),
 
+/* Keymap 7: Steno for Plover
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      |      |      | BASE |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |   #  |   #  |   #  |   #  |   #  |      |           |      |  #   |  #   |   #  |   #  |  #   |   #    |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |   T  |   P  |   H  |      |------|           |------|      |  F   |   P  |   L  |  T   |   D    |
+ * |--------+   S  +------+------+------+   *  |      |           |      |  *   +------+------+------+------+--------|
+ * |        |      |   K  |   W  |   R  |      |      |           |      |      |  R   |   B  |   G  |  S   |   Z    |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        |      |      |       |      |      |
+ *                                 ,------|------|------|       |------+------+------.
+ *                                 |      |      |      |       |      |      |      |
+ *                                 |   A  |   O  |------|       |------|  E   |  U   |
+ *                                 |      |      |      |       |      |      |      |
+ *                                 `--------------------'       `--------------------'
+ */
+
+[PLVR] = KEYMAP(
+// left hand
+KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,  KC_NO,   M(A_PLVR),
+KC_NO,  PV_NUM, PV_NUM, PV_NUM,  PV_NUM, PV_NUM,  KC_NO,
+KC_NO,  PV_LS,  PV_LT,  PV_LP,   PV_LH,  PV_STAR,
+KC_NO,  PV_LS,  PV_LK,  PV_LW,   PV_LR,  PV_STAR, KC_NO,
+KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,
+                                           KC_NO, KC_NO,
+                                           KC_NO,
+                                           PV_A,  PV_O,  KC_NO,
+
+                                                 // right hand
+                                                 KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+                                                 KC_NO,   PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,
+                                                          PV_STAR, PV_RF,   PV_RP,   PV_RL,   PV_RT,   PV_RD,
+                                                 KC_NO,   PV_STAR, PV_RR,   PV_RB,   PV_RG,   PV_RS,   PV_RZ,
+                                                                   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO,
+                                           KC_NO,      KC_NO,
+                                           KC_NO,
+                                           KC_NO,PV_E, PV_U
+ ),
+
 };
 
 const uint16_t PROGMEM fn_actions[] = {
@@ -411,6 +458,29 @@ const uint16_t PROGMEM fn_actions[] = {
   ,[F_ALT]  = ACTION_MODS_ONESHOT (MOD_LALT)
   ,[F_CTRL] = ACTION_MODS_ONESHOT (MOD_LCTL)
 };
+
+void toggle_steno(int pressed)
+{
+  uint8_t layer = biton32(layer_state);
+
+  if (pressed) {
+    if (layer != PLVR) layer_on(PLVR); else layer_off(PLVR);
+
+    register_code(PV_LP);
+    register_code(PV_LH);
+    register_code(PV_LR);
+    register_code(PV_O);
+    register_code(PV_RL);
+    register_code(PV_RG);
+  } else {
+    unregister_code(PV_LP);
+    unregister_code(PV_LH);
+    unregister_code(PV_LR);
+    unregister_code(PV_O);
+    unregister_code(PV_RL);
+    unregister_code(PV_RG);
+  }
+}
 
 macro_t *ang_do_hun (keyrecord_t *record, uint16_t accent, uint16_t hun_char)
 {
@@ -681,6 +751,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         }
         break;
 
+        /* Plover base */
+      case A_PLVR:
+        toggle_steno(record->event.pressed);
+        break;
+
         /* GUI & AppSel */
       case A_GUI:
         if (record->event.pressed) {
@@ -841,6 +916,10 @@ void matrix_scan_user(void) {
   } else if (layer == EMACS) {
     ergodox_right_led_1_on();
     ergodox_right_led_2_on();
+  } else if (layer == PLVR) {
+    ergodox_right_led_1_on ();
+    ergodox_right_led_2_on ();
+    ergodox_right_led_3_on ();
   }
 
   if (layer == OHLFT || layer == OHRGT) {
@@ -875,7 +954,7 @@ void matrix_scan_user(void) {
     ergodox_right_led_1_on ();
   } else {
     ergodox_right_led_1_set (LED_BRIGHTNESS_LO);
-    if (layer != OHLFT && layer != EMACS)
+    if (layer != OHLFT && layer != EMACS && layer != PLVR)
       ergodox_right_led_1_off ();
   }
 
@@ -885,7 +964,7 @@ void matrix_scan_user(void) {
     ergodox_right_led_2_on ();
   } else {
     ergodox_right_led_2_set (LED_BRIGHTNESS_LO);
-    if (layer != OHRGT && layer != HUN && layer != OHLFT && layer != EMACS)
+    if (layer != OHRGT && layer != HUN && layer != OHLFT && layer != EMACS && layer != PLVR)
       ergodox_right_led_2_off ();
   }
 
@@ -895,7 +974,7 @@ void matrix_scan_user(void) {
     ergodox_right_led_3_on ();
   } else {
     ergodox_right_led_3_set (LED_BRIGHTNESS_LO);
-    if (layer != OHRGT && layer != HUN)
+    if (layer != OHRGT && layer != HUN && layer != PLVR)
       ergodox_right_led_3_off ();
   }
 

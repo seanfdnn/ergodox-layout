@@ -34,7 +34,8 @@ right). The more interesting parts are how certain keys behave:
 * The `ESC` key also doubles as a one-shot cancel key: if tapped while any of
   the one-shot modifiers are in-flight (as in, single-tapped, and not expired
   yet), it cancels all one-shot modifiers. Otherwise it sends the usual keycode.
-* The **Emacs** and **Hun** layer keys are one-shot, the **1Hand** is a toggle.
+* The **Emacs** and **Hun** layer keys are one-shot, the **1Hand** and **STENO**
+  keys are toggles.
 * The **Lead** key allows me to type in a sequence of keys, and trigger some
   actions:
     - `LEAD u` enters unicode input mode, by sending the GTK+ key sequence that
@@ -99,6 +100,14 @@ The differences are as follows:
     - The `Enter`/`Shift` key sends `Enter` on short-tap, `Shift` on long-tap.
 * The `Apps`/`BASE` key can be used to go back to the base layer, by
   long-tapping it. A short-tap will send the `App` key, as usual.
+
+## Steno layer
+
+[![Steno layer for Plover](images/steno-layer.png)](http://www.keyboard-layout-editor.com/#/gists/401ef9a84369e47c57f9aedcf0a0d667)
+
+This is to be used with [Plover](http://www.openstenoproject.org/plover/),
+nothing really fancy here. The **STENO** key toggles the layer on and off, and
+sends the toggle command to Plover too.
 
 # Building
 
