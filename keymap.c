@@ -21,7 +21,7 @@ enum {
   OHLFT,
   OHRGT,
   PLVR,
-  CDVRK
+  EXPRM
 };
 
 /* Macros */
@@ -470,7 +470,7 @@ KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,
  *                                  |      |      | ESC  |           | HUN  |      |      |
  *                                  `--------------------'           `--------------------'
  */
-[CDVRK] = KEYMAP(
+[EXPRM] = KEYMAP(
 // left hand
  KC_GRV             ,M(KF_1)     ,M(KF_2)     ,M(KF_3),M(KF_4),M(KF_5),M(A_PLVR)
 ,KC_TAB             ,KC_QUOT     ,KC_COMM     ,KC_DOT ,KC_P   ,KC_Y   ,KC_LBRC
@@ -971,7 +971,7 @@ void matrix_scan_user(void) {
     ergodox_right_led_1_on ();
     ergodox_right_led_2_on ();
     ergodox_right_led_3_on ();
-  } else if (layer == CDVRK) {
+  } else if (layer == EXPRM) {
     ergodox_right_led_1_on ();
     ergodox_right_led_2_on ();
     ergodox_right_led_3_on ();
@@ -1011,7 +1011,7 @@ void matrix_scan_user(void) {
     ergodox_right_led_1_on ();
   } else {
     ergodox_right_led_1_set (LED_BRIGHTNESS_LO);
-    if (layer != OHLFT && layer != EMACS && layer != PLVR && layer != CDVRK)
+    if (layer != OHLFT && layer != EMACS && layer != PLVR && layer != EXPRM)
       ergodox_right_led_1_off ();
   }
 
@@ -1021,7 +1021,7 @@ void matrix_scan_user(void) {
     ergodox_right_led_2_on ();
   } else {
     ergodox_right_led_2_set (LED_BRIGHTNESS_LO);
-    if (layer != OHRGT && layer != HUN && layer != OHLFT && layer != EMACS && layer != PLVR && layer != CDVRK)
+    if (layer != OHRGT && layer != HUN && layer != OHLFT && layer != EMACS && layer != PLVR && layer != EXPRM)
       ergodox_right_led_2_off ();
   }
 
@@ -1031,7 +1031,7 @@ void matrix_scan_user(void) {
     ergodox_right_led_3_on ();
   } else {
     ergodox_right_led_3_set (LED_BRIGHTNESS_LO);
-    if (layer != OHRGT && layer != HUN && layer != PLVR && layer != CDVRK)
+    if (layer != OHRGT && layer != HUN && layer != PLVR && layer != EXPRM)
       ergodox_right_led_3_off ();
   }
 
@@ -1080,7 +1080,7 @@ void matrix_scan_user(void) {
     SEQ_ONE_KEY (KC_E) {
       if (is_exp == 0) {
         default_layer_and (0);
-        default_layer_or ((1 << CDVRK));
+        default_layer_or ((1 << EXPRM));
         is_exp = 1;
 
         ergodox_led_all_off ();

@@ -43,8 +43,7 @@ right). The more interesting parts are how certain keys behave:
     - `LEAD l` uses the unicode input method to enter a `λ`.
     - `LEAD s` does a lot of magic to type in a shruggie: `¯\_(ツ)_/¯`
     - `LEAD w m` maximises the currently focused window.
-    - `LEAD e` makes the experimental
-      ([Capewell-Dvorak](#capewell-dvorak-layer), see below) layer the default.
+    - `LEAD e` makes the [experimental layer](#experimental-layer) the default.
 
 ## Hungarian layer
 
@@ -111,9 +110,9 @@ This is to be used with [Plover](http://www.openstenoproject.org/plover/),
 nothing really fancy here. The **STENO** key toggles the layer on and off, and
 sends the toggle command to Plover too.
 
-## Capewell-Dvorak layer
+## Experimental layer
 
-[![Capewell-Dvorak](images/capewell-dvorak-layer.png)](http://www.keyboard-layout-editor.com/#/gists/6ff50bf71248e05aab5b3fec4fae3d08)
+[![Experimental layer](images/experimental-layer.png)](http://www.keyboard-layout-editor.com/#/gists/6ff50bf71248e05aab5b3fec4fae3d08)
 
 Toggled by the `LEAD + E` combo (`E` for experimental), this is a layer I am
 exploring. Some of the keys on Dvorak are not the most convenient, and on this
