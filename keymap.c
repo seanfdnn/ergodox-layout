@@ -474,7 +474,7 @@ KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,
 // left hand
  KC_GRV             ,M(KF_1)     ,M(KF_2)     ,M(KF_3),M(KF_4),M(KF_5),M(A_PLVR)
 ,KC_TAB             ,KC_QUOT     ,KC_COMM     ,KC_DOT ,KC_P   ,KC_Y   ,KC_LBRC
-,KC_MINS            ,KC_A        ,KC_O        ,KC_E   ,KC_U   ,KC_U
+,KC_MINS            ,KC_A        ,KC_O        ,KC_E   ,KC_U   ,KC_I
 ,KC_MPLY            ,KC_Z        ,KC_K        ,KC_V   ,KC_C   ,KC_X   ,KC_LPRN
 ,KC_HOME            ,KC_END      ,KC_DOWN     ,KC_UP  ,KC_COLN
 
