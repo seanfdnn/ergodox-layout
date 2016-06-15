@@ -412,10 +412,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      | BASE |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |   #  |   #  |   #  |   #  |   #  |      |           |      |  #   |  #   |   #  |   #  |  #   |   #    |
+ * |        |   #  |   #  |   #  |   #  |   #  |   #  |           |  #   |  #   |  #   |   #  |   #  |  #   |   #    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |      |   T  |   P  |   H  |      |------|           |------|      |  F   |   P  |   L  |  T   |   D    |
- * |--------+   S  +------+------+------+   *  |      |           |      |  *   +------+------+------+------+--------|
+ * |--------+   S  +------+------+------+   *  |   *  |           |  *   |  *   +------+------+------+------+--------|
  * |        |      |   K  |   W  |   R  |      |      |           |      |      |  R   |   B  |   G  |  S   |   Z    |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      |      |      |                                       |      |      |      |      |      |
@@ -432,9 +432,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [PLVR] = KEYMAP(
 // left hand
 KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,  KC_NO,   M(A_PLVR),
-KC_NO,  PV_NUM, PV_NUM, PV_NUM,  PV_NUM, PV_NUM,  KC_NO,
+KC_NO,  PV_NUM, PV_NUM, PV_NUM,  PV_NUM, PV_NUM,  PV_NUM,
 KC_NO,  PV_LS,  PV_LT,  PV_LP,   PV_LH,  PV_STAR,
-KC_NO,  PV_LS,  PV_LK,  PV_LW,   PV_LR,  PV_STAR, KC_NO,
+KC_NO,  PV_LS,  PV_LK,  PV_LW,   PV_LR,  PV_STAR, PV_STAR,
 KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,
                                            KC_NO, KC_NO,
                                            KC_NO,
@@ -442,10 +442,10 @@ KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,
 
                                                  // right hand
                                                  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-                                                 KC_NO,   PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,
+                                                 PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,
                                                           PV_STAR, PV_RF,   PV_RP,   PV_RL,   PV_RT,   PV_RD,
-                                                 KC_NO,   PV_STAR, PV_RR,   PV_RB,   PV_RG,   PV_RS,   PV_RZ,
-                                                                   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO,
+                                                 PV_STAR, PV_STAR, PV_RR,   PV_RB,   PV_RG,   PV_RS,   PV_RZ,
+                                                                   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
                                            KC_NO,      KC_NO,
                                            KC_NO,
                                            KC_NO,PV_E, PV_U
