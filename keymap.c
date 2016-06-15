@@ -11,11 +11,6 @@
 #include "timer.h"
 #include "keymap_plover.h"
 
-#if KEYMAP_VERSION == QMK_VERSION
-#undef KEYMAP_VERSION
-#define KEYMAP_VERSION "QMK"
-#endif
-
 /* Layers */
 
 enum {
