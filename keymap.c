@@ -11,6 +11,8 @@
 #include "timer.h"
 #include "keymap_plover.h"
 
+#define KEYMAP_VERSION "1.2-beta"
+
 /* Layers */
 
 enum {
@@ -1087,11 +1089,9 @@ void matrix_scan_user(void) {
       ang_do_unicode ();
     }
 
-#ifdef QMK_VERSION
     SEQ_ONE_KEY (KC_V) {
-      SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
+      SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " (" KEYMAP_VERSION ") @ " QMK_VERSION);
     }
-#endif
 
     SEQ_ONE_KEY (KC_L) {
       /* λ */
