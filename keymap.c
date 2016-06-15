@@ -11,8 +11,6 @@
 #include "timer.h"
 #include "keymap_plover.h"
 
-#define KEYMAP_VERSION "1.2-beta"
-
 /* Layers */
 
 enum {
