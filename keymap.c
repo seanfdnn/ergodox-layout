@@ -32,7 +32,6 @@ enum {
   // Buttons that do extra stuff
   A_GUI,
   A_PLVR,
-  A_ARW,
   A_ESC,
   A_MPN,
   A_COLN,
@@ -154,7 +153,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_RPRN   ,KC_B   ,KC_M   ,KC_W   ,KC_V        ,KC_Z        ,KC_MSTP
                                                                                   ,KC_MINS,KC_DOWN,KC_RGHT     ,KC_NO       ,KC_NO
 
-                                                               ,OSL(NMDIA),M(A_ARW)
+                                                               ,OSL(NMDIA),OSL(ARRW)
                                                                ,KC_LEAD
                                                                ,F(F_HUN)  ,KC_ENT ,KC_SPC
     ),
@@ -199,7 +198,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                ,KC_RPRN   ,KC_Q   ,KC_M   ,KC_W   ,KC_B        ,KC_SLSH     ,KC_MSTP
                                                                                   ,KC_MINS,KC_LEFT,KC_RGHT     ,KC_PGUP     ,KC_PGDN
 
-                                                               ,OSL(NMDIA),M(A_ARW)
+                                                               ,OSL(NMDIA),OSL(ARRW)
                                                                ,KC_LEAD
                                                                ,F(F_HUN)  ,KC_ENT ,KC_SPC
     ),
@@ -637,24 +636,6 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           layer_off (HUN);
         } else {
           unregister_code (KC_ESC);
-        }
-        break;
-
-      case A_ARW:
-        if (record->event.pressed) {
-          layer_invert (ARRW);
-
-          ergodox_led_all_off ();
-          ergodox_right_led_2_on ();
-          _delay_ms (100);
-          ergodox_right_led_1_on ();
-          _delay_ms (100);
-          ergodox_right_led_2_off ();
-          ergodox_right_led_3_on ();
-          _delay_ms (100);
-          ergodox_right_led_1_off ();
-          _delay_ms (100);
-          ergodox_right_led_3_off ();
         }
         break;
 
