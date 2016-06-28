@@ -10,6 +10,7 @@
 #include "mousekey.h"
 #include "timer.h"
 #include "keymap_plover.h"
+#include "eeconfig.h"
 
 /* Layers */
 
@@ -851,8 +852,12 @@ struct {
   uint16_t timer;
 } dt_key;
 
+uint8_t is_exp = 0;
+
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
+  uint8_t dl;
+
   ergodox_led_all_on();
   for (int i = LED_BRIGHTNESS_HI; i > LED_BRIGHTNESS_LO; i--) {
     ergodox_led_all_set (i);
@@ -866,6 +871,12 @@ void matrix_init_user(void) {
   ergodox_led_all_off();
   dt_key.keycode = 0;
   dt_key.count = 0;
+
+  if (!eeconfig_is_enabled())
+    eeconfig_init();
+  dl = eeconfig_read_default_layer ();
+  if (dl == (1UL << EXPRM))
+    is_exp = 1;
 };
 
 LEADER_EXTERNS();
@@ -891,8 +902,6 @@ void ang_tap (uint16_t codes[]) {
 #define TAP_ONCE(code) \
   register_code (code); \
   unregister_code (code)
-
-uint8_t is_exp = 0;
 
 void dt_user (void) {
   switch (dt_key.keycode) {
@@ -1059,7 +1068,8 @@ void matrix_scan_user(void) {
     SEQ_ONE_KEY (KC_E) {
       if (is_exp == 0) {
         default_layer_and (0);
-        default_layer_or ((1 << EXPRM));
+        default_layer_or ((1UL << EXPRM));
+        eeconfig_update_default_layer ((1UL << EXPRM));
         is_exp = 1;
 
         ergodox_led_all_off ();
@@ -1076,7 +1086,8 @@ void matrix_scan_user(void) {
       } else {
         is_exp = 0;
         default_layer_and (0);
-        default_layer_or (1 << BASE);
+        default_layer_or (1UL << BASE);
+        eeconfig_update_default_layer ((1UL << BASE));
 
         ergodox_led_all_off ();
         ergodox_right_led_1_on ();
