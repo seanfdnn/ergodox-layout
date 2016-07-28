@@ -117,7 +117,9 @@ uint16_t oh_left_blink_timer = 0;
 uint8_t oh_right_blink = 0;
 uint16_t oh_right_blink_timer = 0;
 
+#if KEYLOGGER_ENABLE
 bool log_enable = false;
+#endif
 
 /* The Keymap */
 
@@ -1072,12 +1074,14 @@ void matrix_scan_user(void) {
     leading = false;
     leader_end ();
 
+#if KEYLOGGER_ENABLE
     SEQ_ONE_KEY (KC_D) {
       ergodox_led_all_on();
       _delay_ms(100);
       ergodox_led_all_off();
       log_enable = !log_enable;
     }
+#endif
 
     SEQ_ONE_KEY (KC_U) {
       ang_do_unicode ();
@@ -1166,6 +1170,7 @@ void matrix_scan_user(void) {
   }
 }
 
+#if KEYLOGGER_ENABLE
 bool process_record_user (uint16_t keycode, keyrecord_t *record) {
   uint8_t layer = biton32(layer_state);
 
@@ -1176,3 +1181,4 @@ bool process_record_user (uint16_t keycode, keyrecord_t *record) {
 
   return true;
 }
+#endif
