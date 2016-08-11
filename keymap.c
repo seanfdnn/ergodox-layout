@@ -218,7 +218,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                         |      |      |           |      |      |
  *                                  ,------|------|------|           |------+------+------.
  *                                  |      |      |      |           |      |      |      |
- *                                  |      |      |------|           |------| PgUp | PgDn |
+ *                                  | Enter|      |------|           |------| PgUp | PgDn |
  *                                  |      |      |      |           |      |      |      |
  *                                  `--------------------'           `--------------------'
  */
@@ -233,7 +233,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                              ,KC_TRNS ,KC_TRNS
                                                       ,KC_TRNS
-                                    ,KC_TRNS ,KC_TRNS ,KC_TRNS
+                                    ,KC_ENT  ,KC_TRNS ,KC_TRNS
 
                                                                 // right hand
                                                                ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS ,KC_TRNS
