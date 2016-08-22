@@ -817,6 +817,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void) {
   uint8_t layer = biton32(layer_state);
+  bool is_arrow = false;
 
   if (gui_timer && timer_elapsed (gui_timer) > TAPPING_TERM)
     unregister_code (KC_LGUI);
@@ -839,13 +840,19 @@ void matrix_scan_user(void) {
     ergodox_right_led_2_set (LED_BRIGHTNESS_HI);
   }
 
+  if (layer_state & (1UL << ARRW)) {
+    ergodox_right_led_1_on ();
+    ergodox_right_led_3_on ();
+    is_arrow = true;
+  }
+
   if (keyboard_report->mods & MOD_BIT(KC_LSFT) ||
       ((get_oneshot_mods() & MOD_BIT(KC_LSFT)) && !has_oneshot_mods_timed_out())) {
     ergodox_right_led_1_set (LED_BRIGHTNESS_HI);
     ergodox_right_led_1_on ();
   } else {
     ergodox_right_led_1_set (LED_BRIGHTNESS_LO);
-    if (layer != NMDIA && layer != PLVR && layer != ADORE)
+    if (layer != NMDIA && layer != PLVR && layer != ADORE && !is_arrow)
       ergodox_right_led_1_off ();
   }
 
@@ -865,7 +872,7 @@ void matrix_scan_user(void) {
     ergodox_right_led_3_on ();
   } else {
     ergodox_right_led_3_set (LED_BRIGHTNESS_LO);
-    if (layer != HUN && layer != PLVR && layer != ADORE)
+    if (layer != HUN && layer != PLVR && layer != ADORE && !is_arrow)
       ergodox_right_led_3_off ();
   }
 
