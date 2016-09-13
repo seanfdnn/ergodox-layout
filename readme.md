@@ -65,6 +65,8 @@ The symbols on the front in the image above have the same color as the key that 
 
 My experimental layout, that I keep tweaking. No full description here, because things are very much in flux.
 
+Note that the **HUN** layer does not work well with ADORE: it still has the same layout as on the [Base](#base-layer) layer. This will remain until ADORE becomes the default.
+
 ## Steno layer
 
 [![Steno layer for Plover](images/steno-layer.png)](http://www.keyboard-layout-editor.com/#/gists/401ef9a84369e47c57f9aedcf0a0d667)
