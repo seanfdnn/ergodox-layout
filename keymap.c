@@ -125,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Base Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | Next/Prev | 9    | 7  @ | 5  * | 3  ^ | 1    | F11  |           |  F12 | 0  % | 2  ! | 4  # | 6  & | 8  $ |    Plover |
+ * | Next/Prev | 9    | 7  @ | 5  * | 3  ^ | 1  $ | F11  |           |  F12 | 0  % | 2  ! | 4  # | 6  & | 8    |    Plover |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
  * |         ~ |   '  |   ,  |   .  |   P  |   Y  |   (  |           |  )   |   F  |   G  |   C  |   R  |  L   | \         |
  * |-----------+------+------+------+------+------|   [  |           |  ]   |------+------+------+------+------+-----------|
@@ -170,7 +170,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 1: Adore layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | Play/Pause| 9    | 7  @ | 5  * | 3  ^ | 1    | F11  |           |  F12 | 0  % | 2  ! | 4  # | 6  & | 8  $ |    Plover |
+ * | Play/Pause| 9    | 7  @ | 5  * | 3  ^ | 1  $ | F11  |           |  F12 | 0  % | 2  ! | 4  # | 6  & | 8    |    Plover |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
  * |        `~ |   X  |   W  |   G  |   L  |   M  |   (  |           |  )   |   F  |   H  |   C  |   P  |  Y   | \         |
  * |-----------+------+------+------+------+------|   [  |           |  ]   |------+------+------+------+------+-----------|
@@ -537,9 +537,10 @@ static void ang_handle_num_row(uint8_t id, keyrecord_t *record) {
     kc = idx + KC_1;
   } else {
     switch (id) {
-    case A_1:
+    case A_8:
     case A_9:
       return;
+
     case A_7:
       kc = KC_2;
       break;
@@ -548,6 +549,9 @@ static void ang_handle_num_row(uint8_t id, keyrecord_t *record) {
       break;
     case A_3:
       kc = KC_6;
+      break;
+    case A_1:
+      kc = KC_4;
       break;
 
     case A_0:
@@ -561,9 +565,6 @@ static void ang_handle_num_row(uint8_t id, keyrecord_t *record) {
       break;
     case A_6:
       kc = KC_7;
-      break;
-    case A_8:
-      kc = KC_4;
       break;
     }
   }
