@@ -8,7 +8,6 @@
 #include "debug.h"
 #include "action_layer.h"
 #include "action_util.h"
-#include "mousekey.h"
 #include "timer.h"
 #include "keymap_plover.h"
 #include "eeconfig.h"
@@ -42,17 +41,6 @@ enum {
   APP_TERM, // Terminal
   APP_CHRM, // Chrome
   APP_MSIC, // Music
-
-  // Diagonal mouse movement
-  A_MUL,
-  A_MUR,
-  A_MDL,
-  A_MDR,
-
-  // Mouse acceleration
-  A_ACL0,
-  A_ACL1,
-  A_ACL2,
 
   // Hungarian layer keys
   HU_AA, // Á
@@ -354,45 +342,45 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 5: Navigation & Media layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | MS Slow   |  F9  |  F7  |  F5  |  F3  |  F1  |ScrLCK|           |ScrLCK| F10  |  F2  |  F4  |  F6  |  F8  |           |
+ * |           |  F9  |  F7  |  F5  |  F3  |  F1  |      |           |ScrLCK| F10  |  F2  |  F4  |  F6  |  F8  |           |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * | MS Normal |      | Home |  Up  | PgUp |      |      |           |Scroll|      |MsUpL | MsUp |MsUpR |      |PrintScreen|
- * |-----------+------+------+------+------+------|      |           |  Up  |------+------+------+------+------+-----------|
- * | MS Fast   |      | Left | Down | Right|      |------|           |------|      |MsLeft| MsDn |MsRght|      |           |
- * |-----------+------+------+------+------+------|      |           |Scroll|------+------+------+------+------+-----------|
- * | Play/Pause|      | End  | Down | PgDn |      |      |           | Down |      |MsDnL | MsDn |MsDnR |      |      Stop |
+ * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
+ * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |      |      |      |      |      |------|           |------|      |      |      |      |      |           |
+ * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |      |      |      |      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
- *                                         | Mute | VlUp |           | BASE | MClk |
+ *                                         | Mute | VlUp |           | BASE |      |
  *                                  ,------|------|------|           |------+------+------.
- *                                  |      |      | VlDn |           | Prev |Left  |Right |
- *                                  |  SPC | Enter|------|           |------| Click| Click|
- *                                  |      |      | ESC  |           | Next |      |      |
+ *                                  |      |      | VlDn |           |      |      |      |
+ *                                  |      |      |------|           |------|      |      |
+ *                                  |      |      |      |           |      |      |      |
  *                                  `--------------------'           `--------------------'
  */
 [NMDIA] = KEYMAP(
 // left hand
- M(A_ACL0)  ,KC_F9       ,KC_F7      ,KC_F5   ,KC_F3   ,KC_F1   ,LGUI(KC_L)
-,M(A_ACL1)  ,KC_NO       ,KC_HOME    ,KC_UP   ,KC_PGUP ,KC_NO   ,KC_NO
-,M(A_ACL2)  ,KC_NO       ,KC_LEFT    ,KC_DOWN ,KC_RIGHT,KC_NO
-,KC_MPLY    ,KC_NO       ,KC_END     ,KC_DOWN ,KC_PGDN ,KC_NO   ,KC_NO
+ KC_NO      ,KC_F9       ,KC_F7      ,KC_F5   ,KC_F3   ,KC_F1   ,KC_NO
+,KC_NO      ,KC_NO       ,KC_NO      ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
+,KC_NO      ,KC_NO       ,KC_NO      ,KC_NO   ,KC_NO   ,KC_NO
+,KC_NO      ,KC_NO       ,KC_NO      ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
 ,KC_NO      ,KC_NO       ,KC_NO      ,KC_NO   ,KC_NO
                                                         ,KC_MUTE ,KC_VOLU
                                                                  ,KC_VOLD
-                                                 ,KC_SPC,KC_ENTER,KC_ESC
+                                                 ,KC_NO ,KC_NO   ,KC_TRNS
 
                                                                      // right hand
                                                                      ,LGUI(KC_L),KC_F10  ,KC_F2   ,KC_F4   ,KC_F6   ,KC_F8    ,KC_NO
-                                                                     ,KC_WH_U   ,KC_NO   ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_NO    ,KC_PSCR
-                                                                                ,KC_NO   ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_NO    ,KC_NO
-                                                                     ,KC_WH_D   ,KC_NO   ,M(A_MDL),KC_MS_D ,M(A_MDR),KC_NO    ,KC_MSTP
+                                                                     ,KC_NO     ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO    ,KC_NO
+                                                                                ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO    ,KC_NO
+                                                                     ,KC_NO     ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO    ,KC_NO
                                                                                          ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO    ,KC_NO
 
-                                                                     ,KC_TRNS   ,KC_MS_BTN3
-                                                                     ,KC_MPRV
-                                                                     ,KC_MNXT   ,KC_BTN1 ,KC_BTN2
+                                                                     ,KC_TRNS   ,KC_NO
+                                                                     ,KC_NO
+                                                                     ,KC_NO     ,KC_NO   ,KC_NO
     ),
 
 /* Keymap 6: Steno for Plover
@@ -518,10 +506,6 @@ static macro_t *ang_do_hun (keyrecord_t *record, uint16_t accent, uint16_t hun_c
   return MACRO_NONE;
 }
 
-static struct {
-  uint8_t idx;
-} m_accel_state;
-
 static void ang_handle_num_row(uint8_t id, keyrecord_t *record) {
   uint8_t idx = id - A_1;
   uint8_t kc;
@@ -621,70 +605,6 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         return ang_do_hun (record, KC_EQL, KC_O);
       case HU_UEE:
         return ang_do_hun (record, KC_EQL, KC_U);
-
-#if MOUSEKEY_ENABLE
-        /* Mouse movement */
-      case A_MUL:
-        if (record->event.pressed) {
-          mousekey_on(KC_MS_UP);
-          mousekey_on(KC_MS_LEFT);
-        } else {
-          mousekey_off(KC_MS_UP);
-          mousekey_off(KC_MS_LEFT);
-        }
-        mousekey_send();
-        break;
-
-      case A_MUR:
-        if (record->event.pressed) {
-          mousekey_on(KC_MS_UP);
-          mousekey_on(KC_MS_RIGHT);
-        } else {
-          mousekey_off(KC_MS_UP);
-          mousekey_off(KC_MS_RIGHT);
-        }
-        mousekey_send();
-        break;
-
-      case A_MDL:
-        if (record->event.pressed) {
-          mousekey_on(KC_MS_DOWN);
-          mousekey_on(KC_MS_LEFT);
-        } else {
-          mousekey_off(KC_MS_DOWN);
-          mousekey_off(KC_MS_LEFT);
-        }
-        mousekey_send();
-        break;
-
-      case A_MDR:
-        if (record->event.pressed) {
-          mousekey_on(KC_MS_DOWN);
-          mousekey_on(KC_MS_RIGHT);
-        } else {
-          mousekey_off(KC_MS_DOWN);
-          mousekey_off(KC_MS_RIGHT);
-        }
-        mousekey_send();
-        break;
-
-      case A_ACL0 ... A_ACL2:
-        if (record->event.pressed) {
-          uint8_t idx = id - A_ACL0;
-          if (m_accel_state.idx == id) {
-            mousekey_off(m_accel_state.idx - A_ACL0 + KC_ACL0);
-            m_accel_state.idx = 0;
-          } else {
-            if (m_accel_state.idx) {
-              mousekey_off(m_accel_state.idx - A_ACL0 + KC_ACL0);
-              m_accel_state.idx = 0;
-            }
-            mousekey_on(KC_ACL0 + idx);
-            m_accel_state.idx = id;
-          }
-        }
-        break;
-#endif
 
         /* Plover base */
       case A_PLVR:
