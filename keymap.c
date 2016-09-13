@@ -98,18 +98,6 @@ enum {
   CT_RBP,
   CT_TMUX,
   CT_TPS,
-
-  // Function / number keys
-  KF_1, // 1, F1
-  KF_2, // 2, F2
-  KF_3, // ...
-  KF_4,
-  KF_5,
-  KF_6,
-  KF_7,
-  KF_8,
-  KF_9,
-  KF_10,
 };
 
 /* States & timers */
@@ -137,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Base Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | Next/Prev | 1 F1 | 2 F2 | 3 F3 | 4 F4 | 5 F5 | Plvr |           |  F12 | 6 F6 | 7 F7 | 8 F8 | 9 F9 | 0 F10|       F11 |
+ * | Next/Prev | 9    | 7  @ | 5  * | 3  ^ | 1  $ | F11  |           |  F12 | 0  % | 2  ! | 4  # | 6  & | 8    |    Plover |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
  * |         ~ |   '  |   ,  |   .  |   P  |   Y  |   (  |           |  )   |   F  |   G  |   C  |   R  |  L   | \         |
  * |-----------+------+------+------+------+------|   [  |           |  ]   |------+------+------+------+------+-----------|
@@ -157,7 +145,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = KEYMAP(
 // left hand
- M(A_MPN)           ,TD(KF_1)    ,TD(KF_2)    ,TD(KF_3),TD(KF_4),TD(KF_5),M(A_PLVR)
+ M(A_MPN)           ,M(A_9)      ,M(A_7)      ,M(A_5)  ,M(A_3)  ,M(A_1)  ,KC_F11
 ,KC_GRV             ,KC_QUOT     ,KC_COMM     ,KC_DOT  ,KC_P    ,KC_Y    ,TD(CT_LBP)
 ,TD(CT_TA)          ,KC_A        ,KC_O        ,KC_E    ,KC_U    ,KC_I
 ,KC_MPLY            ,KC_SLSH     ,KC_Q        ,KC_J    ,KC_K    ,KC_X    ,TD(CT_TMUX)
@@ -168,7 +156,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                     ,KC_BSPC,F(F_SFT),KC_ESC
 
                                                                 // right hand
-                                                               ,KC_F12    ,TD(KF_6),TD(KF_7)  ,TD(KF_8),TD(KF_9),TD(KF_10),KC_F11
+                                                               ,KC_F12    ,M(A_0)  ,M(A_2)    ,M(A_4)  ,M(A_6)  ,M(A_8)   ,M(A_PLVR)
                                                                ,TD(CT_RBP),KC_F    ,KC_G      ,KC_C    ,KC_R    ,KC_L     ,KC_BSLS
                                                                           ,KC_D    ,KC_H      ,KC_T    ,KC_N    ,KC_S     ,KC_EQL
                                                                ,TD(CT_TPS),KC_B    ,KC_M      ,KC_W    ,KC_V    ,KC_Z     ,KC_MSTP
@@ -182,7 +170,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 1: Adore layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | Play/Pause| 9    | 7  @ | 5  * | 3  ^ | 1    | F11  |           |  F12 | 0  % | 2  ! | 4  # | 6  & | 8  $ |    Plover |
+ * | Play/Pause| 9    | 7  @ | 5  * | 3  ^ | 1  $ | F11  |           |  F12 | 0  % | 2  ! | 4  # | 6  & | 8    |    Plover |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
  * |        `~ |   X  |   W  |   G  |   L  |   M  |   (  |           |  )   |   F  |   H  |   C  |   P  |  Y   | \         |
  * |-----------+------+------+------+------+------|   [  |           |  ]   |------+------+------+------+------+-----------|
@@ -535,51 +523,50 @@ static struct {
 } m_accel_state;
 
 static void ang_handle_num_row(uint8_t id, keyrecord_t *record) {
+  uint8_t idx = id - A_1;
   uint8_t kc;
+  static bool shifted[10];
 
-  if (!is_adore) {
-    kc = id - A_1 + KC_1;
+  if (keyboard_report->mods & MOD_BIT(KC_LSFT) ||
+      ((get_oneshot_mods() & MOD_BIT(KC_LSFT)) && !has_oneshot_mods_timed_out())) {
+    if (record->event.pressed)
+      shifted[idx] = true;
+  }
+
+  if (!shifted[idx]) {
+    kc = idx + KC_1;
   } else {
-    bool shifted = false;
+    switch (id) {
+    case A_8:
+    case A_9:
+      shifted[idx] = false;
+      return;
 
-    if (keyboard_report->mods & MOD_BIT(KC_LSFT) ||
-        ((get_oneshot_mods() & MOD_BIT(KC_LSFT)) && !has_oneshot_mods_timed_out())) {
-      shifted = true;
-    }
+    case A_7:
+      kc = KC_2;
+      break;
+    case A_5:
+      kc = KC_8;
+      break;
+    case A_3:
+      kc = KC_6;
+      break;
+    case A_1:
+      kc = KC_4;
+      break;
 
-    if (!shifted) {
-      kc = id - A_1 + KC_1;
-    } else {
-      switch (id) {
-      case A_1:
-      case A_9:
-        return;
-      case A_7:
-        kc = KC_2;
-        break;
-      case A_5:
-        kc = KC_8;
-        break;
-      case A_3:
-        kc = KC_6;
-        break;
-
-      case A_0:
-        kc = KC_5;
-        break;
-      case A_2:
-        kc = KC_1;
-        break;
-      case A_4:
-        kc = KC_3;
-        break;
-      case A_6:
-        kc = KC_7;
-        break;
-      case A_8:
-        kc = KC_4;
-        break;
-      }
+    case A_0:
+      kc = KC_5;
+      break;
+    case A_2:
+      kc = KC_1;
+      break;
+    case A_4:
+      kc = KC_3;
+      break;
+    case A_6:
+      kc = KC_7;
+      break;
     }
   }
 
@@ -587,6 +574,7 @@ static void ang_handle_num_row(uint8_t id, keyrecord_t *record) {
     register_code (kc);
   } else {
     unregister_code (kc);
+    shifted[idx] = false;
   }
 }
 
@@ -834,33 +822,6 @@ static void ang_tap_dance_ta_reset (qk_tap_dance_state_t *state, void *user_data
     layer_off (ARRW);
 }
 
-static void ang_tap_dance_fx_on_finished (qk_tap_dance_state_t *state, void *user_data) {
-  uint8_t code = state->keycode - KF_1;
-  uint8_t kc_base;
-
-  if (state->count == 1)
-    kc_base = KC_1;
-  else
-    kc_base = KC_F1;
-
-  code += kc_base;
-  register_code (code);
-}
-
-
-static void ang_tap_dance_fx_on_reset (qk_tap_dance_state_t *state, void *user_data) {
-  uint8_t code = state->keycode - KF_1;
-  uint8_t kc_base;
-
-  if (state->count == 1)
-    kc_base = KC_1;
-  else
-    kc_base = KC_F1;
-
-  code += kc_base;
-  unregister_code (code);
-}
-
 static void ang_tap_dance_tmux_finished (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
     register_code(KC_LALT);
@@ -901,16 +862,6 @@ qk_tap_dance_action_t tap_dance_actions[] = {
   ,[CT_RBP] = ACTION_TAP_DANCE_DOUBLE (KC_RBRC, KC_RPRN)
   ,[CT_TMUX]= ACTION_TAP_DANCE_FN (ang_tap_dance_tmux_finished)
   ,[CT_TPS] = ACTION_TAP_DANCE_FN (ang_tap_dance_tmux_pane_select)
-  ,[KF_1]   = ACTION_TAP_DANCE_FN_ADVANCED (NULL, ang_tap_dance_fx_on_finished, ang_tap_dance_fx_on_reset)
-  ,[KF_2]   = ACTION_TAP_DANCE_FN_ADVANCED (NULL, ang_tap_dance_fx_on_finished, ang_tap_dance_fx_on_reset)
-  ,[KF_3]   = ACTION_TAP_DANCE_FN_ADVANCED (NULL, ang_tap_dance_fx_on_finished, ang_tap_dance_fx_on_reset)
-  ,[KF_4]   = ACTION_TAP_DANCE_FN_ADVANCED (NULL, ang_tap_dance_fx_on_finished, ang_tap_dance_fx_on_reset)
-  ,[KF_5]   = ACTION_TAP_DANCE_FN_ADVANCED (NULL, ang_tap_dance_fx_on_finished, ang_tap_dance_fx_on_reset)
-  ,[KF_6]   = ACTION_TAP_DANCE_FN_ADVANCED (NULL, ang_tap_dance_fx_on_finished, ang_tap_dance_fx_on_reset)
-  ,[KF_7]   = ACTION_TAP_DANCE_FN_ADVANCED (NULL, ang_tap_dance_fx_on_finished, ang_tap_dance_fx_on_reset)
-  ,[KF_8]   = ACTION_TAP_DANCE_FN_ADVANCED (NULL, ang_tap_dance_fx_on_finished, ang_tap_dance_fx_on_reset)
-  ,[KF_9]   = ACTION_TAP_DANCE_FN_ADVANCED (NULL, ang_tap_dance_fx_on_finished, ang_tap_dance_fx_on_reset)
-  ,[KF_10]  = ACTION_TAP_DANCE_FN_ADVANCED (NULL, ang_tap_dance_fx_on_finished, ang_tap_dance_fx_on_reset)
 };
 
 // Runs constantly in the background, in a loop.
@@ -1154,8 +1105,8 @@ void qk_ucis_symbol_fallback (void) {
   for (uint8_t i = 0; i < qk_ucis_state.count - 1; i++) {
     uint8_t code;
 
-    if (qk_ucis_state.codes[i] > KF_1)
-      code = qk_ucis_state.codes[i] - KF_1 + KC_1;
+    if ((qk_ucis_state.codes[i] >= M(A_1)) && (qk_ucis_state.codes[i] <= M(A_0)))
+      code = qk_ucis_state.codes[i] - M(A_1) + KC_1;
     else
       code = qk_ucis_state.codes[i];
     register_code(code);
