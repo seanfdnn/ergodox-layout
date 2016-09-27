@@ -160,6 +160,10 @@ The keymap default to forcing NKRO, which seems to upset Windows, and except the
 * The `hid-commands` tool will now display a notification when the **AppSel** layer is triggered.
 * The `log-to-heatmap.py` tool now treats the innermost keys on the bottom row as thumb keys, as far as statistics are concerned.
 
+### Miscellaneous
+
+* Fixed the [Steno](#steno-layer) toggle key.
+
 ## v1.7
 
 *2016-09-18*
