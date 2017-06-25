@@ -34,7 +34,7 @@ Some of the things in the layout only work when one uses [Spacemacs][spacemacs] 
 
 ## Base layer
 
-[![Base layer](images/base-layer.png)](http://www.keyboard-layout-editor.com/#/gists/28f7eb305fdbff943613e1dc7aa9e82b)
+[![Base layer](https://github.com/algernon/ergodox-layout/raw/master/images/base-layer.png)](http://www.keyboard-layout-editor.com/#/gists/28f7eb305fdbff943613e1dc7aa9e82b)
 
 At its core, this is a Dvorak layout, with some minor changes. The more interesting parts are how certain keys behave:
 
@@ -57,12 +57,12 @@ At its core, this is a Dvorak layout, with some minor changes. The more interest
     - `LEAD d` toggles logging keypress positions to the HID console.
     - `LEAD t` toggles time travel. Figuring out the current `date` is left as an exercise to the reader.
     - `LEAD u` enters the [Unicode symbol input](#unicode-symbol-input) mode.
-    
+
 The symbols on the front in the image above have the same color as the key that activates them, with the exception of the **Arrow** layer, which is just black on the front.
 
 ## ADORE layer
 
-[![ADORE layer](images/adore-layer.png)](http://www.keyboard-layout-editor.com/#/gists/45681a17453d235925b6028dd83bf12a)
+[![ADORE layer](https://github.com/algernon/ergodox-layout/raw/master/images/adore-layer.png)](http://www.keyboard-layout-editor.com/#/gists/45681a17453d235925b6028dd83bf12a)
 
 My experimental layout, that I keep tweaking. No full description here, because things are very much in flux.
 
@@ -70,7 +70,7 @@ Note that the **HUN** layer does not work well with ADORE: it still has the same
 
 ## Steno layer
 
-[![Steno layer for Plover](images/steno-layer.png)](http://www.keyboard-layout-editor.com/#/gists/401ef9a84369e47c57f9aedcf0a0d667)
+[![Steno layer for Plover](https://github.com/algernon/ergodox-layout/raw/master/images/steno-layer.png)](http://www.keyboard-layout-editor.com/#/gists/401ef9a84369e47c57f9aedcf0a0d667)
 
 This is to be used with [Plover](http://www.openstenoproject.org/plover/), nothing really fancy here. The **STENO** key toggles the layer on and off, and sends the toggle command to Plover too.
 
@@ -110,7 +110,7 @@ Included with the firmware is a small tool that can parse these logs, and create
 
 The generated heatmap looks somewhat like this:
 
- ![Heatmap](images/heatmap.png)
+ ![Heatmap](https://github.com/algernon/ergodox-layout/raw/master/images/heatmap.png)
 
 ## Layer notification
 
