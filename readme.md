@@ -12,12 +12,13 @@ Some modifications from Algernon's design:
 * Removal of Hungarian layer
 * Removal of Unicode Symbol Input
 * Modifications to optimize for vim and i3wm
+* Removal of Adore layer
+* Removal of Lead Key and special unicode characters
 
 Roadmap and some undecided changes:
-* Removing Lead key functionality
 * Collapsing media and/or arrow keys
 * Re-purposing TMux keys
-* Removal of Unicode Symbol Input
+* Incorporating ADORE layer parts into base layer
 
 ## Table of Contents
 
@@ -28,8 +29,6 @@ Roadmap and some undecided changes:
 * [Tools](#tools)
     - [Heatmap](#heatmap)
     - [Layer notification](#layer-notification)
-* [Special features](#special-features)
-    - [Unicode Symbol Input](#unicode-symbol-input)
 * [Building](#building)
     - [Using on Windows](#using-on-windows)
 * [License](#license)
@@ -46,7 +45,7 @@ At its core, this is a Dvorak layout, with some minor changes. The more interest
 * The `Shift`, `Alt`, and `Control` modifiers are one-shot. When tapped, they are considered active for the next key press only. When double tapped, they toggle on, until a third, single tap sometime later. When held, they act as expected. My usual pattern is that I use these for the next keypress only, so this behaviour is perfect. If I need them held, I'll just double-tap.
 * The `GUI` key is special, because while a single tap works as usual, when double-tapped, it turns the number row into an application selector, and when triple tapped, it runs an application selector program on the host.
 * The `ESC` key also doubles as a one-shot cancel key: if tapped while any of the one-shot modifiers are in-flight (as in, single-tapped, and not expired yet), it cancels all one-shot modifiers. It also cancels the **Hun** layer, if active. Otherwise it sends the usual keycode.
-* The **Media** and **Hun** layer keys are one-shot, the **STENO** key is a toggle.
+* The **Media** layer keys are one-shot.
 * The **Fx** key is one-shot, and activates the **Media** layer, along with a one-shot `Alt`.
 * When holding the `Tab`/**Arrow** key, the arrow layer activates while the key is held. Tapping the key produces the normal, `Tab` key. Double-tapping it toggles the **Arrow** layer on until a third tap.
 * Tapping the `:` key once yields `:`, tapping it twice yields `;`.
@@ -59,8 +58,6 @@ The symbols on the front in the image above have the same color as the key that 
 [![ADORE layer](https://github.com/algernon/ergodox-layout/raw/master/images/adore-layer.png)](http://www.keyboard-layout-editor.com/#/gists/45681a17453d235925b6028dd83bf12a)
 
 My experimental layout, that I keep tweaking. No full description here, because things are very much in flux.
-
-Note that the **HUN** layer does not work well with ADORE: it still has the same layout as on the [Base](#base-layer) layer. This will remain until ADORE becomes the default.
 
 ## LED states
 
@@ -104,23 +101,22 @@ There is a very small tool in `tools/layer-notify`, that listens to the HID cons
 
 # Building
 
-To make my workflow easier, this layout is maintained in [its own repository][algernon:ez-layout]. To build it, you will need the [QMK][qmk] firmware checked out, and this repo either checked out to something like `layouts/community/algernon_master`, or symlinked there. One way to achieve that is this:
+To make my workflow easier, this layout is maintained in [its own repository][algernon:ez-layout]. To build it, you will need the [QMK][qmk] firmware checked out, and this repo either checked out to something like `layouts/community/seanfdnn`, or symlinked there. One way to achieve that is this:
 
- [algernon:ez-layout]: https://github.com/algernon/ergodox-layout
  [qmk]: https://github.com/qmk/qmk_firmware
 
 ```
 $ git clone https://github.com/qmk/qmk_firmware.git
 $ cd qmk_firmware
-$ git clone https://github.com/algernon/ergodox-layout.git \
-            layouts/community/ergodox/algernon_master
-$ make ergodox_ez:algernon_master
+$ git clone https://github.com/seanfdnn/ergodox-layout.git \
+            layouts/community/ergodox/seanfdnn
+$ make ergodox_ez:seanfdnn
 ```
 
 From time to time, updates may be submitted back to the QMK repository. If you are reading it there, you can build the firmware like any other firmware included with it (assuming you are in the root directory of the firmware):
 
 ```
-$ make ergodox_ez:algernon
+$ make ergodox_ez:seanfdnn:
 ```
 
 ## Using on Windows
