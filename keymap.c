@@ -1,5 +1,6 @@
 /*
- * algernon's ErgoDox EZ layout, please see the readme.md file!
+ * seanfdnn's ErgoDox EZ layout, forked from Algernon's
+ * please see the readme.md file!
  */
 
 #include <stdarg.h>
