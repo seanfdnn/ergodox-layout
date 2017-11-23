@@ -29,7 +29,6 @@ enum {
   // Buttons that do extra stuff
   A_MPN,
 
-
   // number/symbol keys
   A_1, // 1
   A_2, // 2
@@ -112,13 +111,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  M(A_MPN)           ,M(A_9)      ,M(A_7)      ,M(A_5)  ,M(A_3)  ,M(A_1)  ,KC_F11
 ,KC_GRV             ,KC_QUOT     ,KC_COMM     ,KC_DOT  ,KC_P    ,KC_Y    ,TD(CT_LBP)
 ,TD(CT_TA)          ,KC_A        ,KC_O        ,KC_E    ,KC_U    ,KC_I
-,KC_MPLY            ,KC_SLSH     ,KC_Q        ,KC_J    ,KC_K    ,KC_X    ,TD(CT_TMUX)
+,KC_NO              ,KC_SLSH     ,KC_Q        ,KC_J    ,KC_K    ,KC_X    ,TD(CT_TMUX)
 ,KC_NO              ,KC_NO       ,KC_NO       ,KC_NO   ,TD(CT_CLN)
 
-                                                            ,F(F_ALT), KC_NO
+                                                            ,F(F_ALT), KC_LGUI
                                                                      ,F(F_CTRL)
                                                     ,KC_BSPC,F(F_SFT),KC_ESC
-
                                                                 // right hand
                                                                ,M(Fx)     ,M(A_0)  ,M(A_2)    ,M(A_4)  ,M(A_6)  ,M(A_8)   , KC_NO
                                                                ,TD(CT_RBP),KC_F    ,KC_G      ,KC_C    ,KC_R    ,KC_L     ,KC_BSLS
