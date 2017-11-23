@@ -94,7 +94,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-----------+------+------+------+------+------|   [  |           |  ]   |------+------+------+------+------+-----------|
  * | Esc/ARROW |   A  |   O  |   E  |   U  |   I  |------|           |------|   D  |   H  |   T  |   N  |  S   | = / Arrow |
  * |-----------+------+------+------+------+------| tmux |           | tmux |------+------+------+------+------+-----------|
- * | Play/Pause|   /  |   Q  |   J  |   K  |   X  |      |           | Pane |   B  |   M  |   W  |   V  |  Z   | Stop/Reset|
+ * | Ctrl      |   /  |   Q  |   J  |   K  |   X  |      |           | Pane |   B  |   M  |   W  |   V  |  Z   | Stop/Reset|
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *     |       |      |      |      |   :  |                                       |   -  |      |      |      |       |
  *     `-----------------------------------'                                       `-----------------------------------'
@@ -102,8 +102,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                         | LAlt |      |           | MDIA | Del  |
  *                                  ,------|------|------|           |------+------+------.
  *                                  |      |      | Ctrl |           |      |      |      |
- *                                  |Backsp|LShift|------|           |------| Enter| Space|
- *                                  |      |      | ESC  |           |      |      |      |
+ *                                  |LShift|Enter |------|           |------| Bkspc| Space|
+ *                                  |      |      | GUI  |           |      |      |      |
  *                                  `--------------------'           `--------------------'
  */
 [BASE] = LAYOUT_ergodox(
@@ -111,12 +111,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  KC_GRV             ,M(A_9)      ,M(A_7)      ,M(A_5)  ,M(A_3)  ,M(A_1)  ,KC_F11
 ,KC_TAB             ,KC_QUOT     ,KC_COMM     ,KC_DOT  ,KC_P    ,KC_Y    ,TD(CT_LBP)
 ,TD(CT_TA)          ,KC_A        ,KC_O        ,KC_E    ,KC_U    ,KC_I
-,KC_NO              ,KC_SLSH     ,KC_Q        ,KC_J    ,KC_K    ,KC_X    ,TD(CT_TMUX)
+,F(F_CTRL)          ,KC_SLSH     ,KC_Q        ,KC_J    ,KC_K    ,KC_X    ,TD(CT_TMUX)
 ,KC_NO              ,KC_NO       ,KC_NO       ,KC_NO   ,TD(CT_CLN)
 
-                                                            ,F(F_ALT), KC_LGUI
+                                                            ,F(F_ALT), KC_NO
                                                                      ,F(F_CTRL)
-                                                    ,KC_BSPC,F(F_SFT),KC_ESC
+                                                    ,KC_LSHIFT,KC_ENT,KC_LGUI
                                                                 // right hand
                                                                ,M(Fx)     ,M(A_0)  ,M(A_2)    ,M(A_4)  ,M(A_6)  ,M(A_8)   , KC_NO
                                                                ,TD(CT_RBP),KC_F    ,KC_G      ,KC_C    ,KC_R    ,KC_L     ,KC_BSLS
@@ -126,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                ,OSL(NMDIA),KC_DEL
                                                                , KC_NO
-                                                               , KC_NO       ,KC_ENT ,KC_SPC
+                                                               , KC_NO       ,KC_BSPC ,KC_SPC
     ),
 
 
